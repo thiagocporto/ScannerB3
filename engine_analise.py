@@ -79,13 +79,66 @@ def calcular_score_fundamentalista(info):
     }
 
 def analisar_ativo(df_diario, df_semanal):
-    """Aplica os critérios de Swing Trade conservador e Position Trade."""
+    """Aplica a classificação detalhada de todas as fases de mercado para Swing Trade."""
     fechamento_d = df_diario['Close']
     
     # Médias diárias
     sma200_d = fechamento_d.rolling(window=200).mean()
     ema50_d = fechamento_d.ewm(span=50, adjust=False).mean()
     ema21_d = fechamento_d.ewm(span=21, adjust=False).mean()
+    
+    # IFR de 2 períodos
+    rsi2 = calcular_rsi(fechamento_d, periodo=2)
+    
+    # Position (Semanal)
+    fechamento_w = df_semanal['Close']
+    sma20_w = fechamento_w.rolling(window=20).mean()
+
+    preco_atual = float(fechamento_d.iloc[-1])
+    sma200_val = float(sma200_d.iloc[-1])
+    ema50_val = float(ema50_d.iloc[-1])
+    ema21_val = float(ema21_d.iloc[-1])
+    rsi2_val = float(rsi2.iloc[-1]) if not pd.isna(rsi2.iloc[-1]) else 50.0
+    sma20_w_val = float(sma20_w.iloc[-1]) if len(sma20_w.dropna()) > 0 else preco_atual
+
+    # Condições Técnicas
+    alta_macro = (preco_atual > sma200_val) and (preco_atual > ema50_val)
+    baixa_macro = (preco_atual < sma200_val) and (preco_atual < ema50_val)
+    em_pullback = preco_atual < ema21_val
+    sobrevendido_raro = rsi2_val <= 15.0
+    sobrecomprado = rsi2_val >= 85.0
+
+    # CLASSIFICAÇÃO COMPLETA DE TENDÊNCIA E GATILHOS:
+    gatilho_swing = False
+
+    if alta_macro and em_pullback and sobrevendido_raro:
+        status_swing = "🔥 COMPRA ALTA PROBABILIDADE"
+        gatilho_swing = True
+    elif alta_macro and sobrevendido_raro:
+        status_swing = "Atenção: Sobrevendido em Alta"
+    elif alta_macro and sobrecomprado:
+        status_swing = "Sobrecomprado (Risco de Correção)"
+    elif alta_macro and em_pullback:
+        status_swing = "Pullback em Alta (Aguardando Gatilho)"
+    elif alta_macro:
+        status_swing = "Tendência de Alta Forte"
+    elif baixa_macro and sobrevendido_raro:
+        status_swing = "Tendência de Baixa (Sobrevendido)"
+    elif baixa_macro:
+        status_swing = "Tendência de Baixa"
+    else:
+        status_swing = "Lateralização / Neutro"
+
+    status_position = "Alta Estrutural (Semanal)" if preco_atual > sma20_w_val else "Abaixo da Média Semanal"
+
+    return {
+        "Preço (R$)": round(preco_atual, 2),
+        "SMA 200": round(sma200_val, 2),
+        "RSI(2)": round(rsi2_val, 1),
+        "Swing Trade": status_swing,
+        "Position Trade": status_position,
+        "Gatilho_Swing": gatilho_swing
+    }
     
     # IFR de 2 períodos
     rsi2 = calcular_rsi(fechamento_d, periodo=2)
