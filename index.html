@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner B3 | IBrX 100</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <style>
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.25rem 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <header class="mb-8">
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Scanner B3 — IBrX 100</h1>
+            <p class="text-sm text-slate-500 mt-1">Análise Quantitativa Multi-Horizonte (Swing Trade, Position Trade & Fundamentos)</p>
+            <p class="text-xs text-slate-400 mt-0.5">Última atualização: 22/10/2026 às 18:12</p>
+        </header>
+
+        <main class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 overflow-x-auto">
+            <table id="tabelaScanner" class="w-full text-sm text-left">
+                <thead class="text-xs uppercase bg-slate-100 text-slate-600">
+                    <tr>
+                        <th class="px-4 py-3">Ticker</th>
+                        <th class="px-4 py-3 text-right">Preço</th>
+                        <th class="px-4 py-3 text-center">IFR(2)</th>
+                        <th class="px-4 py-3 text-center">Swing Trade</th>
+                        <th class="px-4 py-3 text-center">Position Trade</th>
+                        <th class="px-4 py-3 text-center">Score Fund.</th>
+                        <th class="px-4 py-3 text-right">P/L</th>
+                        <th class="px-4 py-3 text-right">DY (%)</th>
+                        <th class="px-4 py-3 text-right">ROE (%)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ALOS3</td>
+            <td class="px-4 py-3 text-right">R$ 34.85</td>
+            <td class="px-4 py-3 text-center font-mono">28.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">18.54</td>
+            <td class="px-4 py-3 text-right font-mono">993.0%</td>
+            <td class="px-4 py-3 text-right font-mono">7.59%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ALPA4</td>
+            <td class="px-4 py-3 text-right">R$ 16.77</td>
+            <td class="px-4 py-3 text-center font-mono">7.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Atenção: Sobrevendido em Alta</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">16.77</td>
+            <td class="px-4 py-3 text-right font-mono">311.0%</td>
+            <td class="px-4 py-3 text-right font-mono">18.08%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ABEV3</td>
+            <td class="px-4 py-3 text-right">R$ 16.90</td>
+            <td class="px-4 py-3 text-center font-mono">72.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">16.41</td>
+            <td class="px-4 py-3 text-right font-mono">438.0%</td>
+            <td class="px-4 py-3 text-right font-mono">18.4%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ANIM3</td>
+            <td class="px-4 py-3 text-right">R$ 5.07</td>
+            <td class="px-4 py-3 text-center font-mono">41.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">12.37</td>
+            <td class="px-4 py-3 text-right font-mono">156.0%</td>
+            <td class="px-4 py-3 text-right font-mono">9.61%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ASAI3</td>
+            <td class="px-4 py-3 text-right">R$ 13.49</td>
+            <td class="px-4 py-3 text-center font-mono">36.6</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">18.74</td>
+            <td class="px-4 py-3 text-right font-mono">75.0%</td>
+            <td class="px-4 py-3 text-right font-mono">16.16%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">AURE3</td>
+            <td class="px-4 py-3 text-right">R$ 14.83</td>
+            <td class="px-4 py-3 text-center font-mono">19.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">20/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-7.68%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">AXIA3</td>
+            <td class="px-4 py-3 text-right">R$ 59.08</td>
+            <td class="px-4 py-3 text-center font-mono">59.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">13.64</td>
+            <td class="px-4 py-3 text-right font-mono">323.0%</td>
+            <td class="px-4 py-3 text-right font-mono">10.01%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">AZZA3</td>
+            <td class="px-4 py-3 text-right">R$ 25.13</td>
+            <td class="px-4 py-3 text-center font-mono">28.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">4.52</td>
+            <td class="px-4 py-3 text-right font-mono">960.0%</td>
+            <td class="px-4 py-3 text-right font-mono">3.96%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">B3SA3</td>
+            <td class="px-4 py-3 text-right">R$ 23.25</td>
+            <td class="px-4 py-3 text-center font-mono">48.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">23.25</td>
+            <td class="px-4 py-3 text-right font-mono">320.0%</td>
+            <td class="px-4 py-3 text-right font-mono">27.71%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BBSE3</td>
+            <td class="px-4 py-3 text-right">R$ 43.33</td>
+            <td class="px-4 py-3 text-center font-mono">91.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">9.16</td>
+            <td class="px-4 py-3 text-right font-mono">1081.0%</td>
+            <td class="px-4 py-3 text-right font-mono">85.94%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BBDC3</td>
+            <td class="px-4 py-3 text-right">R$ 17.91</td>
+            <td class="px-4 py-3 text-center font-mono">23.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">10.99</td>
+            <td class="px-4 py-3 text-right font-mono">113.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.76%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BBDC4</td>
+            <td class="px-4 py-3 text-right">R$ 20.22</td>
+            <td class="px-4 py-3 text-center font-mono">22.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">12.4</td>
+            <td class="px-4 py-3 text-right font-mono">110.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.76%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BRAP4</td>
+            <td class="px-4 py-3 text-right">R$ 18.79</td>
+            <td class="px-4 py-3 text-center font-mono">1.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">13.42</td>
+            <td class="px-4 py-3 text-right font-mono">1206.0%</td>
+            <td class="px-4 py-3 text-right font-mono">6.95%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SAUD3</td>
+            <td class="px-4 py-3 text-right">R$ 16.07</td>
+            <td class="px-4 py-3 text-center font-mono">78.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">14.22</td>
+            <td class="px-4 py-3 text-right font-mono">264.0%</td>
+            <td class="px-4 py-3 text-right font-mono">10.54%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BBAS3</td>
+            <td class="px-4 py-3 text-right">R$ 23.92</td>
+            <td class="px-4 py-3 text-center font-mono">29.0</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">11.13</td>
+            <td class="px-4 py-3 text-right font-mono">57.0%</td>
+            <td class="px-4 py-3 text-right font-mono">10.55%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BRAV3</td>
+            <td class="px-4 py-3 text-right">R$ 21.10</td>
+            <td class="px-4 py-3 text-center font-mono">92.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">45/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">191.82</td>
+            <td class="px-4 py-3 text-right font-mono">59.0%</td>
+            <td class="px-4 py-3 text-right font-mono">0.44%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BPAC11</td>
+            <td class="px-4 py-3 text-right">R$ 79.46</td>
+            <td class="px-4 py-3 text-center font-mono">37.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">45/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">129.41</td>
+            <td class="px-4 py-3 text-right font-mono">115.0%</td>
+            <td class="px-4 py-3 text-right font-mono">24.41%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CXSE3</td>
+            <td class="px-4 py-3 text-right">R$ 21.30</td>
+            <td class="px-4 py-3 text-center font-mono">48.6</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">14.11</td>
+            <td class="px-4 py-3 text-right font-mono">655.0%</td>
+            <td class="px-4 py-3 text-right font-mono">33.35%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CBAV3</td>
+            <td class="px-4 py-3 text-right">R$ 11.23</td>
+            <td class="px-4 py-3 text-center font-mono">25.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">12.21</td>
+            <td class="px-4 py-3 text-right font-mono">39.0%</td>
+            <td class="px-4 py-3 text-right font-mono">14.57%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CEAB3</td>
+            <td class="px-4 py-3 text-right">R$ 13.68</td>
+            <td class="px-4 py-3 text-center font-mono">45.8</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">7.52</td>
+            <td class="px-4 py-3 text-right font-mono">377.0%</td>
+            <td class="px-4 py-3 text-right font-mono">15.49%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CMIG4</td>
+            <td class="px-4 py-3 text-right">R$ 11.66</td>
+            <td class="px-4 py-3 text-center font-mono">30.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">7.2</td>
+            <td class="px-4 py-3 text-right font-mono">974.0%</td>
+            <td class="px-4 py-3 text-right font-mono">15.94%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">COGN3</td>
+            <td class="px-4 py-3 text-right">R$ 3.01</td>
+            <td class="px-4 py-3 text-center font-mono">31.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">60/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">8.36</td>
+            <td class="px-4 py-3 text-right font-mono">427.0%</td>
+            <td class="px-4 py-3 text-right font-mono">4.93%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CSMG3</td>
+            <td class="px-4 py-3 text-right">R$ 62.96</td>
+            <td class="px-4 py-3 text-center font-mono">51.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">18.52</td>
+            <td class="px-4 py-3 text-right font-mono">162.0%</td>
+            <td class="px-4 py-3 text-right font-mono">14.97%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CPLE3</td>
+            <td class="px-4 py-3 text-right">R$ 17.48</td>
+            <td class="px-4 py-3 text-center font-mono">47.8</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">16.34</td>
+            <td class="px-4 py-3 text-right font-mono">612.0%</td>
+            <td class="px-4 py-3 text-right font-mono">12.76%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CSAN3</td>
+            <td class="px-4 py-3 text-right">R$ 5.02</td>
+            <td class="px-4 py-3 text-center font-mono">28.0</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">0/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-27.22%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CPFE3</td>
+            <td class="px-4 py-3 text-right">R$ 49.49</td>
+            <td class="px-4 py-3 text-center font-mono">33.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">9.5</td>
+            <td class="px-4 py-3 text-right font-mono">754.0%</td>
+            <td class="px-4 py-3 text-right font-mono">27.28%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CMIN3</td>
+            <td class="px-4 py-3 text-right">R$ 4.94</td>
+            <td class="px-4 py-3 text-center font-mono">36.0</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">12.67</td>
+            <td class="px-4 py-3 text-right font-mono">778.0%</td>
+            <td class="px-4 py-3 text-right font-mono">28.14%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CURY3</td>
+            <td class="px-4 py-3 text-right">R$ 31.98</td>
+            <td class="px-4 py-3 text-center font-mono">37.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">8.76</td>
+            <td class="px-4 py-3 text-right font-mono">1330.0%</td>
+            <td class="px-4 py-3 text-right font-mono">68.53%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CVCB3</td>
+            <td class="px-4 py-3 text-right">R$ 1.49</td>
+            <td class="px-4 py-3 text-center font-mono">22.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">10/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">49.67</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-33.35%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CYRE3</td>
+            <td class="px-4 py-3 text-right">R$ 34.30</td>
+            <td class="px-4 py-3 text-center font-mono">77.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">7.92</td>
+            <td class="px-4 py-3 text-right font-mono">794.0%</td>
+            <td class="px-4 py-3 text-right font-mono">20.59%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">DIRR3</td>
+            <td class="px-4 py-3 text-right">R$ 11.32</td>
+            <td class="px-4 py-3 text-center font-mono">53.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">6.94</td>
+            <td class="px-4 py-3 text-right font-mono">1353.0%</td>
+            <td class="px-4 py-3 text-right font-mono">41.88%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ECOR3</td>
+            <td class="px-4 py-3 text-right">R$ 12.72</td>
+            <td class="px-4 py-3 text-center font-mono">16.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">16.1</td>
+            <td class="px-4 py-3 text-right font-mono">227.0%</td>
+            <td class="px-4 py-3 text-right font-mono">12.31%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">EMBJ3</td>
+            <td class="px-4 py-3 text-right">R$ 87.55</td>
+            <td class="px-4 py-3 text-center font-mono">12.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">26.77</td>
+            <td class="px-4 py-3 text-right font-mono">121.0%</td>
+            <td class="px-4 py-3 text-right font-mono">12.19%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ENGI11</td>
+            <td class="px-4 py-3 text-right">R$ 65.93</td>
+            <td class="px-4 py-3 text-center font-mono">35.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">47.78</td>
+            <td class="px-4 py-3 text-right font-mono">172.0%</td>
+            <td class="px-4 py-3 text-right font-mono">9.41%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ENEV3</td>
+            <td class="px-4 py-3 text-right">R$ 32.00</td>
+            <td class="px-4 py-3 text-center font-mono">56.6</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">20/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">31.68</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">7.15%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">EGIE3</td>
+            <td class="px-4 py-3 text-right">R$ 31.09</td>
+            <td class="px-4 py-3 text-center font-mono">46.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">9.04</td>
+            <td class="px-4 py-3 text-right font-mono">359.0%</td>
+            <td class="px-4 py-3 text-right font-mono">28.59%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">EQTL3</td>
+            <td class="px-4 py-3 text-right">R$ 48.17</td>
+            <td class="px-4 py-3 text-center font-mono">23.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">35/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">126.76</td>
+            <td class="px-4 py-3 text-right font-mono">326.0%</td>
+            <td class="px-4 py-3 text-right font-mono">5.0%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">EZTC3</td>
+            <td class="px-4 py-3 text-right">R$ 18.83</td>
+            <td class="px-4 py-3 text-center font-mono">45.8</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">10.07</td>
+            <td class="px-4 py-3 text-right font-mono">197.0%</td>
+            <td class="px-4 py-3 text-right font-mono">10.55%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">FLRY3</td>
+            <td class="px-4 py-3 text-right">R$ 27.82</td>
+            <td class="px-4 py-3 text-center font-mono">39.6</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">23.98</td>
+            <td class="px-4 py-3 text-right font-mono">462.0%</td>
+            <td class="px-4 py-3 text-right font-mono">12.62%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">GGBR4</td>
+            <td class="px-4 py-3 text-right">R$ 25.48</td>
+            <td class="px-4 py-3 text-center font-mono">21.8</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">22.16</td>
+            <td class="px-4 py-3 text-right font-mono">347.0%</td>
+            <td class="px-4 py-3 text-right font-mono">4.18%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">GOAU4</td>
+            <td class="px-4 py-3 text-right">R$ 11.53</td>
+            <td class="px-4 py-3 text-center font-mono">19.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">19.22</td>
+            <td class="px-4 py-3 text-right font-mono">368.0%</td>
+            <td class="px-4 py-3 text-right font-mono">4.17%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">GGPS3</td>
+            <td class="px-4 py-3 text-right">R$ 16.09</td>
+            <td class="px-4 py-3 text-center font-mono">43.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">12.28</td>
+            <td class="px-4 py-3 text-right font-mono">201.0%</td>
+            <td class="px-4 py-3 text-right font-mono">22.34%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">GMAT3</td>
+            <td class="px-4 py-3 text-right">R$ 5.20</td>
+            <td class="px-4 py-3 text-center font-mono">20.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">7.12</td>
+            <td class="px-4 py-3 text-right font-mono">225.0%</td>
+            <td class="px-4 py-3 text-right font-mono">14.27%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SBFG3</td>
+            <td class="px-4 py-3 text-right">R$ 11.08</td>
+            <td class="px-4 py-3 text-center font-mono">36.6</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">6.16</td>
+            <td class="px-4 py-3 text-right font-mono">472.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.7%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">HAPV3</td>
+            <td class="px-4 py-3 text-right">R$ 8.63</td>
+            <td class="px-4 py-3 text-center font-mono">31.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">10/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-0.36%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">HYPE3</td>
+            <td class="px-4 py-3 text-right">R$ 26.48</td>
+            <td class="px-4 py-3 text-center font-mono">37.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">9.99</td>
+            <td class="px-4 py-3 text-right font-mono">392.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.16%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">IGTI11</td>
+            <td class="px-4 py-3 text-right">R$ 31.37</td>
+            <td class="px-4 py-3 text-center font-mono">19.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">65/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">192.45</td>
+            <td class="px-4 py-3 text-right font-mono">211.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.51%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">INTB3</td>
+            <td class="px-4 py-3 text-right">R$ 19.31</td>
+            <td class="px-4 py-3 text-center font-mono">51.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">10.61</td>
+            <td class="px-4 py-3 text-right font-mono">650.0%</td>
+            <td class="px-4 py-3 text-right font-mono">18.59%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">IRBR3</td>
+            <td class="px-4 py-3 text-right">R$ 66.94</td>
+            <td class="px-4 py-3 text-center font-mono">11.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Atenção: Sobrevendido em Alta</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">20.6</td>
+            <td class="px-4 py-3 text-right font-mono">236.0%</td>
+            <td class="px-4 py-3 text-right font-mono">4.57%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ISAE4</td>
+            <td class="px-4 py-3 text-right">R$ 28.35</td>
+            <td class="px-4 py-3 text-center font-mono">19.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">6.62</td>
+            <td class="px-4 py-3 text-right font-mono">704.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.19%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ITSA4</td>
+            <td class="px-4 py-3 text-right">R$ 15.30</td>
+            <td class="px-4 py-3 text-center font-mono">16.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">9.44</td>
+            <td class="px-4 py-3 text-right font-mono">62.0%</td>
+            <td class="px-4 py-3 text-right font-mono">18.92%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ITUB3</td>
+            <td class="px-4 py-3 text-right">R$ 52.83</td>
+            <td class="px-4 py-3 text-center font-mono">46.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">12.76</td>
+            <td class="px-4 py-3 text-right font-mono">41.0%</td>
+            <td class="px-4 py-3 text-right font-mono">21.48%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ITUB4</td>
+            <td class="px-4 py-3 text-right">R$ 48.00</td>
+            <td class="px-4 py-3 text-center font-mono">22.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">11.59</td>
+            <td class="px-4 py-3 text-right font-mono">183.0%</td>
+            <td class="px-4 py-3 text-right font-mono">21.48%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">JHSF3</td>
+            <td class="px-4 py-3 text-right">R$ 13.62</td>
+            <td class="px-4 py-3 text-center font-mono">29.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">4.39</td>
+            <td class="px-4 py-3 text-right font-mono">582.0%</td>
+            <td class="px-4 py-3 text-right font-mono">29.33%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">KLBN11</td>
+            <td class="px-4 py-3 text-right">R$ 18.16</td>
+            <td class="px-4 py-3 text-center font-mono">31.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">35/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">27.47</td>
+            <td class="px-4 py-3 text-right font-mono">638.0%</td>
+            <td class="px-4 py-3 text-right font-mono">3.65%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">RENT3</td>
+            <td class="px-4 py-3 text-right">R$ 51.60</td>
+            <td class="px-4 py-3 text-center font-mono">36.8</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">16.38</td>
+            <td class="px-4 py-3 text-right font-mono">424.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.01%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">LREN3</td>
+            <td class="px-4 py-3 text-right">R$ 14.41</td>
+            <td class="px-4 py-3 text-center font-mono">38.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">9.54</td>
+            <td class="px-4 py-3 text-right font-mono">624.0%</td>
+            <td class="px-4 py-3 text-right font-mono">14.46%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">MGLU3</td>
+            <td class="px-4 py-3 text-right">R$ 12.78</td>
+            <td class="px-4 py-3 text-center font-mono">51.0</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">116.18</td>
+            <td class="px-4 py-3 text-right font-mono">20.0%</td>
+            <td class="px-4 py-3 text-right font-mono">0.8%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">POMO4</td>
+            <td class="px-4 py-3 text-right">R$ 4.75</td>
+            <td class="px-4 py-3 text-center font-mono">50.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">4.95</td>
+            <td class="px-4 py-3 text-right font-mono">1975.0%</td>
+            <td class="px-4 py-3 text-right font-mono">28.32%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">MBRF3</td>
+            <td class="px-4 py-3 text-right">R$ 18.30</td>
+            <td class="px-4 py-3 text-center font-mono">29.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">10/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">65.36</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">0.91%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">BEEF3</td>
+            <td class="px-4 py-3 text-right">R$ 4.24</td>
+            <td class="px-4 py-3 text-center font-mono">25.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">10.87</td>
+            <td class="px-4 py-3 text-right font-mono">290.0%</td>
+            <td class="px-4 py-3 text-right font-mono">23.22%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">MOTV3</td>
+            <td class="px-4 py-3 text-right">R$ 20.03</td>
+            <td class="px-4 py-3 text-center font-mono">23.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">12.29</td>
+            <td class="px-4 py-3 text-right font-mono">385.0%</td>
+            <td class="px-4 py-3 text-right font-mono">21.97%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">MDNE3</td>
+            <td class="px-4 py-3 text-right">R$ 29.99</td>
+            <td class="px-4 py-3 text-center font-mono">38.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">5.06</td>
+            <td class="px-4 py-3 text-right font-mono">1547.0%</td>
+            <td class="px-4 py-3 text-right font-mono">28.02%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">MOVI3</td>
+            <td class="px-4 py-3 text-right">R$ 18.34</td>
+            <td class="px-4 py-3 text-center font-mono">39.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">70/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">15.03</td>
+            <td class="px-4 py-3 text-right font-mono">388.0%</td>
+            <td class="px-4 py-3 text-right font-mono">13.2%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">MRVE3</td>
+            <td class="px-4 py-3 text-right">R$ 8.23</td>
+            <td class="px-4 py-3 text-center font-mono">72.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">20/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-10.04%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">MULT3</td>
+            <td class="px-4 py-3 text-right">R$ 36.73</td>
+            <td class="px-4 py-3 text-center font-mono">16.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">15.63</td>
+            <td class="px-4 py-3 text-right font-mono">305.0%</td>
+            <td class="px-4 py-3 text-right font-mono">21.9%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">NATU3</td>
+            <td class="px-4 py-3 text-right">R$ 7.56</td>
+            <td class="px-4 py-3 text-center font-mono">63.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">30/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-2.48%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">ORVR3</td>
+            <td class="px-4 py-3 text-right">R$ 20.01</td>
+            <td class="px-4 py-3 text-center font-mono">16.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">20/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">133.4</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">2.36%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">PGMN3</td>
+            <td class="px-4 py-3 text-right">R$ 5.35</td>
+            <td class="px-4 py-3 text-center font-mono">30.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">10.7</td>
+            <td class="px-4 py-3 text-right font-mono">458.0%</td>
+            <td class="px-4 py-3 text-right font-mono">10.59%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">PETR3</td>
+            <td class="px-4 py-3 text-right">R$ 64.73</td>
+            <td class="px-4 py-3 text-center font-mono">42.8</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">6.17</td>
+            <td class="px-4 py-3 text-right font-mono">566.0%</td>
+            <td class="px-4 py-3 text-right font-mono">30.27%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">PETR4</td>
+            <td class="px-4 py-3 text-right">R$ 57.83</td>
+            <td class="px-4 py-3 text-center font-mono">40.0</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">5.51</td>
+            <td class="px-4 py-3 text-right font-mono">635.0%</td>
+            <td class="px-4 py-3 text-right font-mono">30.27%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">RECV3</td>
+            <td class="px-4 py-3 text-right">R$ 12.24</td>
+            <td class="px-4 py-3 text-center font-mono">16.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">7.2</td>
+            <td class="px-4 py-3 text-right font-mono">550.0%</td>
+            <td class="px-4 py-3 text-right font-mono">11.25%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">PLPL3</td>
+            <td class="px-4 py-3 text-right">R$ 7.95</td>
+            <td class="px-4 py-3 text-center font-mono">49.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">5.23</td>
+            <td class="px-4 py-3 text-right font-mono">611.0%</td>
+            <td class="px-4 py-3 text-right font-mono">31.77%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">PSSA3</td>
+            <td class="px-4 py-3 text-right">R$ 51.70</td>
+            <td class="px-4 py-3 text-center font-mono">32.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">9.1</td>
+            <td class="px-4 py-3 text-right font-mono">403.0%</td>
+            <td class="px-4 py-3 text-right font-mono">24.17%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">PRIO3</td>
+            <td class="px-4 py-3 text-right">R$ 72.63</td>
+            <td class="px-4 py-3 text-center font-mono">99.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">15.23</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">14.22%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">RADL3</td>
+            <td class="px-4 py-3 text-right">R$ 20.32</td>
+            <td class="px-4 py-3 text-center font-mono">13.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">25.4</td>
+            <td class="px-4 py-3 text-right font-mono">213.0%</td>
+            <td class="px-4 py-3 text-right font-mono">19.99%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">RDOR3</td>
+            <td class="px-4 py-3 text-right">R$ 44.03</td>
+            <td class="px-4 py-3 text-center font-mono">70.1</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">60/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">20.01</td>
+            <td class="px-4 py-3 text-right font-mono">168.0%</td>
+            <td class="px-4 py-3 text-right font-mono">19.78%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">RAIL3</td>
+            <td class="px-4 py-3 text-right">R$ 18.55</td>
+            <td class="px-4 py-3 text-center font-mono">24.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">45/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">28.11</td>
+            <td class="px-4 py-3 text-right font-mono">57.0%</td>
+            <td class="px-4 py-3 text-right font-mono">8.81%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SBSP3</td>
+            <td class="px-4 py-3 text-right">R$ 31.80</td>
+            <td class="px-4 py-3 text-center font-mono">18.0</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">13.53</td>
+            <td class="px-4 py-3 text-right font-mono">217.0%</td>
+            <td class="px-4 py-3 text-right font-mono">18.79%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SAPR11</td>
+            <td class="px-4 py-3 text-right">R$ 41.07</td>
+            <td class="px-4 py-3 text-center font-mono">75.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">50.77</td>
+            <td class="px-4 py-3 text-right font-mono">269.0%</td>
+            <td class="px-4 py-3 text-right font-mono">3.81%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SANB11</td>
+            <td class="px-4 py-3 text-right">R$ 27.75</td>
+            <td class="px-4 py-3 text-center font-mono">35.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">13.56</td>
+            <td class="px-4 py-3 text-right font-mono">570.0%</td>
+            <td class="px-4 py-3 text-right font-mono">11.15%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SMTO3</td>
+            <td class="px-4 py-3 text-right">R$ 20.52</td>
+            <td class="px-4 py-3 text-center font-mono">16.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">8.38</td>
+            <td class="px-4 py-3 text-right font-mono">104.0%</td>
+            <td class="px-4 py-3 text-right font-mono">11.34%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">CSNA3</td>
+            <td class="px-4 py-3 text-right">R$ 5.40</td>
+            <td class="px-4 py-3 text-center font-mono">6.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">20/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-12.29%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SIMH3</td>
+            <td class="px-4 py-3 text-right">R$ 16.17</td>
+            <td class="px-4 py-3 text-center font-mono">49.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">45/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">104.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-0.23%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SLCE3</td>
+            <td class="px-4 py-3 text-right">R$ 17.06</td>
+            <td class="px-4 py-3 text-center font-mono">57.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">60/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">21.87</td>
+            <td class="px-4 py-3 text-right font-mono">474.0%</td>
+            <td class="px-4 py-3 text-right font-mono">6.97%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SMFT3</td>
+            <td class="px-4 py-3 text-right">R$ 24.61</td>
+            <td class="px-4 py-3 text-center font-mono">21.8</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">45/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">22.17</td>
+            <td class="px-4 py-3 text-right font-mono">411.0%</td>
+            <td class="px-4 py-3 text-right font-mono">11.69%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">SUZB3</td>
+            <td class="px-4 py-3 text-right">R$ 42.98</td>
+            <td class="px-4 py-3 text-center font-mono">76.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">6.51</td>
+            <td class="px-4 py-3 text-right font-mono">263.0%</td>
+            <td class="px-4 py-3 text-right font-mono">17.6%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">TAEE11</td>
+            <td class="px-4 py-3 text-right">R$ 44.90</td>
+            <td class="px-4 py-3 text-center font-mono">33.4</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">75/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">41.19</td>
+            <td class="px-4 py-3 text-right font-mono">665.0%</td>
+            <td class="px-4 py-3 text-right font-mono">20.86%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">VIVT3</td>
+            <td class="px-4 py-3 text-right">R$ 33.18</td>
+            <td class="px-4 py-3 text-center font-mono">99.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">80/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">16.11</td>
+            <td class="px-4 py-3 text-right font-mono">518.0%</td>
+            <td class="px-4 py-3 text-right font-mono">9.87%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">TEND3</td>
+            <td class="px-4 py-3 text-right">R$ 28.79</td>
+            <td class="px-4 py-3 text-center font-mono">83.6</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">6.1</td>
+            <td class="px-4 py-3 text-right font-mono">511.0%</td>
+            <td class="px-4 py-3 text-right font-mono">40.6%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">TIMS3</td>
+            <td class="px-4 py-3 text-right">R$ 19.50</td>
+            <td class="px-4 py-3 text-center font-mono">94.3</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">10.83</td>
+            <td class="px-4 py-3 text-right font-mono">863.0%</td>
+            <td class="px-4 py-3 text-right font-mono">17.25%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">TOTS3</td>
+            <td class="px-4 py-3 text-right">R$ 43.75</td>
+            <td class="px-4 py-3 text-center font-mono">97.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">29.36</td>
+            <td class="px-4 py-3 text-right font-mono">139.0%</td>
+            <td class="px-4 py-3 text-right font-mono">17.01%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">UGPA3</td>
+            <td class="px-4 py-3 text-right">R$ 39.12</td>
+            <td class="px-4 py-3 text-center font-mono">26.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">90/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">11.93</td>
+            <td class="px-4 py-3 text-right font-mono">500.0%</td>
+            <td class="px-4 py-3 text-right font-mono">19.8%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">USIM5</td>
+            <td class="px-4 py-3 text-right">R$ 6.33</td>
+            <td class="px-4 py-3 text-center font-mono">7.5</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs">10/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">-</td>
+            <td class="px-4 py-3 text-right font-mono">0.0%</td>
+            <td class="px-4 py-3 text-right font-mono">-8.07%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">VALE3</td>
+            <td class="px-4 py-3 text-right">R$ 61.49</td>
+            <td class="px-4 py-3 text-center font-mono">0.6</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">23.2</td>
+            <td class="px-4 py-3 text-right font-mono">682.0%</td>
+            <td class="px-4 py-3 text-right font-mono">4.11%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">VAMO3</td>
+            <td class="px-4 py-3 text-right">R$ 6.28</td>
+            <td class="px-4 py-3 text-center font-mono">42.7</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">45/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">22.43</td>
+            <td class="px-4 py-3 text-right font-mono">219.0%</td>
+            <td class="px-4 py-3 text-right font-mono">10.7%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">VBBR3</td>
+            <td class="px-4 py-3 text-right">R$ 37.00</td>
+            <td class="px-4 py-3 text-center font-mono">83.0</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">8.6</td>
+            <td class="px-4 py-3 text-right font-mono">537.0%</td>
+            <td class="px-4 py-3 text-right font-mono">22.62%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">VIVA3</td>
+            <td class="px-4 py-3 text-right">R$ 27.09</td>
+            <td class="px-4 py-3 text-center font-mono">25.9</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">100/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">10.88</td>
+            <td class="px-4 py-3 text-right font-mono">256.0%</td>
+            <td class="px-4 py-3 text-right font-mono">19.7%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">WEGE3</td>
+            <td class="px-4 py-3 text-right">R$ 44.00</td>
+            <td class="px-4 py-3 text-center font-mono">8.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded text-xs">Fora do Filtro</span></td>
+            <td class="px-4 py-3 text-center text-xs">Abaixo da Média Semanal</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">55/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">29.53</td>
+            <td class="px-4 py-3 text-right font-mono">343.0%</td>
+            <td class="px-4 py-3 text-right font-mono">30.79%</td>
+        </tr>
+        
+
+        <tr>
+            <td class="font-bold text-gray-900 px-4 py-3">YDUQ3</td>
+            <td class="px-4 py-3 text-right">R$ 13.77</td>
+            <td class="px-4 py-3 text-center font-mono">27.2</td>
+            <td class="px-4 py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs">Tendência de Alta Forte</span></td>
+            <td class="px-4 py-3 text-center text-xs">Alta Estrutural (Semanal)</td>
+            <td class="px-4 py-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">45/100</span></td>
+            <td class="px-4 py-3 text-right font-mono">32.79</td>
+            <td class="px-4 py-3 text-right font-mono">407.0%</td>
+            <td class="px-4 py-3 text-right font-mono">3.75%</td>
+        </tr>
+        
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#tabelaScanner').DataTable({
+                pageLength: 25,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
+                },
+                order: [[5, 'desc']] // Inicia ordenado pelo Score Fundamentalista
+            });
+        });
+    </script>
+</body>
+</html>
