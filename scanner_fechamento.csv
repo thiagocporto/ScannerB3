@@ -1,0 +1,101 @@
+﻿Ticker,Preço (R$),SMA 200,RSI(2),Swing Trade,Position Trade,Gatilho_Swing,Score_Fund,Class_Fund,P/L,P/VP,DY (%),ROE (%)
+ALOS3,34.85,28.16,28.4,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),18.54,1.36,993.0,7.59
+ALPA4,16.77,13.1,7.5,Atenção: Sobrevendido em Alta,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),16.77,3.15,311.0,18.08
+ABEV3,16.9,15.5,72.3,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),16.41,2.96,438.0,18.4
+ANIM3,5.07,3.56,41.1,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),12.37,0.79,156.0,9.61
+ASAI3,13.49,9.01,36.6,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),18.74,2.85,75.0,16.16
+AURE3,14.83,12.17,19.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,20,⚠️ Múltiplos Esticados / Arriscada,-,1.35,0.0,-7.68
+AXIA3,59.08,55.78,59.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),13.64,1.39,323.0,10.01
+AZZA3,25.13,20.87,28.5,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),4.52,0.63,960.0,3.96
+B3SA3,23.25,16.63,48.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,23.25,6.21,320.0,27.71
+BBSE3,43.33,35.75,91.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),9.16,7.72,1081.0,85.94
+BBDC3,17.91,15.83,23.3,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),10.99,1.04,113.0,13.76
+BBDC4,20.22,18.21,22.3,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),12.4,1.18,110.0,13.76
+BRAP4,18.79,22.41,1.1,Fora do Filtro,Abaixo da Média Semanal,False,80,💎 Sólida (Top Tier),13.42,0.92,1206.0,6.95
+SAUD3,16.07,13.7,78.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),14.22,2.51,264.0,10.54
+BBAS3,23.92,22.02,29.0,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),11.13,0.75,57.0,10.55
+BRAV3,21.1,18.97,92.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,45,⚖️ Moderada / Aceitável,191.82,0.8,59.0,0.44
+BPAC11,79.46,57.73,37.5,Tendência de Alta Forte,Alta Estrutural (Semanal),False,45,⚖️ Moderada / Aceitável,129.41,4.76,115.0,24.41
+CXSE3,21.3,18.52,48.6,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),14.11,4.63,655.0,33.35
+CBAV3,11.23,10.58,25.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),12.21,1.44,39.0,14.57
+CEAB3,13.68,10.93,45.8,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),7.52,1.08,377.0,15.49
+CMIG4,11.66,11.14,30.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),7.2,1.14,974.0,15.94
+COGN3,3.01,2.81,31.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,60,⚖️ Moderada / Aceitável,8.36,0.44,427.0,4.93
+CSMG3,62.96,55.9,51.3,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),18.52,2.7,162.0,14.97
+CPLE3,17.48,14.9,47.8,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),16.34,2.3,612.0,12.76
+CSAN3,5.02,4.63,28.0,Tendência de Alta Forte,Alta Estrutural (Semanal),False,0,⚠️ Múltiplos Esticados / Arriscada,-,3.98,0.0,-27.22
+CPFE3,49.49,46.19,33.4,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),9.5,2.51,754.0,27.28
+CMIN3,4.94,5.16,36.0,Fora do Filtro,Abaixo da Média Semanal,False,80,💎 Sólida (Top Tier),12.67,3.64,778.0,28.14
+CURY3,31.98,32.19,37.7,Fora do Filtro,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),8.76,5.95,1330.0,68.53
+CVCB3,1.49,1.81,22.2,Fora do Filtro,Alta Estrutural (Semanal),False,10,⚠️ Múltiplos Esticados / Arriscada,49.67,2.4,0.0,-33.35
+CYRE3,34.3,25.58,77.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),7.92,1.34,794.0,20.59
+DIRR3,11.32,12.92,53.7,Fora do Filtro,Abaixo da Média Semanal,False,90,💎 Sólida (Top Tier),6.94,2.53,1353.0,41.88
+ECOR3,12.72,8.74,16.1,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),16.1,2.15,227.0,12.31
+EMBJ3,87.55,86.6,12.7,Fora do Filtro,Abaixo da Média Semanal,False,55,⚖️ Moderada / Aceitável,26.77,3.48,121.0,12.19
+ENGI11,65.93,50.91,35.4,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,47.78,1.29,172.0,9.41
+ENEV3,32.0,25.15,56.6,Tendência de Alta Forte,Alta Estrutural (Semanal),False,20,⚠️ Múltiplos Esticados / Arriscada,31.68,3.01,0.0,7.15
+EGIE3,31.09,31.46,46.3,Fora do Filtro,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),9.04,2.37,359.0,28.59
+EQTL3,48.17,40.35,23.4,Tendência de Alta Forte,Alta Estrutural (Semanal),False,35,⚠️ Múltiplos Esticados / Arriscada,126.76,2.31,326.0,5.0
+EZTC3,18.83,13.68,45.8,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),10.07,1.0,197.0,10.55
+FLRY3,27.82,17.38,39.6,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,23.98,3.03,462.0,12.62
+GGBR4,25.48,22.51,21.8,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,22.16,0.93,347.0,4.18
+GOAU4,11.53,9.96,19.3,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),19.22,0.79,368.0,4.17
+GGPS3,16.09,14.59,43.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),12.28,2.69,201.0,22.34
+GMAT3,5.2,4.56,20.5,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),7.12,1.07,225.0,14.27
+SBFG3,11.08,10.7,36.6,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),6.16,0.8,472.0,13.7
+HAPV3,8.63,10.41,31.2,Fora do Filtro,Abaixo da Média Semanal,False,10,⚠️ Múltiplos Esticados / Arriscada,-,0.09,0.0,-0.36
+HYPE3,26.48,22.31,37.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),9.99,1.29,392.0,13.16
+IGTI11,31.37,26.55,19.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,65,⚖️ Moderada / Aceitável,192.45,1.88,211.0,13.51
+INTB3,19.31,13.81,51.5,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),10.61,1.91,650.0,18.59
+IRBR3,66.94,55.61,11.9,Atenção: Sobrevendido em Alta,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),20.6,1.03,236.0,4.57
+ISAE4,28.35,27.73,19.5,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),6.62,0.84,704.0,13.19
+ITSA4,15.3,13.52,16.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),9.44,1.83,62.0,18.92
+ITUB3,52.83,43.3,46.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),12.76,2.67,41.0,21.48
+ITUB4,48.0,42.48,22.4,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),11.59,2.43,183.0,21.48
+JHSF3,13.62,10.51,29.1,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),4.39,1.2,582.0,29.33
+KLBN11,18.16,18.35,31.7,Fora do Filtro,Alta Estrutural (Semanal),False,35,⚠️ Múltiplos Esticados / Arriscada,27.47,2.36,638.0,3.65
+RENT3,51.6,42.28,36.8,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),16.38,2.1,424.0,13.01
+LREN3,14.41,13.45,38.5,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),9.54,1.34,624.0,14.46
+MGLU3,12.78,7.29,51.0,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,116.18,0.89,20.0,0.8
+POMO4,4.75,5.48,50.9,Fora do Filtro,Abaixo da Média Semanal,False,100,💎 Sólida (Top Tier),4.95,1.39,1975.0,28.32
+MBRF3,18.3,17.79,29.1,Tendência de Alta Forte,Alta Estrutural (Semanal),False,10,⚠️ Múltiplos Esticados / Arriscada,65.36,2.22,0.0,0.91
+BEEF3,4.24,4.24,25.3,Fora do Filtro,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),10.87,2.66,290.0,23.22
+MOTV3,20.03,15.19,23.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),12.29,2.27,385.0,21.97
+MDNE3,29.99,28.1,38.3,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),5.06,1.35,1547.0,28.02
+MOVI3,18.34,10.76,39.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,70,💎 Sólida (Top Tier),15.03,1.89,388.0,13.2
+MRVE3,8.23,6.64,72.5,Tendência de Alta Forte,Alta Estrutural (Semanal),False,20,⚠️ Múltiplos Esticados / Arriscada,-,1.01,0.0,-10.04
+MULT3,36.73,30.34,16.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),15.63,2.67,305.0,21.9
+NATU3,7.56,8.76,63.4,Fora do Filtro,Abaixo da Média Semanal,False,30,⚠️ Múltiplos Esticados / Arriscada,-,0.83,0.0,-2.48
+ORVR3,20.01,18.36,16.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,20,⚠️ Múltiplos Esticados / Arriscada,133.4,2.27,0.0,2.36
+PGMN3,5.35,4.91,30.1,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),10.7,1.13,458.0,10.59
+PETR3,64.73,46.44,42.8,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),6.17,1.73,566.0,30.27
+PETR4,57.83,41.91,40.0,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),5.51,1.55,635.0,30.27
+RECV3,12.24,11.06,16.1,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),7.2,0.81,550.0,11.25
+PLPL3,7.95,10.42,49.3,Fora do Filtro,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),5.23,1.44,611.0,31.77
+PSSA3,51.7,49.4,32.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),9.1,2.06,403.0,24.17
+PRIO3,72.63,59.61,99.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,15.23,2.05,0.0,14.22
+RADL3,20.32,20.8,13.9,Fora do Filtro,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,25.4,4.87,213.0,19.99
+RDOR3,44.03,37.54,70.1,Tendência de Alta Forte,Alta Estrutural (Semanal),False,60,⚖️ Moderada / Aceitável,20.01,4.63,168.0,19.78
+RAIL3,18.55,15.11,24.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,45,⚖️ Moderada / Aceitável,28.11,2.38,57.0,8.81
+SBSP3,31.8,28.92,18.0,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),13.53,2.48,217.0,18.79
+SAPR11,41.07,39.6,75.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,50.77,1.03,269.0,3.81
+SANB11,27.75,28.94,35.2,Fora do Filtro,Abaixo da Média Semanal,False,80,💎 Sólida (Top Tier),13.56,0.82,570.0,11.15
+SMTO3,20.52,17.09,16.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),8.38,0.9,104.0,11.34
+CSNA3,5.4,6.59,6.9,Fora do Filtro,Abaixo da Média Semanal,False,20,⚠️ Múltiplos Esticados / Arriscada,-,0.59,0.0,-12.29
+SIMH3,16.17,9.93,49.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,45,⚖️ Moderada / Aceitável,-,1.6,104.0,-0.23
+SLCE3,17.06,15.96,57.4,Tendência de Alta Forte,Alta Estrutural (Semanal),False,60,⚖️ Moderada / Aceitável,21.87,1.56,474.0,6.97
+SMFT3,24.61,19.44,21.8,Tendência de Alta Forte,Alta Estrutural (Semanal),False,45,⚖️ Moderada / Aceitável,22.17,2.5,411.0,11.69
+SUZB3,42.98,46.46,76.3,Fora do Filtro,Abaixo da Média Semanal,False,90,💎 Sólida (Top Tier),6.51,1.07,263.0,17.6
+TAEE11,44.9,40.29,33.4,Tendência de Alta Forte,Alta Estrutural (Semanal),False,75,💎 Sólida (Top Tier),41.19,1.92,665.0,20.86
+VIVT3,33.18,34.09,99.3,Fora do Filtro,Alta Estrutural (Semanal),False,80,💎 Sólida (Top Tier),16.11,1.62,518.0,9.87
+TEND3,28.79,30.32,83.6,Fora do Filtro,Abaixo da Média Semanal,False,90,💎 Sólida (Top Tier),6.1,2.29,511.0,40.6
+TIMS3,19.5,22.37,94.3,Fora do Filtro,Abaixo da Média Semanal,False,100,💎 Sólida (Top Tier),10.83,1.86,863.0,17.25
+TOTS3,43.75,34.42,97.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,55,⚖️ Moderada / Aceitável,29.36,4.59,139.0,17.01
+UGPA3,39.12,29.33,26.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,90,💎 Sólida (Top Tier),11.93,2.33,500.0,19.8
+USIM5,6.33,7.62,7.5,Fora do Filtro,Abaixo da Média Semanal,False,10,⚠️ Múltiplos Esticados / Arriscada,-,0.38,0.0,-8.07
+VALE3,61.49,77.18,0.6,Fora do Filtro,Abaixo da Média Semanal,False,55,⚖️ Moderada / Aceitável,23.2,1.33,682.0,4.11
+VAMO3,6.28,3.7,42.7,Tendência de Alta Forte,Alta Estrutural (Semanal),False,45,⚖️ Moderada / Aceitável,22.43,2.33,219.0,10.7
+VBBR3,37.0,31.85,83.0,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),8.6,1.88,537.0,22.62
+VIVA3,27.09,25.02,25.9,Tendência de Alta Forte,Alta Estrutural (Semanal),False,100,💎 Sólida (Top Tier),10.88,2.0,256.0,19.7
+WEGE3,44.0,47.66,8.2,Fora do Filtro,Abaixo da Média Semanal,False,55,⚖️ Moderada / Aceitável,29.53,10.6,343.0,30.79
+YDUQ3,13.77,10.63,27.2,Tendência de Alta Forte,Alta Estrutural (Semanal),False,45,⚖️ Moderada / Aceitável,32.79,1.2,407.0,3.75
