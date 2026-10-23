@@ -1,5 +1,14 @@
 [
     {
+        "ticker": "VIVA3",
+        "preco": 26.58,
+        "rsi2": 9.7,
+        "mm200": 25.0,
+        "score": "93 (Excelente)",
+        "regime": "ZONA_MORTA",
+        "hora": "12:56:02"
+    },
+    {
         "ticker": "IRBR3",
         "preco": 66.72,
         "rsi2": 9.6,
@@ -97,15 +106,6 @@
         "score": "30 (Fraco)",
         "regime": "FLUXO_NY",
         "hora": "11:20:06"
-    },
-    {
-        "ticker": "VIVA3",
-        "preco": 26.8,
-        "rsi2": 13.3,
-        "mm200": 25.0,
-        "score": "93 (Excelente)",
-        "regime": "FLUXO_NY",
-        "hora": "11:04:21"
     },
     {
         "ticker": "ECOR3",
