@@ -4,46 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="300">
-    <title>WF Investimentos - Radar Quantitativo B3</title>
+    <title>WF Investimentos - Avaliação de Ativos & Mercado</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { background-color: #f8f9fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        .card { border-radius: 10px; }
-        .table-hover tbody tr:hover { background-color: #e9ecef; }
+        body {
+            background-color: #0b132b;
+            color: #e0e6ed;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .navbar-custom {
+            background-color: #1c2541;
+            border-bottom: 2px solid #3a506b;
+            padding: 12px 24px;
+        }
+        .card-custom {
+            background-color: #1c2541;
+            border: 1px solid #3a506b;
+            border-radius: 10px;
+        }
+        .table-custom {
+            color: #d1d5db;
+        }
+        .table-custom th {
+            background-color: #0f172a !important;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #3a506b;
+        }
+        .table-custom td {
+            background-color: transparent !important;
+            border-bottom: 1px solid #1e293b;
+            font-size: 0.9rem;
+        }
+        .table-hover tbody tr:hover td {
+            background-color: #233152 !important;
+        }
+        /* Badges Temáticas WF */
+        .badge-trend-alta { background-color: #10b981; color: white; }
+        .badge-pullback { background-color: #ec4899; color: white; }
+        .badge-lateral { background-color: #8b5cf6; color: white; }
+        .badge-sobrecomprado { background-color: #f59e0b; color: white; }
+        .badge-baixa { background-color: #ef4444; color: white; }
+        .badge-pos-alta { background-color: transparent; border: 1px solid #10b981; color: #10b981; }
+        .badge-pos-baixa { background-color: transparent; border: 1px solid #ef4444; color: #ef4444; }
+        .badge-score-exc { background-color: transparent; border: 1px solid #10b981; color: #10b981; }
+        .badge-score-bom { background-color: transparent; border: 1px solid #3b82f6; color: #3b82f6; }
+        .badge-score-reg { background-color: transparent; border: 1px solid #f59e0b; color: #f59e0b; }
+        .badge-score-fra { background-color: transparent; border: 1px solid #ef4444; color: #ef4444; }
+        .search-box {
+            background-color: #0f172a;
+            border: 1px solid #3a506b;
+            color: white;
+        }
+        .search-box:focus {
+            background-color: #0f172a;
+            color: white;
+            border-color: #60a5fa;
+            box-shadow: none;
+        }
     </style>
 </head>
-<body class="py-4">
-    <div class="container-fluid px-4">
-        <header class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
-            <div>
-                <h2 class="fw-bold text-dark m-0"><i class="bi bi-graph-up-arrow text-primary"></i> WF Investimentos • Radar B3</h2>
-                <div class="text-muted small">Estratégia Quantitativa Larry Connors RSI(2) & Regimes de Mercado</div>
-            </div>
-            <div class="text-end">
-                <span class="badge bg-dark">Atualizado: 23/10/2026 às 11:21:21</span>
-            </div>
-        </header>
+<body class="pb-5">
 
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-custom mb-4">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="rounded-circle d-flex align-items-center justify-content-center me-3 border border-warning" style="width: 48px; height: 48px; background-color: #0b132b;">
+                    <span class="fw-bold text-warning" style="font-size: 1.1rem;">WF</span>
+                </div>
+                <div>
+                    <h4 class="fw-bold text-white m-0">WF INVESTIMENTOS</h4>
+                    <span class="text-warning small text-uppercase" style="letter-spacing: 1px; font-size: 0.75rem;">Avaliação de Ativos & Mercado</span>
+                </div>
+            </div>
+            <div class="text-end text-muted small">
+                <div><i class="bi bi-clock me-1 text-primary"></i> Atualizado em: <strong class="text-white">23/10/2026 às 11:26</strong></div>
+                <div>Universo: <strong class="text-white">100 IBrX 100</strong></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4">
+
+        <!-- Banner Intraday -->
         
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card border-success shadow-sm">
-                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                        <span class="fw-bold"><i class="bi bi-lightning-charge-fill"></i> 🔥 OPORTUNIDADES DETECTADAS HOJE (INTRADAY)</span>
-                        <span class="badge bg-light text-success fw-bold">Ao Vivo</span>
+                <div class="card card-custom border-1 border-warning">
+                    <div class="card-header bg-dark d-flex justify-content-between align-items-center border-bottom border-warning">
+                        <span class="fw-bold text-warning"><i class="bi bi-lightning-charge-fill"></i> 🔥 OPORTUNIDADES DETECTADAS HOJE (INTRADAY)</span>
+                        <span class="badge bg-success text-white fw-bold">Ao Vivo</span>
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
         
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#SMFT3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#SMFT3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 24.35</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">14.80</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 24.35</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">14.80</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 19.45</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 38 (Fraco)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:21:06</div>
@@ -51,13 +117,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#SBSP3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#SBSP3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 31.69</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">13.30</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 31.69</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">13.30</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 28.95</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 79 (Bom)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:20:58</div>
@@ -65,13 +131,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#ORVR3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#ORVR3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 19.87</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">12.00</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 19.87</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">12.00</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 18.37</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 45 (Regular)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:20:45</div>
@@ -79,13 +145,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#MOTV3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#MOTV3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 19.83</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">13.30</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 19.83</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">13.30</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 15.22</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 68 (Bom)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:20:38</div>
@@ -93,13 +159,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#GMAT3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#GMAT3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 5.12</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">14.90</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 5.12</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">14.90</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 4.56</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 78 (Bom)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:20:17</div>
@@ -107,13 +173,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#GOAU4</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#GOAU4</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 11.44</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">14.40</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 11.44</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">14.40</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 9.97</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 55 (Regular)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:20:14</div>
@@ -121,13 +187,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#ENGI11</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#ENGI11</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 64.96</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">14.60</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 64.96</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">14.60</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 50.99</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 30 (Fraco)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:20:06</div>
@@ -135,13 +201,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#VIVA3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#VIVA3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 26.80</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">13.30</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 26.80</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">13.30</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 25.00</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 93 (Excelente)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:04:21</div>
@@ -149,13 +215,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#ECOR3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#ECOR3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 12.65</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">14.10</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 12.65</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">14.10</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 8.75</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 46 (Regular)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 11:03:08</div>
@@ -163,13 +229,13 @@
                             </div>
             
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                <div class="p-3 rounded bg-dark border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-dark m-0">#BBDC3</h4>
-                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                        <h4 class="fw-bold text-white m-0">#BBDC3</h4>
+                                        <span class="badge bg-primary">FLUXO_NY</span>
                                     </div>
-                                    <div class="fs-5 fw-bold text-success mb-1">R$ 17.50</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">9.00</span></div>
+                                    <div class="fs-4 fw-bold text-success mb-1">R$ 17.50</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">9.00</span></div>
                                     <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 15.84</div>
                                     <div class="small text-muted"><strong>Fundamentos:</strong> 83 (Excelente)</div>
                                     <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 10:36:46</div>
@@ -183,135 +249,1121 @@
         </div>
         
 
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white fw-bold py-3">
-                <i class="bi bi-table"></i> Panorama Consolidado de Ativos
+        <!-- Gráficos -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-6">
+                <div class="card card-custom p-3 h-100 shadow-sm">
+                    <h6 class="fw-bold text-warning mb-3"><i class="bi bi-pie-chart-fill me-2"></i> DISTRIBUIÇÃO DE TENDÊNCIAS (SWING TRADE)</h6>
+                    <div style="position: relative; height: 260px;">
+                        <canvas id="chartTendencias"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card card-custom p-3 h-100 shadow-sm">
+                    <h6 class="fw-bold text-warning mb-3"><i class="bi bi-bar-chart-fill me-2"></i> RADAR IFR(2) - MENORES NÍVEIS (PULLBACKS)</h6>
+                    <div style="position: relative; height: 260px;">
+                        <canvas id="chartIfr"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="card card-custom shadow-sm">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3 border-bottom border-secondary">
+                <div>
+                    <h5 class="fw-bold text-white m-0">Scanner Consolidado de Ativos</h5>
+                    <div class="text-muted small">Clique no cabeçalho das colunas para ordenar</div>
+                </div>
+                <div class="w-25">
+                    <input type="text" id="filtroTicker" class="form-control form-control-sm search-box" placeholder="🔍 Pesquisar Ticker (ex: VALE3)...">
+                </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0 text-center">
-                        <thead class="table-dark">
+                    <table class="table table-custom table-hover align-middle mb-0 text-center" id="tabelaScanner">
+                        <thead>
                             <tr>
-                                <th>Ticker</th>
-                                <th>Preço (R$)</th>
-                                <th>RSI(2)</th>
-                                <th>SMA 200</th>
-                                <th>Volume > Média</th>
-                                <th>Score Fund.</th>
-                                <th>Sinal</th>
+                                <th>TICKER ⇕</th>
+                                <th>PREÇO ⇕</th>
+                                <th>SMA 200 ⇕</th>
+                                <th>IFR(2) ⇕</th>
+                                <th>SWING TRADE ⇕</th>
+                                <th>POSITION (SEMANAL) ⇕</th>
+                                <th>SCORE FUND. ⇕</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>ALOS3</td><td>R$ 35.26</td><td><span class="badge bg-light text-dark">51.8</span></td><td>R$ 28.12</td><td><span class="badge bg-success">70 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ALPA4</td><td>R$ 17.40</td><td><span class="badge bg-warning text-dark">17.7</span></td><td>R$ 13.08</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ABEV3</td><td>R$ 16.69</td><td><span class="badge bg-light text-dark">44.6</span></td><td>R$ 15.48</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ANIM3</td><td>R$ 5.00</td><td><span class="badge bg-light text-dark">26.8</span></td><td>R$ 3.55</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ASAI3</td><td>R$ 13.84</td><td><span class="badge bg-light text-dark">74.2</span></td><td>R$ 8.98</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>AURE3</td><td>R$ 15.23</td><td><span class="badge bg-light text-dark">84.6</span></td><td>R$ 12.16</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>AXIA3</td><td>R$ 58.58</td><td><span class="badge bg-light text-dark">27.3</span></td><td>R$ 55.74</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>AZZA3</td><td>R$ 25.80</td><td><span class="badge bg-light text-dark">43.2</span></td><td>R$ 20.87</td><td><span class="badge bg-success">70 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>B3SA3</td><td>R$ 23.51</td><td><span class="badge bg-light text-dark">74.4</span></td><td>R$ 16.58</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>BBSE3</td><td>R$ 42.46</td><td><span class="badge bg-light text-dark">77.9</span></td><td>R$ 35.69</td><td><span class="badge bg-success">90 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>BBDC3</td><td>R$ 18.27</td><td><span class="badge bg-light text-dark">75.4</span></td><td>R$ 15.81</td><td><span class="badge bg-success">83 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>BBDC4</td><td>R$ 20.65</td><td><span class="badge bg-light text-dark">64.4</span></td><td>R$ 18.20</td><td><span class="badge bg-success">76 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>BRAP4</td><td>R$ 19.55</td><td><span class="badge bg-danger">4.0</span></td><td>R$ 22.42</td><td><span class="badge bg-primary">53 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa (Sobrevendido)</span></td></tr>
-<tr><td>SAUD3</td><td>R$ 15.42</td><td><span class="badge bg-light text-dark">42.2</span></td><td>R$ 13.68</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>BBAS3</td><td>R$ 24.10</td><td><span class="badge bg-light text-dark">57.7</span></td><td>R$ 22.01</td><td><span class="badge bg-success">75 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>BRAV3</td><td>R$ 21.04</td><td><span class="badge bg-light text-dark">86.1</span></td><td>R$ 18.94</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>BPAC11</td><td>R$ 80.56</td><td><span class="badge bg-light text-dark">61.2</span></td><td>R$ 57.59</td><td><span class="badge bg-primary">65 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CXSE3</td><td>R$ 21.38</td><td><span class="badge bg-light text-dark">65.0</span></td><td>R$ 18.50</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CBAV3</td><td>R$ 11.22</td><td><span class="badge bg-danger">9.6</span></td><td>R$ 10.56</td><td><span class="badge bg-primary">64 (Bom)</span></td><td><span class="badge bg-success">🔥 COMPRA ALTA PROBABILIDADE</span></td></tr>
-<tr><td>CEAB3</td><td>R$ 13.85</td><td><span class="badge bg-light text-dark">59.3</span></td><td>R$ 10.91</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CMIG4</td><td>R$ 11.70</td><td><span class="badge bg-light text-dark">37.9</span></td><td>R$ 11.13</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>COGN3</td><td>R$ 3.02</td><td><span class="badge bg-light text-dark">33.5</span></td><td>R$ 2.81</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CSMG3</td><td>R$ 63.00</td><td><span class="badge bg-light text-dark">53.9</span></td><td>R$ 55.79</td><td><span class="badge bg-primary">64 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CPLE3</td><td>R$ 17.36</td><td><span class="badge bg-danger">13.2</span></td><td>R$ 14.88</td><td><span class="badge bg-success">72 (Bom)</span></td><td><span class="badge bg-warning text-dark">Atenção: Sobrevendido em Alta</span></td></tr>
-<tr><td>CSAN3</td><td>R$ 5.09</td><td><span class="badge bg-light text-dark">40.0</span></td><td>R$ 4.63</td><td><span class="badge bg-secondary">10 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CPFE3</td><td>R$ 49.51</td><td><span class="badge bg-light text-dark">34.6</span></td><td>R$ 46.19</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CMIN3</td><td>R$ 4.96</td><td><span class="badge bg-light text-dark">49.8</span></td><td>R$ 5.16</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>CURY3</td><td>R$ 32.36</td><td><span class="badge bg-light text-dark">59.4</span></td><td>R$ 32.19</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CVCB3</td><td>R$ 1.61</td><td><span class="badge bg-light text-dark">56.0</span></td><td>R$ 1.81</td><td><span class="badge bg-secondary">10 (Fraco)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>CYRE3</td><td>R$ 34.39</td><td><span class="badge bg-light text-dark">90.2</span></td><td>R$ 25.54</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>DIRR3</td><td>R$ 11.46</td><td><span class="badge bg-light text-dark">82.4</span></td><td>R$ 12.93</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>ECOR3</td><td>R$ 13.33</td><td><span class="badge bg-light text-dark">39.8</span></td><td>R$ 8.72</td><td><span class="badge bg-secondary">46 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>EMBJ3</td><td>R$ 91.83</td><td><span class="badge bg-light text-dark">59.9</span></td><td>R$ 86.62</td><td><span class="badge bg-primary">53 (Regular)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>ENGI11</td><td>R$ 66.00</td><td><span class="badge bg-light text-dark">37.3</span></td><td>R$ 50.81</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ENEV3</td><td>R$ 32.17</td><td><span class="badge bg-light text-dark">92.2</span></td><td>R$ 25.09</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>EGIE3</td><td>R$ 31.10</td><td><span class="badge bg-light text-dark">47.8</span></td><td>R$ 31.45</td><td><span class="badge bg-success">75 (Bom)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>EQTL3</td><td>R$ 48.63</td><td><span class="badge bg-light text-dark">36.6</span></td><td>R$ 40.31</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>EZTC3</td><td>R$ 19.19</td><td><span class="badge bg-light text-dark">92.2</span></td><td>R$ 13.65</td><td><span class="badge bg-success">85 (Excelente)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>FLRY3</td><td>R$ 28.12</td><td><span class="badge bg-light text-dark">81.0</span></td><td>R$ 17.32</td><td><span class="badge bg-primary">64 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>GGBR4</td><td>R$ 26.52</td><td><span class="badge bg-light text-dark">91.4</span></td><td>R$ 22.49</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>GOAU4</td><td>R$ 11.95</td><td><span class="badge bg-light text-dark">91.3</span></td><td>R$ 9.95</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>GGPS3</td><td>R$ 16.13</td><td><span class="badge bg-light text-dark">48.3</span></td><td>R$ 14.59</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>GMAT3</td><td>R$ 5.42</td><td><span class="badge bg-light text-dark">42.2</span></td><td>R$ 4.55</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>SBFG3</td><td>R$ 11.50</td><td><span class="badge bg-light text-dark">64.6</span></td><td>R$ 10.70</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>HAPV3</td><td>R$ 8.74</td><td><span class="badge bg-light text-dark">36.3</span></td><td>R$ 10.45</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>HYPE3</td><td>R$ 26.81</td><td><span class="badge bg-light text-dark">59.1</span></td><td>R$ 22.29</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>IGTI11</td><td>R$ 31.97</td><td><span class="badge bg-light text-dark">45.2</span></td><td>R$ 26.52</td><td><span class="badge bg-primary">61 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>INTB3</td><td>R$ 19.45</td><td><span class="badge bg-light text-dark">64.9</span></td><td>R$ 13.77</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>IRBR3</td><td>R$ 66.95</td><td><span class="badge bg-danger">12.0</span></td><td>R$ 55.53</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-warning text-dark">Atenção: Sobrevendido em Alta</span></td></tr>
-<tr><td>ISAE4</td><td>R$ 28.98</td><td><span class="badge bg-light text-dark">62.8</span></td><td>R$ 27.72</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ITSA4</td><td>R$ 15.71</td><td><span class="badge bg-light text-dark">58.3</span></td><td>R$ 13.50</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ITUB3</td><td>R$ 53.31</td><td><span class="badge bg-light text-dark">83.9</span></td><td>R$ 43.21</td><td><span class="badge bg-success">83 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>ITUB4</td><td>R$ 48.90</td><td><span class="badge bg-light text-dark">78.3</span></td><td>R$ 42.44</td><td><span class="badge bg-success">90 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>JHSF3</td><td>R$ 14.27</td><td><span class="badge bg-light text-dark">90.9</span></td><td>R$ 10.48</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>KLBN11</td><td>R$ 18.20</td><td><span class="badge bg-light text-dark">38.4</span></td><td>R$ 18.35</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>RENT3</td><td>R$ 52.54</td><td><span class="badge bg-light text-dark">75.0</span></td><td>R$ 42.23</td><td><span class="badge bg-primary">56 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>LREN3</td><td>R$ 14.75</td><td><span class="badge bg-light text-dark">71.5</span></td><td>R$ 13.44</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>MGLU3</td><td>R$ 13.04</td><td><span class="badge bg-light text-dark">66.1</span></td><td>R$ 7.27</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>POMO4</td><td>R$ 4.68</td><td><span class="badge bg-light text-dark">35.5</span></td><td>R$ 5.49</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>MBRF3</td><td>R$ 18.81</td><td><span class="badge bg-light text-dark">70.8</span></td><td>R$ 17.79</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>BEEF3</td><td>R$ 4.29</td><td><span class="badge bg-light text-dark">47.9</span></td><td>R$ 4.25</td><td><span class="badge bg-primary">60 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>MOTV3</td><td>R$ 20.40</td><td><span class="badge bg-light text-dark">93.1</span></td><td>R$ 15.16</td><td><span class="badge bg-primary">68 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>MDNE3</td><td>R$ 30.58</td><td><span class="badge bg-light text-dark">78.1</span></td><td>R$ 28.08</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>MOVI3</td><td>R$ 18.92</td><td><span class="badge bg-light text-dark">56.6</span></td><td>R$ 10.72</td><td><span class="badge bg-secondary">46 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>MRVE3</td><td>R$ 8.23</td><td><span class="badge bg-light text-dark">72.5</span></td><td>R$ 6.64</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>MULT3</td><td>R$ 37.25</td><td><span class="badge bg-light text-dark">31.6</span></td><td>R$ 30.29</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>NATU3</td><td>R$ 7.63</td><td><span class="badge bg-light text-dark">89.7</span></td><td>R$ 8.76</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>ORVR3</td><td>R$ 20.50</td><td><span class="badge bg-light text-dark">59.0</span></td><td>R$ 18.35</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>PGMN3</td><td>R$ 5.60</td><td><span class="badge bg-light text-dark">68.7</span></td><td>R$ 4.91</td><td><span class="badge bg-primary">63 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>PETR3</td><td>R$ 64.75</td><td><span class="badge bg-light text-dark">44.3</span></td><td>R$ 46.27</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>PETR4</td><td>R$ 57.75</td><td><span class="badge bg-light text-dark">33.1</span></td><td>R$ 41.76</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>RECV3</td><td>R$ 12.40</td><td><span class="badge bg-light text-dark">26.8</span></td><td>R$ 11.04</td><td><span class="badge bg-success">85 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>PLPL3</td><td>R$ 8.06</td><td><span class="badge bg-light text-dark">74.2</span></td><td>R$ 10.45</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>PSSA3</td><td>R$ 51.73</td><td><span class="badge bg-light text-dark">33.2</span></td><td>R$ 49.37</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>PRIO3</td><td>R$ 71.31</td><td><span class="badge bg-light text-dark">99.7</span></td><td>R$ 59.45</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>RADL3</td><td>R$ 21.12</td><td><span class="badge bg-light text-dark">39.5</span></td><td>R$ 20.82</td><td><span class="badge bg-primary">56 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>RDOR3</td><td>R$ 43.71</td><td><span class="badge bg-light text-dark">52.6</span></td><td>R$ 37.52</td><td><span class="badge bg-secondary">46 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>RAIL3</td><td>R$ 18.96</td><td><span class="badge bg-light text-dark">50.4</span></td><td>R$ 15.09</td><td><span class="badge bg-secondary">28 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>SBSP3</td><td>R$ 32.03</td><td><span class="badge bg-light text-dark">28.5</span></td><td>R$ 28.90</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>SAPR11</td><td>R$ 41.11</td><td><span class="badge bg-light text-dark">82.2</span></td><td>R$ 39.60</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>SANB11</td><td>R$ 28.13</td><td><span class="badge bg-light text-dark">76.4</span></td><td>R$ 28.96</td><td><span class="badge bg-primary">68 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>SMTO3</td><td>R$ 20.85</td><td><span class="badge bg-light text-dark">32.3</span></td><td>R$ 17.06</td><td><span class="badge bg-primary">63 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>CSNA3</td><td>R$ 5.71</td><td><span class="badge bg-warning text-dark">17.1</span></td><td>R$ 6.61</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>SIMH3</td><td>R$ 16.42</td><td><span class="badge bg-light text-dark">70.2</span></td><td>R$ 9.90</td><td><span class="badge bg-secondary">12 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>SLCE3</td><td>R$ 16.97</td><td><span class="badge bg-light text-dark">35.4</span></td><td>R$ 15.95</td><td><span class="badge bg-secondary">40 (Regular)</span></td><td><span class="badge bg-success">Pullback em Alta (Aguardando Gatilho)</span></td></tr>
-<tr><td>SMFT3</td><td>R$ 25.25</td><td><span class="badge bg-light text-dark">52.2</span></td><td>R$ 19.43</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>SUZB3</td><td>R$ 42.64</td><td><span class="badge bg-light text-dark">51.4</span></td><td>R$ 46.50</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>TAEE11</td><td>R$ 45.24</td><td><span class="badge bg-light text-dark">49.0</span></td><td>R$ 40.26</td><td><span class="badge bg-primary">68 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>VIVT3</td><td>R$ 32.64</td><td><span class="badge bg-light text-dark">98.2</span></td><td>R$ 34.08</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>TEND3</td><td>R$ 28.60</td><td><span class="badge bg-light text-dark">76.3</span></td><td>R$ 30.30</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>TIMS3</td><td>R$ 19.37</td><td><span class="badge bg-light text-dark">91.7</span></td><td>R$ 22.37</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
-<tr><td>TOTS3</td><td>R$ 43.24</td><td><span class="badge bg-light text-dark">95.9</span></td><td>R$ 34.40</td><td><span class="badge bg-primary">61 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>UGPA3</td><td>R$ 40.03</td><td><span class="badge bg-light text-dark">86.0</span></td><td>R$ 29.23</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
-<tr><td>USIM5</td><td>R$ 6.65</td><td><span class="badge bg-light text-dark">28.3</span></td><td>R$ 7.62</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
-<tr><td>VALE3</td><td>R$ 64.03</td><td><span class="badge bg-danger">2.0</span></td><td>R$ 77.23</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa (Sobrevendido)</span></td></tr>
-<tr><td>VAMO3</td><td>R$ 6.40</td><td><span class="badge bg-light text-dark">58.2</span></td><td>R$ 3.69</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>VBBR3</td><td>R$ 36.83</td><td><span class="badge bg-light text-dark">72.8</span></td><td>R$ 31.79</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-success">Pullback em Alta (Aguardando Gatilho)</span></td></tr>
-<tr><td>VIVA3</td><td>R$ 27.28</td><td><span class="badge bg-light text-dark">37.8</span></td><td>R$ 25.04</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-<tr><td>WEGE3</td><td>R$ 45.21</td><td><span class="badge bg-danger">12.6</span></td><td>R$ 47.68</td><td><span class="badge bg-success">75 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa (Sobrevendido)</span></td></tr>
-<tr><td>YDUQ3</td><td>R$ 14.00</td><td><span class="badge bg-light text-dark">41.7</span></td><td>R$ 10.62</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
-
+                            
+            <tr>
+                <td class="fw-bold text-white">ALOS3</td>
+                <td>R$ 35.26</td>
+                <td>R$ 28.12</td>
+                <td class="text-muted">51.8</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">70 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ALPA4</td>
+                <td>R$ 17.40</td>
+                <td>R$ 13.08</td>
+                <td class="text-warning">17.7</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">79 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ABEV3</td>
+                <td>R$ 16.69</td>
+                <td>R$ 15.48</td>
+                <td class="text-muted">44.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">86 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ANIM3</td>
+                <td>R$ 5.00</td>
+                <td>R$ 3.55</td>
+                <td class="text-muted">26.8</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">38 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ASAI3</td>
+                <td>R$ 13.84</td>
+                <td>R$ 8.98</td>
+                <td class="text-muted">74.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">38 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">AURE3</td>
+                <td>R$ 15.23</td>
+                <td>R$ 12.16</td>
+                <td class="text-muted">84.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">30 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">AXIA3</td>
+                <td>R$ 58.58</td>
+                <td>R$ 55.74</td>
+                <td class="text-muted">27.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">AZZA3</td>
+                <td>R$ 25.80</td>
+                <td>R$ 20.87</td>
+                <td class="text-muted">43.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">70 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">B3SA3</td>
+                <td>R$ 23.51</td>
+                <td>R$ 16.58</td>
+                <td class="text-muted">74.4</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BBSE3</td>
+                <td>R$ 42.46</td>
+                <td>R$ 35.69</td>
+                <td class="text-muted">77.9</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">90 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BBDC3</td>
+                <td>R$ 18.27</td>
+                <td>R$ 15.81</td>
+                <td class="text-muted">75.4</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">83 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BBDC4</td>
+                <td>R$ 20.65</td>
+                <td>R$ 18.20</td>
+                <td class="text-muted">64.4</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">76 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BRAP4</td>
+                <td>R$ 19.55</td>
+                <td>R$ 22.42</td>
+                <td class="text-danger fw-bold">4.0</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa (Sobrevendido)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">53 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SAUD3</td>
+                <td>R$ 15.42</td>
+                <td>R$ 13.68</td>
+                <td class="text-muted">42.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">71 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BBAS3</td>
+                <td>R$ 24.10</td>
+                <td>R$ 22.01</td>
+                <td class="text-muted">57.7</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">75 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BRAV3</td>
+                <td>R$ 21.04</td>
+                <td>R$ 18.94</td>
+                <td class="text-muted">86.1</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">30 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BPAC11</td>
+                <td>R$ 80.56</td>
+                <td>R$ 57.59</td>
+                <td class="text-muted">61.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">65 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CXSE3</td>
+                <td>R$ 21.38</td>
+                <td>R$ 18.50</td>
+                <td class="text-muted">65.0</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CBAV3</td>
+                <td>R$ 11.22</td>
+                <td>R$ 10.56</td>
+                <td class="text-danger fw-bold">9.6</td>
+                <td><span class="badge badge-trend-alta">🔥 COMPRA ALTA PROBABILIDADE</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">64 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CEAB3</td>
+                <td>R$ 13.85</td>
+                <td>R$ 10.91</td>
+                <td class="text-muted">59.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CMIG4</td>
+                <td>R$ 11.70</td>
+                <td>R$ 11.13</td>
+                <td class="text-muted">37.9</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">86 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">COGN3</td>
+                <td>R$ 3.02</td>
+                <td>R$ 2.81</td>
+                <td class="text-muted">33.5</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CSMG3</td>
+                <td>R$ 63.00</td>
+                <td>R$ 55.79</td>
+                <td class="text-muted">53.9</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">64 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CPLE3</td>
+                <td>R$ 17.36</td>
+                <td>R$ 14.88</td>
+                <td class="text-danger fw-bold">13.2</td>
+                <td><span class="badge bg-secondary">Atenção: Sobrevendido em Alta</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">72 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CSAN3</td>
+                <td>R$ 5.09</td>
+                <td>R$ 4.63</td>
+                <td class="text-muted">40.0</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">10 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CPFE3</td>
+                <td>R$ 49.51</td>
+                <td>R$ 46.19</td>
+                <td class="text-muted">34.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CMIN3</td>
+                <td>R$ 4.96</td>
+                <td>R$ 5.16</td>
+                <td class="text-muted">49.8</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">79 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CURY3</td>
+                <td>R$ 32.36</td>
+                <td>R$ 32.19</td>
+                <td class="text-muted">59.4</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">100 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CVCB3</td>
+                <td>R$ 1.61</td>
+                <td>R$ 1.81</td>
+                <td class="text-muted">56.0</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">10 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CYRE3</td>
+                <td>R$ 34.39</td>
+                <td>R$ 25.54</td>
+                <td class="text-muted">90.2</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">100 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">DIRR3</td>
+                <td>R$ 11.46</td>
+                <td>R$ 12.93</td>
+                <td class="text-muted">82.4</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ECOR3</td>
+                <td>R$ 13.33</td>
+                <td>R$ 8.72</td>
+                <td class="text-muted">39.8</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">46 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">EMBJ3</td>
+                <td>R$ 91.83</td>
+                <td>R$ 86.62</td>
+                <td class="text-muted">59.9</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">53 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ENGI11</td>
+                <td>R$ 66.00</td>
+                <td>R$ 50.81</td>
+                <td class="text-muted">37.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">30 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ENEV3</td>
+                <td>R$ 32.17</td>
+                <td>R$ 25.09</td>
+                <td class="text-muted">92.2</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">38 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">EGIE3</td>
+                <td>R$ 31.10</td>
+                <td>R$ 31.45</td>
+                <td class="text-muted">47.8</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">75 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">EQTL3</td>
+                <td>R$ 48.63</td>
+                <td>R$ 40.31</td>
+                <td class="text-muted">36.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">20 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">EZTC3</td>
+                <td>R$ 19.19</td>
+                <td>R$ 13.65</td>
+                <td class="text-muted">92.2</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">85 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">FLRY3</td>
+                <td>R$ 28.12</td>
+                <td>R$ 17.32</td>
+                <td class="text-muted">81.0</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">64 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">GGBR4</td>
+                <td>R$ 26.52</td>
+                <td>R$ 22.49</td>
+                <td class="text-muted">91.4</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">55 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">GOAU4</td>
+                <td>R$ 11.95</td>
+                <td>R$ 9.95</td>
+                <td class="text-muted">91.3</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">55 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">GGPS3</td>
+                <td>R$ 16.13</td>
+                <td>R$ 14.59</td>
+                <td class="text-muted">48.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">71 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">GMAT3</td>
+                <td>R$ 5.42</td>
+                <td>R$ 4.55</td>
+                <td class="text-muted">42.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SBFG3</td>
+                <td>R$ 11.50</td>
+                <td>R$ 10.70</td>
+                <td class="text-muted">64.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">71 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">HAPV3</td>
+                <td>R$ 8.74</td>
+                <td>R$ 10.45</td>
+                <td class="text-muted">36.3</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">45 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">HYPE3</td>
+                <td>R$ 26.81</td>
+                <td>R$ 22.29</td>
+                <td class="text-muted">59.1</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">IGTI11</td>
+                <td>R$ 31.97</td>
+                <td>R$ 26.52</td>
+                <td class="text-muted">45.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">61 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">INTB3</td>
+                <td>R$ 19.45</td>
+                <td>R$ 13.77</td>
+                <td class="text-muted">64.9</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">86 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">IRBR3</td>
+                <td>R$ 66.95</td>
+                <td>R$ 55.53</td>
+                <td class="text-danger fw-bold">12.0</td>
+                <td><span class="badge bg-secondary">Atenção: Sobrevendido em Alta</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">55 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ISAE4</td>
+                <td>R$ 28.98</td>
+                <td>R$ 27.72</td>
+                <td class="text-muted">62.8</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ITSA4</td>
+                <td>R$ 15.71</td>
+                <td>R$ 13.50</td>
+                <td class="text-muted">58.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ITUB3</td>
+                <td>R$ 53.31</td>
+                <td>R$ 43.21</td>
+                <td class="text-muted">83.9</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">83 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ITUB4</td>
+                <td>R$ 48.90</td>
+                <td>R$ 42.44</td>
+                <td class="text-muted">78.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">90 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">JHSF3</td>
+                <td>R$ 14.27</td>
+                <td>R$ 10.48</td>
+                <td class="text-muted">90.9</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">KLBN11</td>
+                <td>R$ 18.20</td>
+                <td>R$ 18.35</td>
+                <td class="text-muted">38.4</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">20 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">RENT3</td>
+                <td>R$ 52.54</td>
+                <td>R$ 42.23</td>
+                <td class="text-muted">75.0</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">56 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">LREN3</td>
+                <td>R$ 14.75</td>
+                <td>R$ 13.44</td>
+                <td class="text-muted">71.5</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">86 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">MGLU3</td>
+                <td>R$ 13.04</td>
+                <td>R$ 7.27</td>
+                <td class="text-muted">66.1</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">45 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">POMO4</td>
+                <td>R$ 4.68</td>
+                <td>R$ 5.49</td>
+                <td class="text-muted">35.5</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">86 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">MBRF3</td>
+                <td>R$ 18.81</td>
+                <td>R$ 17.79</td>
+                <td class="text-muted">70.8</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">20 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">BEEF3</td>
+                <td>R$ 4.29</td>
+                <td>R$ 4.25</td>
+                <td class="text-muted">47.9</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">60 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">MOTV3</td>
+                <td>R$ 20.40</td>
+                <td>R$ 15.16</td>
+                <td class="text-muted">93.1</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">68 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">MDNE3</td>
+                <td>R$ 30.58</td>
+                <td>R$ 28.08</td>
+                <td class="text-muted">78.1</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">100 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">MOVI3</td>
+                <td>R$ 18.92</td>
+                <td>R$ 10.72</td>
+                <td class="text-muted">56.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">46 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">MRVE3</td>
+                <td>R$ 8.23</td>
+                <td>R$ 6.64</td>
+                <td class="text-muted">72.5</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">30 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">MULT3</td>
+                <td>R$ 37.25</td>
+                <td>R$ 30.29</td>
+                <td class="text-muted">31.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">NATU3</td>
+                <td>R$ 7.63</td>
+                <td>R$ 8.76</td>
+                <td class="text-muted">89.7</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">45 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">ORVR3</td>
+                <td>R$ 20.50</td>
+                <td>R$ 18.35</td>
+                <td class="text-muted">59.0</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">45 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">PGMN3</td>
+                <td>R$ 5.60</td>
+                <td>R$ 4.91</td>
+                <td class="text-muted">68.7</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">63 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">PETR3</td>
+                <td>R$ 64.75</td>
+                <td>R$ 46.27</td>
+                <td class="text-muted">44.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">100 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">PETR4</td>
+                <td>R$ 57.75</td>
+                <td>R$ 41.76</td>
+                <td class="text-muted">33.1</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">100 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">RECV3</td>
+                <td>R$ 12.40</td>
+                <td>R$ 11.04</td>
+                <td class="text-muted">26.8</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">85 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">PLPL3</td>
+                <td>R$ 8.06</td>
+                <td>R$ 10.45</td>
+                <td class="text-muted">74.2</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">86 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">PSSA3</td>
+                <td>R$ 51.73</td>
+                <td>R$ 49.37</td>
+                <td class="text-muted">33.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">PRIO3</td>
+                <td>R$ 71.31</td>
+                <td>R$ 59.45</td>
+                <td class="text-muted">99.7</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">79 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">RADL3</td>
+                <td>R$ 21.12</td>
+                <td>R$ 20.82</td>
+                <td class="text-muted">39.5</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">56 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">RDOR3</td>
+                <td>R$ 43.71</td>
+                <td>R$ 37.52</td>
+                <td class="text-muted">52.6</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">46 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">RAIL3</td>
+                <td>R$ 18.96</td>
+                <td>R$ 15.09</td>
+                <td class="text-muted">50.4</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">28 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SBSP3</td>
+                <td>R$ 32.03</td>
+                <td>R$ 28.90</td>
+                <td class="text-muted">28.5</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">79 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SAPR11</td>
+                <td>R$ 41.11</td>
+                <td>R$ 39.60</td>
+                <td class="text-muted">82.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">45 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SANB11</td>
+                <td>R$ 28.13</td>
+                <td>R$ 28.96</td>
+                <td class="text-muted">76.4</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">68 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SMTO3</td>
+                <td>R$ 20.85</td>
+                <td>R$ 17.06</td>
+                <td class="text-muted">32.3</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">63 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">CSNA3</td>
+                <td>R$ 5.71</td>
+                <td>R$ 6.61</td>
+                <td class="text-warning">17.1</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">20 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SIMH3</td>
+                <td>R$ 16.42</td>
+                <td>R$ 9.90</td>
+                <td class="text-muted">70.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">12 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SLCE3</td>
+                <td>R$ 16.97</td>
+                <td>R$ 15.95</td>
+                <td class="text-muted">35.4</td>
+                <td><span class="badge badge-pullback">Pullback em Alta (Aguardando Gatilho)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">40 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SMFT3</td>
+                <td>R$ 25.25</td>
+                <td>R$ 19.43</td>
+                <td class="text-muted">52.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">38 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">SUZB3</td>
+                <td>R$ 42.64</td>
+                <td>R$ 46.50</td>
+                <td class="text-muted">51.4</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">TAEE11</td>
+                <td>R$ 45.24</td>
+                <td>R$ 40.26</td>
+                <td class="text-muted">49.0</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">68 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">VIVT3</td>
+                <td>R$ 32.64</td>
+                <td>R$ 34.08</td>
+                <td class="text-muted">98.2</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">71 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">TEND3</td>
+                <td>R$ 28.60</td>
+                <td>R$ 30.30</td>
+                <td class="text-muted">76.3</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">TIMS3</td>
+                <td>R$ 19.37</td>
+                <td>R$ 22.37</td>
+                <td class="text-muted">91.7</td>
+                <td><span class="badge badge-lateral">Lateralização / Neutro</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">TOTS3</td>
+                <td>R$ 43.24</td>
+                <td>R$ 34.40</td>
+                <td class="text-muted">95.9</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">61 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">UGPA3</td>
+                <td>R$ 40.03</td>
+                <td>R$ 29.23</td>
+                <td class="text-muted">86.0</td>
+                <td><span class="badge badge-trend-alta">Sobrecomprado (Risco de Correção)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">71 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">USIM5</td>
+                <td>R$ 6.65</td>
+                <td>R$ 7.62</td>
+                <td class="text-muted">28.3</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">45 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">VALE3</td>
+                <td>R$ 64.03</td>
+                <td>R$ 77.23</td>
+                <td class="text-danger fw-bold">2.0</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa (Sobrevendido)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-reg">55 (Regular)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">VAMO3</td>
+                <td>R$ 6.40</td>
+                <td>R$ 3.69</td>
+                <td class="text-muted">58.2</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">30 (Fraco)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">VBBR3</td>
+                <td>R$ 36.83</td>
+                <td>R$ 31.79</td>
+                <td class="text-muted">72.8</td>
+                <td><span class="badge badge-pullback">Pullback em Alta (Aguardando Gatilho)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">78 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">VIVA3</td>
+                <td>R$ 27.28</td>
+                <td>R$ 25.04</td>
+                <td class="text-muted">37.8</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-exc">93 (Excelente)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">WEGE3</td>
+                <td>R$ 45.21</td>
+                <td>R$ 47.68</td>
+                <td class="text-danger fw-bold">12.6</td>
+                <td><span class="badge badge-baixa">Tendência de Baixa (Sobrevendido)</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-bom">75 (Bom)</span></td>
+            </tr>
+            
+            <tr>
+                <td class="fw-bold text-white">YDUQ3</td>
+                <td>R$ 14.00</td>
+                <td>R$ 10.62</td>
+                <td class="text-muted">41.7</td>
+                <td><span class="badge badge-trend-alta">Tendência de Alta Forte</span></td>
+                <td><span class="badge bg-secondary">-</span></td>
+                <td><span class="badge badge-score-fra">30 (Fraco)</span></td>
+            </tr>
+            
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <footer class="text-center text-muted small py-3 border-top mt-4">
+        <footer class="text-center text-muted small py-4 mt-4 border-top border-secondary">
             WF Investimentos • Automação Quantitativa Integrada • Dados B3 via yfinance
         </footer>
     </div>
+
+    <script>
+        // Gráfico Rosca
+        const ctxPie = document.getElementById('chartTendencias').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: ["Tend\u00eancia de Alta Forte", "Sobrecomprado (Risco de Corre\u00e7\u00e3o)", "Lateraliza\u00e7\u00e3o / Neutro", "Tend\u00eancia de Baixa", "Tend\u00eancia de Baixa (Sobrevendido)", "Aten\u00e7\u00e3o: Sobrevendido em Alta", "Pullback em Alta (Aguardando Gatilho)", "\ud83d\udd25 COMPRA ALTA PROBABILIDADE"],
+                datasets: [{
+                    data: [64, 11, 9, 8, 3, 2, 2, 1],
+                    backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#3b82f6', '#ec4899', '#06b6d4'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 10 } } }
+                }
+            }
+        });
+
+        // Gráfico Barras
+        const ctxBar = document.getElementById('chartIfr').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ["VALE3", "BRAP4", "CBAV3", "IRBR3", "WEGE3", "CPLE3", "CSNA3", "ALPA4"],
+                datasets: [{
+                    label: 'IFR(2)',
+                    data: [2.0, 4.0, 9.6, 12.0, 12.6, 13.2, 17.1, 17.7],
+                    backgroundColor: '#d97706',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { min: 0, max: 100, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Filtro de Busca
+        document.getElementById('filtroTicker').addEventListener('keyup', function() {
+            const val = this.value.toUpperCase();
+            const trs = document.querySelectorAll('#tabelaScanner tbody tr');
+            trs.forEach(tr => {
+                const td = tr.querySelector('td');
+                if (td) {
+                    tr.style.display = td.innerText.toUpperCase().indexOf(val) > -1 ? '' : 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
