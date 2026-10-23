@@ -1,11 +1,12 @@
 import json
+import time
 import numpy as np
 import pandas as pd
 import yfinance as yf
 
 
-def calcular_rsi(series, periodo=2):
-  """Calcula o Índice de Força Relativa (IFR / RSI)."""
+def calcular_rsi(series: pd.Series, periodo: int = 2) -> pd.Series:
+  """Calcula o Índice de Força Relativa (IFR / RSI) de Larry Connors."""
   delta = series.diff()
   ganho = delta.where(delta > 0, 0.0)
   perda = -delta.where(delta < 0, 0.0)
@@ -18,20 +19,25 @@ def calcular_rsi(series, periodo=2):
   return rsi
 
 
-def calcular_score_fundamentalista(info):
-  """Calcula um Score Fundamentalista de 0 a 100 baseado em múltiplos contábeis.
+def calcular_score_fundamentalista(info: dict) -> str:
+  """Calcula um Score Fundamentalista de 0 a 100 baseado em balanços auditados.
 
-  Pilares (25 pts cada): 1. Rentabilidade (ROE > 15%) 2. Margem Líquida (> 10%)
-  3. Alavancagem (Dívida Líquida / EBITDA < 2.5x) 4. Valuation (P/L entre 0 e 15
-  ou P/VP razoável)
+  Pilares (25 pts cada):
+  1. Rentabilidade (ROE >= 12% a 20%)
+  2. Margem Líquida (Margem >= 8% a 15%)
+  3. Alavancagem e Endividamento (Dívida/Patrimônio saudável)
+  4. Valuation (P/L justo entre 3x e 18x ou P/VP baixo)
   """
+  if not info or not isinstance(info, dict):
+    return "N/D"
+
   pontos = 0
-  dados_validos = 0
+  dados_encontrados = 0
 
   # 1. Rentabilidade: ROE (Return on Equity)
   roe = info.get("returnOnEquity")
   if roe is not None and not np.isnan(roe):
-    dados_validos += 1
+    dados_encontrados += 1
     if roe >= 0.20:
       pontos += 25
     elif roe >= 0.12:
@@ -39,10 +45,10 @@ def calcular_score_fundamentalista(info):
     elif roe > 0:
       pontos += 10
 
-  # 2. Eficiência: Margem Líquida (Profit Margins)
+  # 2. Eficiência Operacional: Margem Líquida (Profit Margins)
   margem = info.get("profitMargins")
   if margem is not None and not np.isnan(margem):
-    dados_validos += 1
+    dados_encontrados += 1
     if margem >= 0.15:
       pontos += 25
     elif margem >= 0.08:
@@ -50,12 +56,10 @@ def calcular_score_fundamentalista(info):
     elif margem > 0:
       pontos += 10
 
-  # 3. Endividamento: Dívida Líquida / EBITDA (ou Dívida Total / Patrimônio)
-  # yfinance traz frequentemente 'debtToEquity' (percentual)
+  # 3. Endividamento: Debt to Equity
   debt_to_equity = info.get("debtToEquity")
   if debt_to_equity is not None and not np.isnan(debt_to_equity):
-    dados_validos += 1
-    # D/E < 80% é muito saudável; > 150% é alto
+    dados_encontrados += 1
     if debt_to_equity < 80:
       pontos += 25
     elif debt_to_equity <= 140:
@@ -63,14 +67,14 @@ def calcular_score_fundamentalista(info):
     elif debt_to_equity <= 200:
       pontos += 10
   else:
-    # Caso seja instituição financeira (bancos não usam D/E ou EBITDA padrão)
+    # Setor financeiro (bancos/seguradoras) opera sem essa métrica convencional
     pontos += 15
 
-  # 4. Valuation: P/L (Trailing P/E) ou P/VP (Price to Book)
+  # 4. Valuation: Preço / Lucro (P/E) ou Preço / Valor Patrimonial (P/B)
   pe = info.get("trailingPE")
   pb = info.get("priceToBook")
   if pe is not None and not np.isnan(pe) and pe > 0:
-    dados_validos += 1
+    dados_encontrados += 1
     if 3.0 <= pe <= 12.0:
       pontos += 25
     elif 12.0 < pe <= 18.0:
@@ -78,31 +82,30 @@ def calcular_score_fundamentalista(info):
     elif pe <= 25.0:
       pontos += 10
   elif pb is not None and not np.isnan(pb) and pb > 0:
-    dados_validos += 1
+    dados_encontrados += 1
     if pb <= 1.5:
       pontos += 20
     elif pb <= 2.5:
       pontos += 12
 
-  # Se a empresa não tiver dados suficientes auditados no Yahoo Finance
-  if dados_validos == 0:
+  if dados_encontrados == 0:
     return "N/D"
 
-  # Classificação em Selos/Notas
+  # Classificação por Faixas
   if pontos >= 80:
-    rating = f"{pontos} (Excelente)"
+    return f"{pontos} (Excelente)"
   elif pontos >= 60:
-    rating = f"{pontos} (Bom)"
+    return f"{pontos} (Bom)"
   elif pontos >= 40:
-    rating = f"{pontos} (Regular)"
+    return f"{pontos} (Regular)"
   else:
-    rating = f"{pontos} (Fraco)"
-
-  return rating
+    return f"{pontos} (Fraco)"
 
 
-def analisar_ativo(df_diario, df_semanal, info_fundamentalista=None):
-  """Aplica a classificação quantitativa técnica e fundamentalista completa."""
+def analisar_ativo(
+    df_diario: pd.DataFrame, df_semanal: pd.DataFrame, info: dict = None
+) -> dict:
+  """Executa a triagem técnica e consolida com o score fundamentalista."""
   fechamento_d = df_diario["Close"]
 
   # Médias diárias
@@ -110,30 +113,37 @@ def analisar_ativo(df_diario, df_semanal, info_fundamentalista=None):
   ema50_d = fechamento_d.ewm(span=50, adjust=False).mean()
   ema21_d = fechamento_d.ewm(span=21, adjust=False).mean()
 
-  # IFR de 2 períodos
+  # IFR(2)
   rsi2 = calcular_rsi(fechamento_d, periodo=2)
 
-  # Position (Semanal)
+  # Semanal (Position Trade)
   fechamento_w = df_semanal["Close"]
   sma20_w = fechamento_w.rolling(window=20).mean()
 
   preco_atual = float(fechamento_d.iloc[-1])
-  sma200_val = float(sma200_d.iloc[-1])
-  ema50_val = float(ema50_d.iloc[-1])
-  ema21_val = float(ema21_d.iloc[-1])
+  sma200_val = (
+      float(sma200_d.iloc[-1])
+      if not pd.isna(sma200_d.iloc[-1])
+      else preco_atual
+  )
+  ema50_val = (
+      float(ema50_d.iloc[-1]) if not pd.isna(ema50_d.iloc[-1]) else preco_atual
+  )
+  ema21_val = (
+      float(ema21_d.iloc[-1]) if not pd.isna(ema21_d.iloc[-1]) else preco_atual
+  )
   rsi2_val = float(rsi2.iloc[-1]) if not pd.isna(rsi2.iloc[-1]) else 50.0
   sma20_w_val = (
       float(sma20_w.iloc[-1]) if len(sma20_w.dropna()) > 0 else preco_atual
   )
 
-  # Condições Técnicas
+  # Lógica Técnica
   alta_macro = (preco_atual > sma200_val) and (preco_atual > ema50_val)
   baixa_macro = (preco_atual < sma200_val) and (preco_atual < ema50_val)
   em_pullback = preco_atual < ema21_val
   sobrevendido_raro = rsi2_val <= 15.0
   sobrecomprado = rsi2_val >= 85.0
 
-  # Classificação de Swing Trade
   gatilho_swing = False
   if alta_macro and em_pullback and sobrevendido_raro:
     status_swing = "🔥 COMPRA ALTA PROBABILIDADE"
@@ -159,12 +169,7 @@ def analisar_ativo(df_diario, df_semanal, info_fundamentalista=None):
       else "Abaixo da Média Semanal"
   )
 
-  # Score Fundamentalista
-  score_fund = (
-      calcular_score_fundamentalista(info_fundamentalista)
-      if info_fundamentalista
-      else "N/D"
-  )
+  score_fund = calcular_score_fundamentalista(info)
 
   return {
       "Preço (R$)": round(preco_atual, 2),
@@ -178,15 +183,16 @@ def analisar_ativo(df_diario, df_semanal, info_fundamentalista=None):
 
 
 def executar_scanner():
-  """Lê a lista de tickers do IBrX 100, captura cotações e fundamentos, e exporta para CSV."""
-  print("Iniciando motor de análise técnica e fundamentalista...")
+  """Lê a lista do IBrX 100, sanitiza os tickers e processa cotações e fundamentos."""
+  print("=== INICIANDO MOTOR QUANTITATIVO & FUNDAMENTALISTA ===")
 
   try:
     with open("ibrx100_tickers.json", "r", encoding="utf-8") as f:
       tickers = json.load(f)
   except FileNotFoundError:
     print(
-        "Arquivo 'ibrx100_tickers.json' não encontrado. Usando lista padrão."
+        "Arquivo 'ibrx100_tickers.json' não encontrado. Utilizando cesta"
+        " padrão."
     )
     tickers = ["PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "WEGE3", "RENT3"]
 
@@ -194,37 +200,47 @@ def executar_scanner():
   total = len(tickers)
 
   for i, ticker in enumerate(tickers, 1):
-    simbolo_yf = f"{ticker}.SA"
-    print(f"[{i}/{total}] Analisando {ticker}...")
+    # Higienização contra '.SA.SA' ou espaços acidentais
+    ticker_limpo = (
+        str(ticker).replace(".SA", "").replace(".sa", "").strip().upper()
+    )
+    simbolo_yf = f"{ticker_limpo}.SA"
+
+    print(f"[{i:03d}/{total:03d}] Processando {ticker_limpo} ({simbolo_yf})...")
 
     try:
       ativo = yf.Ticker(simbolo_yf)
 
-      # 1. Histórico para médias e IFR
+      # 1. Cotações históricas diárias e semanais
       df_d = ativo.history(period="1y", interval="1d")
       df_w = ativo.history(period="2y", interval="1wk")
 
-      if df_d.empty or len(df_d) < 50:
+      if df_d.empty or len(df_d) < 30:
+        print(f"  [AVISO] Dados históricos insuficientes para {ticker_limpo}.")
         continue
 
       # 2. Fundamentos da empresa
+      info = {}
       try:
-        info = ativo.info
+        info = ativo.info or {}
       except Exception:
         info = {}
 
-      analise = analisar_ativo(df_d, df_w, info_fundamentalista=info)
-      analise["Ticker"] = ticker
+      # 3. Análise quantitativa
+      analise = analisar_ativo(df_d, df_w, info=info)
+      analise["Ticker"] = ticker_limpo
       resultados.append(analise)
 
+      # Pausa suave para evitar restrição de taxa da API
+      time.sleep(0.2)
+
     except Exception as e:
-      print(f"Erro ao processar {ticker}: {e}")
+      print(f"  [ERRO] Falha ao processar {ticker_limpo}: {e}")
       continue
 
   if resultados:
     df_final = pd.DataFrame(resultados)
-    # Ordenar colunas para a tabela
-    colunas = [
+    colunas_ordenadas = [
         "Ticker",
         "Preço (R$)",
         "SMA 200",
@@ -234,14 +250,16 @@ def executar_scanner():
         "Score Fundamentalista",
         "Gatilho_Swing",
     ]
-    df_final = df_final[[c for c in colunas if c in df_final.columns]]
-    df_final.to_csv("scanner_fechamento.csv", index=False)
+    df_final = df_final[
+        [c for c in colunas_ordenadas if c in df_final.columns]
+    ]
+    df_final.to_csv("scanner_fechamento.csv", index=False, encoding="utf-8")
     print(
-        f"\nBase consolidada atualizada em 'scanner_fechamento.csv' com"
-        f" {len(df_final)} ativos."
+        f"\nBase salva em 'scanner_fechamento.csv' com {len(df_final)} ativos"
+        " analisados com sucesso."
     )
   else:
-    print("Nenhum dado pôde ser processado.")
+    print("\nNenhum dado pôde ser compilado.")
 
 
 if __name__ == "__main__":
