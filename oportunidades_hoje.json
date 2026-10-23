@@ -1,47 +1,11 @@
 [
     {
-        "ticker": "ITSA4",
-        "preco": 15.21,
-        "rsi2": 12.3,
-        "mm200": 13.54,
-        "score": "93 (Excelente)",
-        "regime": "FLUXO_NY",
-        "hora": "10:46:28"
-    },
-    {
-        "ticker": "IRBR3",
-        "preco": 66.96,
-        "rsi2": 13.8,
-        "mm200": 55.68,
-        "score": "55 (Regular)",
-        "regime": "FLUXO_NY",
-        "hora": "10:46:25"
-    },
-    {
-        "ticker": "EMBJ3",
-        "preco": 86.82,
-        "rsi2": 10.0,
-        "mm200": 86.57,
-        "score": "53 (Regular)",
-        "regime": "FLUXO_NY",
-        "hora": "10:46:04"
-    },
-    {
-        "ticker": "BBDC4",
-        "preco": 19.83,
-        "rsi2": 10.2,
-        "mm200": 18.22,
-        "score": "76 (Bom)",
-        "regime": "FLUXO_NY",
-        "hora": "10:45:38"
-    },
-    {
         "ticker": "BBDC3",
-        "preco": 17.6,
-        "rsi2": 10.6,
+        "preco": 17.5,
+        "rsi2": 9.0,
         "mm200": 15.84,
         "score": "83 (Excelente)",
         "regime": "FLUXO_NY",
-        "hora": "10:45:37"
+        "hora": "10:36:46"
     }
 ]
