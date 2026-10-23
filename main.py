@@ -1,18 +1,26 @@
-import coletor_ibrx100
-import engine_analise
-import gerar_site
+import sys
+from coletor_ibrx100 import obter_carteira_ibrx100
+from engine_analise import executar_scanner
+from gerar_site import gerar_dashboard_html
 
-def executar_pipeline_completo():
-    print("=== 1/3: Atualizando lista IBrX 100 ===")
-    coletor_ibrx100.obter_carteira_ibrx100()
-
-    print("\n=== 2/3: Executando análise técnica e fundamentalista ===")
-    engine_analise.executar_scanner()
-
-    print("\n=== 3/3: Gerando painel web (index.html) ===")
-    gerar_site.gerar_dashboard_html()
+def rodar_pipeline_completo():
+    print("=== INICIANDO PIPELINE QUANTITATIVO B3 ===")
     
-    print("\n Pipeline concluído com sucesso!")
+    # 1. Coleta da carteira teórica e atualização do ibrx100_tickers.json
+    tickers = obter_carteira_ibrx100()
+    print(f"Total de ativos capturados: {len(tickers)}")
+    
+    # 2. Execução do motor de análise técnica e fundamentalista
+    # (Lê internamente a lista salva em ibrx100_tickers.json)
+    executar_scanner()
+    
+    # 3. Compilação do dashboard com a marca WF Investimentos e gráficos interativos
+    print("Compilando dashboard visual...")
+    gerar_dashboard_html(
+        caminho_csv="scanner_fechamento.csv",
+        caminho_saida="index.html"
+    )
+    print("=== PIPELINE FINALIZADO COM SUCESSO ===")
 
 if __name__ == "__main__":
-    executar_pipeline_completo()
+    rodar_pipeline_completo()
