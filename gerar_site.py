@@ -1,10 +1,10 @@
 import json
+import re
 from datetime import datetime
 import pandas as pd
 
 
 def formatar_badge_swing(valor):
-  """Aplica selos visuais conforme a fase de mercado e o gatilho de Swing Trade."""
   v = str(valor).lower()
   if "🔥 compra" in v:
     return (
@@ -41,7 +41,6 @@ def formatar_badge_swing(valor):
 
 
 def formatar_badge_score(score_raw):
-  """Aplica selos visuais para a nota de fundamentos contábeis."""
   score_str = str(score_raw)
   if "Excelente" in score_str or "Bom" in score_str:
     return (
@@ -64,57 +63,63 @@ def formatar_badge_score(score_raw):
     )
 
 
+def extrair_valor_score(score_raw):
+  """Extrai o número de 0 a 100 para ordenação matemática correta."""
+  score_str = str(score_raw)
+  m = re.search(r"\d+", score_str)
+  return int(m.group()) if m else -1
+
+
 def gerar_dashboard_html(
     caminho_csv="scanner_fechamento.csv", caminho_saida="index.html"
 ):
-  """Compila os dados quantitativos em uma interface interativa com Chart.js e Tailwind CSS."""
   df = pd.read_csv(caminho_csv)
   data_atualizacao = datetime.now().strftime("%d/%m/%Y às %H:%M")
 
-  # 1. Distribuição de Fases de Mercado (Gráfico Donut)
+  # 1. Gráficos Chart.js
   distribuicao_swing = df["Swing Trade"].value_counts().to_dict()
   labels_chart_donut = list(distribuicao_swing.keys())
   valores_chart_donut = list(distribuicao_swing.values())
 
-  # 2. Top 8 menores IFR(2) (Gráfico de Barras)
   df_sorted_rsi = df.sort_values(by="RSI(2)").head(8)
   labels_chart_bar = df_sorted_rsi["Ticker"].tolist()
   valores_chart_bar = df_sorted_rsi["RSI(2)"].tolist()
 
-  # 3. Montagem das Linhas da Tabela
+  # 2. Montagem das Linhas com data-val para ordenação nativa
   linhas_tabela = ""
   for _, row in df.iterrows():
-    badge_swing = formatar_badge_swing(row.get("Swing Trade", "-"))
-    badge_score = formatar_badge_score(row.get("Score Fundamentalista", "N/D"))
+    ticker = str(row.get("Ticker", "-"))
+    preco = float(row.get("Preço (R$)", 0.0))
+    sma200 = float(row.get("SMA 200", 0.0))
+    rsi_val = float(row.get("RSI(2)", 0.0))
+    swing_val = str(row.get("Swing Trade", "-"))
+    pos_trade = str(row.get("Position Trade", "-"))
+    score_raw = str(row.get("Score Fundamentalista", "N/D"))
+    score_num = extrair_valor_score(score_raw)
 
-    pos_trade = row.get("Position Trade", "-")
+    badge_swing = formatar_badge_swing(swing_val)
+    badge_score = formatar_badge_score(score_raw)
+
     badge_position = (
         "text-emerald-600 font-semibold"
-        if "Alta" in str(pos_trade)
+        if "Alta" in pos_trade
         else "text-slate-500"
     )
-
-    rsi_val = row.get("RSI(2)", 0.0)
     cor_rsi = (
         "text-emerald-700 font-bold"
         if rsi_val <= 15
-        else (
-            "text-rose-700 font-bold" if rsi_val >= 85 else "text-slate-700"
-        )
+        else ("text-rose-700 font-bold" if rsi_val >= 85 else "text-slate-700")
     )
-
-    preco = row.get("Preço (R$)", 0.0)
-    sma200 = row.get("SMA 200", 0.0)
 
     linhas_tabela += f"""
         <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900">{row.get('Ticker', '-')}</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium">R$ {preco:.2f}</td>
-            <td class="px-4 py-3 text-right text-slate-600">R$ {sma200:.2f}</td>
-            <td class="px-4 py-3 text-right {cor_rsi}">{rsi_val:.1f}</td>
-            <td class="px-4 py-3 text-center">{badge_swing}</td>
-            <td class="px-4 py-3 text-center text-xs {badge_position}">{pos_trade}</td>
-            <td class="px-4 py-3 text-center">{badge_score}</td>
+            <td class="px-4 py-3 font-bold text-slate-900" data-val="{ticker}">{ticker}</td>
+            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="{preco}">R$ {preco:.2f}</td>
+            <td class="px-4 py-3 text-right text-slate-600" data-val="{sma200}">R$ {sma200:.2f}</td>
+            <td class="px-4 py-3 text-right {cor_rsi}" data-val="{rsi_val}">{rsi_val:.1f}</td>
+            <td class="px-4 py-3 text-center" data-val="{swing_val}">{badge_swing}</td>
+            <td class="px-4 py-3 text-center text-xs {badge_position}" data-val="{pos_trade}">{pos_trade}</td>
+            <td class="px-4 py-3 text-center" data-val="{score_num}">{badge_score}</td>
         </tr>
         """
 
@@ -131,11 +136,13 @@ def gerar_dashboard_html(
         .gold-gradient {{ background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%); }}
         .gold-border {{ border-color: #c5a059; }}
         .gold-text {{ color: #d4af37; }}
+        th.sortable {{ cursor: pointer; user-select: none; transition: background-color 0.2s; }}
+        th.sortable:hover {{ background-color: #1e293b; color: #d4af37; }}
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Top Header Institucional WF Investimentos -->
+    <!-- Top Header WF Investimentos -->
     <header class="gold-gradient text-white border-b-4 gold-border shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4">
@@ -156,9 +163,8 @@ def gerar_dashboard_html(
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
 
-        <!-- Seção de Gráficos Analíticos -->
+        <!-- Gráficos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Gráfico 1: Tendências e Fases -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-pie gold-text"></i> Distribuição de Tendências (Swing Trade)
@@ -168,7 +174,6 @@ def gerar_dashboard_html(
                 </div>
             </div>
 
-            <!-- Gráfico 2: Menores IFR(2) -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-bar gold-text"></i> Radar IFR(2) - Menores Níveis (Pullbacks)
@@ -179,10 +184,13 @@ def gerar_dashboard_html(
             </div>
         </div>
 
-        <!-- Seção de Tabela com Busca -->
+        <!-- Tabela com Ordenação Dinâmica -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50">
-                <h2 class="text-base font-bold text-slate-800">Scanner Consolidado de Ativos</h2>
+                <div>
+                    <h2 class="text-base font-bold text-slate-800">Scanner Consolidado de Ativos</h2>
+                    <p class="text-xs text-slate-500">Clique no cabeçalho das colunas para ordenar</p>
+                </div>
                 <div class="relative w-full sm:w-72">
                     <input type="text" id="filtroTicker" placeholder="Pesquisar Ticker (ex: VALE3)..." class="w-full pl-9 pr-4 py-1.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
                     <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
@@ -193,13 +201,13 @@ def gerar_dashboard_html(
                 <table class="w-full text-left text-sm" id="tabelaDados">
                     <thead class="bg-slate-900 text-white text-xs uppercase tracking-wider">
                         <tr>
-                            <th class="px-4 py-3">Ticker</th>
-                            <th class="px-4 py-3 text-right">Preço</th>
-                            <th class="px-4 py-3 text-right">SMA 200</th>
-                            <th class="px-4 py-3 text-right">IFR(2)</th>
-                            <th class="px-4 py-3 text-center">Swing Trade</th>
-                            <th class="px-4 py-3 text-center">Position (Semanal)</th>
-                            <th class="px-4 py-3 text-center">Score Fund.</th>
+                            <th class="px-4 py-3 sortable" onclick="ordenarTabela(0, 'str')">Ticker <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
+                            <th class="px-4 py-3 text-right sortable" onclick="ordenarTabela(1, 'num')">Preço <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
+                            <th class="px-4 py-3 text-right sortable" onclick="ordenarTabela(2, 'num')">SMA 200 <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
+                            <th class="px-4 py-3 text-right sortable" onclick="ordenarTabela(3, 'num')">IFR(2) <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
+                            <th class="px-4 py-3 text-center sortable" onclick="ordenarTabela(4, 'str')">Swing Trade <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
+                            <th class="px-4 py-3 text-center sortable" onclick="ordenarTabela(5, 'str')">Position (Semanal) <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
+                            <th class="px-4 py-3 text-center sortable" onclick="ordenarTabela(6, 'num')">Score Fund. <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -216,7 +224,7 @@ def gerar_dashboard_html(
     </footer>
 
     <script>
-        // Filtro em tempo real para os Tickers
+        // Filtro em tempo real de Ticker
         document.getElementById('filtroTicker').addEventListener('keyup', function() {{
             let filter = this.value.toUpperCase();
             let rows = document.querySelectorAll('#tabelaDados tbody tr');
@@ -226,7 +234,7 @@ def gerar_dashboard_html(
             }});
         }});
 
-        // Gráfico Donut de Fases de Mercado
+        // Gráfico Donut
         new Chart(document.getElementById('chartDonut'), {{
             type: 'doughnut',
             data: {{
@@ -249,7 +257,7 @@ def gerar_dashboard_html(
             }}
         }});
 
-        // Gráfico de Barras do IFR(2)
+        // Gráfico IFR(2)
         new Chart(document.getElementById('chartBar'), {{
             type: 'bar',
             data: {{
@@ -271,13 +279,47 @@ def gerar_dashboard_html(
                 plugins: {{ legend: {{ display: false }} }}
             }}
         }});
+
+        // Motor de Ordenação Dinâmica
+        let direcaoOrdenacao = {{}};
+        function ordenarTabela(colIndex, tipo) {{
+            const tabela = document.getElementById('tabelaDados');
+            const tbody = tabela.querySelector('tbody');
+            const linhas = Array.from(tbody.querySelectorAll('tr'));
+            
+            // Alterna ascendente e descendente
+            const ascendente = !direcaoOrdenacao[colIndex];
+            direcaoOrdenacao = {{}}; // reseta outros
+            direcaoOrdenacao[colIndex] = ascendente;
+
+            linhas.sort((a, b) => {{
+                let valA = a.cells[colIndex].getAttribute('data-val') || a.cells[colIndex].innerText.trim();
+                let valB = b.cells[colIndex].getAttribute('data-val') || b.cells[colIndex].innerText.trim();
+
+                if (tipo === 'num') {{
+                    valA = parseFloat(valA) || 0;
+                    valB = parseFloat(valB) || 0;
+                    return ascendente ? valA - valB : valB - valA;
+                }} else {{
+                    return ascendente ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }}
+            }});
+
+            // Atualiza ícones dos cabeçalhos
+            const headers = tabela.querySelectorAll('th i');
+            headers.forEach(i => i.className = 'fa-solid fa-sort ml-1 text-slate-400');
+            const iconeAtivo = tabela.querySelectorAll('th')[colIndex].querySelector('i');
+            iconeAtivo.className = ascendente ? 'fa-solid fa-sort-up ml-1 text-amber-400' : 'fa-solid fa-sort-down ml-1 text-amber-400';
+
+            linhas.forEach(linha => tbody.appendChild(linha));
+        }}
     </script>
 </body>
 </html>
 """
   with open(caminho_saida, "w", encoding="utf-8") as f:
     f.write(html_template)
-  print(f"Dashboard gerado com sucesso em '{caminho_saida}'.")
+  print(f"Dashboard interativo com ordenação gerado com sucesso em '{caminho_saida}'.")
 
 
 if __name__ == "__main__":
