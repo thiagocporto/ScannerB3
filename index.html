@@ -3,1191 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WF Investimentos | Scanner Quantitativo B3</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta http-equiv="refresh" content="300">
+    <title>WF Investimentos - Radar Quantitativo B3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        .gold-gradient { background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%); }
-        .gold-border { border-color: #c5a059; }
-        .gold-text { color: #d4af37; }
-        th.sortable { cursor: pointer; user-select: none; transition: background-color 0.2s; }
-        th.sortable:hover { background-color: #1e293b; color: #d4af37; }
+        body { background-color: #f8f9fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .card { border-radius: 10px; }
+        .table-hover tbody tr:hover { background-color: #e9ecef; }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
-
-    <!-- Top Header WF Investimentos -->
-    <header class="gold-gradient text-white border-b-4 gold-border shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <img src="logo.png" alt="WF Investimentos" class="w-16 h-16 rounded-full border-2 gold-border shadow-md object-cover bg-slate-900" onerror="this.style.display='none'">
-                <div>
-                    <h1 class="text-2xl font-black tracking-wider uppercase flex items-center gap-2">
-                        <span>WF INVESTIMENTOS</span>
-                    </h1>
-                    <p class="text-xs gold-text uppercase tracking-widest font-semibold">Avaliação de Ativos & Mercado</p>
-                </div>
+<body class="py-4">
+    <div class="container-fluid px-4">
+        <header class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div>
+                <h2 class="fw-bold text-dark m-0"><i class="bi bi-graph-up-arrow text-primary"></i> WF Investimentos • Radar B3</h2>
+                <div class="text-muted small">Estratégia Quantitativa Larry Connors RSI(2) & Regimes de Mercado</div>
             </div>
-            <div class="text-right text-xs text-slate-300">
-                <p><i class="fa-regular fa-clock mr-1"></i> Atualizado em: <span class="font-bold text-white">23/10/2026 às 10:38</span></p>
-                <p class="text-slate-400">Universo: B3 IBrX 100</p>
+            <div class="text-end">
+                <span class="badge bg-dark">Atualizado: 23/10/2026 às 10:45:28</span>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
-
-        <!-- Gráficos -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-pie gold-text"></i> Distribuição de Tendências (Swing Trade)
-                </h3>
-                <div class="relative h-56">
-                    <canvas id="chartDonut"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-bar gold-text"></i> Radar IFR(2) - Menores Níveis (Pullbacks)
-                </h3>
-                <div class="relative h-56">
-                    <canvas id="chartBar"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tabela com Ordenação Dinâmica -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50">
-                <div>
-                    <h2 class="text-base font-bold text-slate-800">Scanner Consolidado de Ativos</h2>
-                    <p class="text-xs text-slate-500">Clique no cabeçalho das colunas para ordenar</p>
-                </div>
-                <div class="relative w-full sm:w-72">
-                    <input type="text" id="filtroTicker" placeholder="Pesquisar Ticker (ex: VALE3)..." class="w-full pl-9 pr-4 py-1.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
-                    <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                </div>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm" id="tabelaDados">
-                    <thead class="bg-slate-900 text-white text-xs uppercase tracking-wider">
-                        <tr>
-                            <th class="px-4 py-3 sortable" onclick="ordenarTabela(0, 'str')">Ticker <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
-                            <th class="px-4 py-3 text-right sortable" onclick="ordenarTabela(1, 'num')">Preço <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
-                            <th class="px-4 py-3 text-right sortable" onclick="ordenarTabela(2, 'num')">SMA 200 <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
-                            <th class="px-4 py-3 text-right sortable" onclick="ordenarTabela(3, 'num')">IFR(2) <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
-                            <th class="px-4 py-3 text-center sortable" onclick="ordenarTabela(4, 'str')">Swing Trade <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
-                            <th class="px-4 py-3 text-center sortable" onclick="ordenarTabela(5, 'str')">Position (Semanal) <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
-                            <th class="px-4 py-3 text-center sortable" onclick="ordenarTabela(6, 'num')">Score Fund. <i class="fa-solid fa-sort ml-1 text-slate-400"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ALOS3">ALOS3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="35.26">R$ 35.26</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="28.12">R$ 28.12</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="51.8">51.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="70"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">70 (Bom)</span></td>
-        </tr>
         
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ALPA4">ALPA4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="17.4">R$ 17.40</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="13.08">R$ 13.08</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="17.7">17.7</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="79"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">79 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ABEV3">ABEV3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="16.69">R$ 16.69</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="15.48">R$ 15.48</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="44.6">44.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="86"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">86 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ANIM3">ANIM3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="5.0">R$ 5.00</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="3.55">R$ 3.55</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="26.8">26.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="38"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">38 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ASAI3">ASAI3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="13.84">R$ 13.84</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="8.98">R$ 8.98</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="74.2">74.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="38"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">38 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="AURE3">AURE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="15.23">R$ 15.23</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="12.16">R$ 12.16</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="84.6">84.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="30"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">30 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="AXIA3">AXIA3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="58.58">R$ 58.58</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="55.74">R$ 55.74</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="27.3">27.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="AZZA3">AZZA3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="25.8">R$ 25.80</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="20.87">R$ 20.87</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="43.2">43.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="70"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">70 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="B3SA3">B3SA3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="23.51">R$ 23.51</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="16.58">R$ 16.58</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="74.4">74.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BBSE3">BBSE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="42.46">R$ 42.46</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="35.69">R$ 35.69</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="77.9">77.9</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="90"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">90 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BBDC3">BBDC3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="18.27">R$ 18.27</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="15.81">R$ 15.81</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="75.4">75.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="83"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">83 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BBDC4">BBDC4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="20.65">R$ 20.65</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="18.2">R$ 18.20</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="64.4">64.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="76"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">76 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BRAP4">BRAP4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="19.55">R$ 19.55</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="22.42">R$ 22.42</td>
-            <td class="px-4 py-3 text-right text-emerald-700 font-bold" data-val="4.0">4.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa (Sobrevendido)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa (Sobrevendido)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="53"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">53 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SAUD3">SAUD3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="15.42">R$ 15.42</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="13.68">R$ 13.68</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="42.2">42.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="71"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">71 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BBAS3">BBAS3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="24.1">R$ 24.10</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="22.01">R$ 22.01</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="57.7">57.7</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="75"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">75 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BRAV3">BRAV3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="21.04">R$ 21.04</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="18.94">R$ 18.94</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="86.1">86.1</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="30"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">30 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BPAC11">BPAC11</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="80.56">R$ 80.56</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="57.59">R$ 57.59</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="61.2">61.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="65"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">65 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CXSE3">CXSE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="21.38">R$ 21.38</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="18.5">R$ 18.50</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="65.0">65.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CBAV3">CBAV3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="11.22">R$ 11.22</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.56">R$ 10.56</td>
-            <td class="px-4 py-3 text-right text-emerald-700 font-bold" data-val="9.6">9.6</td>
-            <td class="px-4 py-3 text-center" data-val="🔥 COMPRA ALTA PROBABILIDADE"><span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-500 text-white shadow-sm">🔥 COMPRA ALTA PROBABILIDADE</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="64"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">64 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CEAB3">CEAB3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="13.85">R$ 13.85</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.91">R$ 10.91</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="59.3">59.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CMIG4">CMIG4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="11.7">R$ 11.70</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="11.13">R$ 11.13</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="37.9">37.9</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="86"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">86 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="COGN3">COGN3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="3.02">R$ 3.02</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="2.81">R$ 2.81</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="33.5">33.5</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CSMG3">CSMG3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="63.0">R$ 63.00</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="55.79">R$ 55.79</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="53.9">53.9</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="64"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">64 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CPLE3">CPLE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="17.36">R$ 17.36</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="14.88">R$ 14.88</td>
-            <td class="px-4 py-3 text-right text-emerald-700 font-bold" data-val="13.2">13.2</td>
-            <td class="px-4 py-3 text-center" data-val="Atenção: Sobrevendido em Alta"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 border border-amber-300">Atenção: Sobrevendido em Alta</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="72"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">72 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CSAN3">CSAN3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="5.09">R$ 5.09</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="4.63">R$ 4.63</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="40.0">40.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="10"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">10 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CPFE3">CPFE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="49.51">R$ 49.51</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="46.19">R$ 46.19</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="34.6">34.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CMIN3">CMIN3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="4.96">R$ 4.96</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="5.16">R$ 5.16</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="49.8">49.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="79"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">79 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CURY3">CURY3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="32.36">R$ 32.36</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="32.19">R$ 32.19</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="59.4">59.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="100"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">100 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CVCB3">CVCB3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="1.61">R$ 1.61</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="1.81">R$ 1.81</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="56.0">56.0</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="10"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">10 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CYRE3">CYRE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="34.39">R$ 34.39</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="25.54">R$ 25.54</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="90.2">90.2</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="100"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">100 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="DIRR3">DIRR3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="11.46">R$ 11.46</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="12.93">R$ 12.93</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="82.4">82.4</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ECOR3">ECOR3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="13.33">R$ 13.33</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="8.72">R$ 8.72</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="39.8">39.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="46"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">46 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="EMBJ3">EMBJ3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="91.83">R$ 91.83</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="86.62">R$ 86.62</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="59.9">59.9</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="53"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">53 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ENGI11">ENGI11</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="66.0">R$ 66.00</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="50.81">R$ 50.81</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="37.3">37.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="30"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">30 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ENEV3">ENEV3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="32.17">R$ 32.17</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="25.09">R$ 25.09</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="92.2">92.2</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="38"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">38 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="EGIE3">EGIE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="31.1">R$ 31.10</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="31.45">R$ 31.45</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="47.8">47.8</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="75"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">75 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="EQTL3">EQTL3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="48.63">R$ 48.63</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="40.31">R$ 40.31</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="36.6">36.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="20"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">20 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="EZTC3">EZTC3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="19.19">R$ 19.19</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="13.65">R$ 13.65</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="92.2">92.2</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="85"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">85 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="FLRY3">FLRY3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="28.12">R$ 28.12</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="17.32">R$ 17.32</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="81.0">81.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="64"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">64 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="GGBR4">GGBR4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="26.52">R$ 26.52</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="22.49">R$ 22.49</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="91.4">91.4</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="55"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">55 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="GOAU4">GOAU4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="11.95">R$ 11.95</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="9.95">R$ 9.95</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="91.3">91.3</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="55"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">55 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="GGPS3">GGPS3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="16.13">R$ 16.13</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="14.59">R$ 14.59</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="48.3">48.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="71"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">71 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="GMAT3">GMAT3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="5.42">R$ 5.42</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="4.55">R$ 4.55</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="42.2">42.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SBFG3">SBFG3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="11.5">R$ 11.50</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.7">R$ 10.70</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="64.6">64.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="71"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">71 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="HAPV3">HAPV3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="8.74">R$ 8.74</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.45">R$ 10.45</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="36.3">36.3</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="45"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">45 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="HYPE3">HYPE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="26.81">R$ 26.81</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="22.29">R$ 22.29</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="59.1">59.1</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="IGTI11">IGTI11</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="31.97">R$ 31.97</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="26.52">R$ 26.52</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="45.2">45.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="61"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">61 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="INTB3">INTB3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="19.45">R$ 19.45</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="13.77">R$ 13.77</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="64.9">64.9</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="86"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">86 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="IRBR3">IRBR3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="66.95">R$ 66.95</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="55.53">R$ 55.53</td>
-            <td class="px-4 py-3 text-right text-emerald-700 font-bold" data-val="12.0">12.0</td>
-            <td class="px-4 py-3 text-center" data-val="Atenção: Sobrevendido em Alta"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 border border-amber-300">Atenção: Sobrevendido em Alta</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="55"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">55 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ISAE4">ISAE4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="28.98">R$ 28.98</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="27.72">R$ 27.72</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="62.8">62.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ITSA4">ITSA4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="15.71">R$ 15.71</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="13.5">R$ 13.50</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="58.3">58.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ITUB3">ITUB3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="53.31">R$ 53.31</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="43.21">R$ 43.21</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="83.9">83.9</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="83"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">83 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ITUB4">ITUB4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="48.9">R$ 48.90</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="42.44">R$ 42.44</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="78.3">78.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="90"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">90 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="JHSF3">JHSF3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="14.27">R$ 14.27</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.48">R$ 10.48</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="90.9">90.9</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="KLBN11">KLBN11</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="18.2">R$ 18.20</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="18.35">R$ 18.35</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="38.4">38.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="20"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">20 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="RENT3">RENT3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="52.54">R$ 52.54</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="42.23">R$ 42.23</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="75.0">75.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="56"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">56 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="LREN3">LREN3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="14.75">R$ 14.75</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="13.44">R$ 13.44</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="71.5">71.5</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="86"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">86 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="MGLU3">MGLU3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="13.04">R$ 13.04</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="7.27">R$ 7.27</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="66.1">66.1</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="45"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">45 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="POMO4">POMO4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="4.68">R$ 4.68</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="5.49">R$ 5.49</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="35.5">35.5</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="86"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">86 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="MBRF3">MBRF3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="18.81">R$ 18.81</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="17.79">R$ 17.79</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="70.8">70.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="20"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">20 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="BEEF3">BEEF3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="4.29">R$ 4.29</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="4.25">R$ 4.25</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="47.9">47.9</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="60"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">60 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="MOTV3">MOTV3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="20.4">R$ 20.40</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="15.16">R$ 15.16</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="93.1">93.1</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="68"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">68 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="MDNE3">MDNE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="30.58">R$ 30.58</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="28.08">R$ 28.08</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="78.1">78.1</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="100"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">100 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="MOVI3">MOVI3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="18.92">R$ 18.92</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.72">R$ 10.72</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="56.6">56.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="46"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">46 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="MRVE3">MRVE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="8.23">R$ 8.23</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="6.64">R$ 6.64</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="72.5">72.5</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="30"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">30 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="MULT3">MULT3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="37.25">R$ 37.25</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="30.29">R$ 30.29</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="31.6">31.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="NATU3">NATU3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="7.63">R$ 7.63</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="8.76">R$ 8.76</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="89.7">89.7</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="45"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">45 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="ORVR3">ORVR3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="20.5">R$ 20.50</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="18.35">R$ 18.35</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="59.0">59.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="45"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">45 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="PGMN3">PGMN3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="5.6">R$ 5.60</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="4.91">R$ 4.91</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="68.7">68.7</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="63"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">63 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="PETR3">PETR3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="64.75">R$ 64.75</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="46.27">R$ 46.27</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="44.3">44.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="100"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">100 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="PETR4">PETR4</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="57.75">R$ 57.75</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="41.76">R$ 41.76</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="33.1">33.1</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="100"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">100 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="RECV3">RECV3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="12.4">R$ 12.40</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="11.04">R$ 11.04</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="26.8">26.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="85"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">85 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="PLPL3">PLPL3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="8.06">R$ 8.06</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.45">R$ 10.45</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="74.2">74.2</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="86"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">86 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="PSSA3">PSSA3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="51.73">R$ 51.73</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="49.37">R$ 49.37</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="33.2">33.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="PRIO3">PRIO3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="71.31">R$ 71.31</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="59.45">R$ 59.45</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="99.7">99.7</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="79"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">79 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="RADL3">RADL3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="21.12">R$ 21.12</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="20.82">R$ 20.82</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="39.5">39.5</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="56"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">56 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="RDOR3">RDOR3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="43.71">R$ 43.71</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="37.52">R$ 37.52</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="52.6">52.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="46"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">46 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="RAIL3">RAIL3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="18.96">R$ 18.96</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="15.09">R$ 15.09</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="50.4">50.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="28"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">28 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SBSP3">SBSP3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="32.03">R$ 32.03</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="28.9">R$ 28.90</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="28.5">28.5</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="79"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">79 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SAPR11">SAPR11</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="41.11">R$ 41.11</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="39.6">R$ 39.60</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="82.2">82.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="45"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">45 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SANB11">SANB11</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="28.13">R$ 28.13</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="28.96">R$ 28.96</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="76.4">76.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="68"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">68 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SMTO3">SMTO3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="20.85">R$ 20.85</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="17.06">R$ 17.06</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="32.3">32.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="63"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">63 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="CSNA3">CSNA3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="5.71">R$ 5.71</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="6.61">R$ 6.61</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="17.1">17.1</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="20"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">20 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SIMH3">SIMH3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="16.42">R$ 16.42</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="9.9">R$ 9.90</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="70.2">70.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="12"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">12 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SLCE3">SLCE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="16.97">R$ 16.97</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="15.95">R$ 15.95</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="35.4">35.4</td>
-            <td class="px-4 py-3 text-center" data-val="Pullback em Alta (Aguardando Gatilho)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 border border-amber-300">Pullback em Alta (Aguardando Gatilho)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="40"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">40 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SMFT3">SMFT3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="25.25">R$ 25.25</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="19.43">R$ 19.43</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="52.2">52.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="38"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">38 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="SUZB3">SUZB3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="42.64">R$ 42.64</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="46.5">R$ 46.50</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="51.4">51.4</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="TAEE11">TAEE11</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="45.24">R$ 45.24</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="40.26">R$ 40.26</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="49.0">49.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="68"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">68 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="VIVT3">VIVT3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="32.64">R$ 32.64</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="34.08">R$ 34.08</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="98.2">98.2</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="71"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">71 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="TEND3">TEND3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="28.6">R$ 28.60</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="30.3">R$ 30.30</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="76.3">76.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="TIMS3">TIMS3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="19.37">R$ 19.37</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="22.37">R$ 22.37</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="91.7">91.7</td>
-            <td class="px-4 py-3 text-center" data-val="Lateralização / Neutro"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">Lateralização / Neutro</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="TOTS3">TOTS3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="43.24">R$ 43.24</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="34.4">R$ 34.40</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="95.9">95.9</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="61"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">61 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="UGPA3">UGPA3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="40.03">R$ 40.03</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="29.23">R$ 29.23</td>
-            <td class="px-4 py-3 text-right text-rose-700 font-bold" data-val="86.0">86.0</td>
-            <td class="px-4 py-3 text-center" data-val="Sobrecomprado (Risco de Correção)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">Sobrecomprado (Risco de Correção)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="71"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">71 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="USIM5">USIM5</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="6.65">R$ 6.65</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="7.62">R$ 7.62</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="28.3">28.3</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="45"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">45 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="VALE3">VALE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="64.03">R$ 64.03</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="77.23">R$ 77.23</td>
-            <td class="px-4 py-3 text-right text-emerald-700 font-bold" data-val="2.0">2.0</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa (Sobrevendido)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa (Sobrevendido)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="55"><span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-300">55 (Regular)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="VAMO3">VAMO3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="6.4">R$ 6.40</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="3.69">R$ 3.69</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="58.2">58.2</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="30"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">30 (Fraco)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="VBBR3">VBBR3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="36.83">R$ 36.83</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="31.79">R$ 31.79</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="72.8">72.8</td>
-            <td class="px-4 py-3 text-center" data-val="Pullback em Alta (Aguardando Gatilho)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 border border-amber-300">Pullback em Alta (Aguardando Gatilho)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="78"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">78 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="VIVA3">VIVA3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="27.28">R$ 27.28</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="25.04">R$ 25.04</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="37.8">37.8</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="93"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">93 (Excelente)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="WEGE3">WEGE3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="45.21">R$ 45.21</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="47.68">R$ 47.68</td>
-            <td class="px-4 py-3 text-right text-emerald-700 font-bold" data-val="12.6">12.6</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Baixa (Sobrevendido)"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">Tendência de Baixa (Sobrevendido)</span></td>
-            <td class="px-4 py-3 text-center text-xs text-slate-500" data-val="Abaixo da Média Semanal">Abaixo da Média Semanal</td>
-            <td class="px-4 py-3 text-center" data-val="75"><span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-300">75 (Bom)</span></td>
-        </tr>
-        
-        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
-            <td class="px-4 py-3 font-bold text-slate-900" data-val="YDUQ3">YDUQ3</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium" data-val="14.0">R$ 14.00</td>
-            <td class="px-4 py-3 text-right text-slate-600" data-val="10.62">R$ 10.62</td>
-            <td class="px-4 py-3 text-right text-slate-700" data-val="41.7">41.7</td>
-            <td class="px-4 py-3 text-center" data-val="Tendência de Alta Forte"><span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Tendência de Alta Forte</span></td>
-            <td class="px-4 py-3 text-center text-xs text-emerald-600 font-semibold" data-val="Alta Estrutural (Semanal)">Alta Estrutural (Semanal)</td>
-            <td class="px-4 py-3 text-center" data-val="30"><span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-300">30 (Fraco)</span></td>
-        </tr>
-        
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </main>
-
-    <footer class="bg-slate-900 text-slate-400 py-4 text-center text-xs border-t gold-border">
-        <p>© 2026 WF Investimentos. Análise quantitativa automatizada para apoio decisório.</p>
-    </footer>
-
-    <script>
-        // Filtro em tempo real de Ticker
-        document.getElementById('filtroTicker').addEventListener('keyup', function() {
-            let filter = this.value.toUpperCase();
-            let rows = document.querySelectorAll('#tabelaDados tbody tr');
-            rows.forEach(row => {
-                let ticker = row.cells[0].innerText;
-                row.style.display = ticker.toUpperCase().includes(filter) ? '' : 'none';
-            });
-        });
-
-        // Gráfico Donut
-        new Chart(document.getElementById('chartDonut'), {
-            type: 'doughnut',
-            data: {
-                labels: ["Tend\u00eancia de Alta Forte", "Sobrecomprado (Risco de Corre\u00e7\u00e3o)", "Lateraliza\u00e7\u00e3o / Neutro", "Tend\u00eancia de Baixa", "Tend\u00eancia de Baixa (Sobrevendido)", "Aten\u00e7\u00e3o: Sobrevendido em Alta", "Pullback em Alta (Aguardando Gatilho)", "\ud83d\udd25 COMPRA ALTA PROBABILIDADE"],
-                datasets: [{
-                    data: [64, 11, 9, 8, 3, 2, 2, 1],
-                    backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#64748b', '#3b82f6', '#ec4899'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: { boxWidth: 12, font: { size: 10 } }
-                    }
-                }
-            }
-        });
-
-        // Gráfico IFR(2)
-        new Chart(document.getElementById('chartBar'), {
-            type: 'bar',
-            data: {
-                labels: ["VALE3", "BRAP4", "CBAV3", "IRBR3", "WEGE3", "CPLE3", "CSNA3", "ALPA4"],
-                datasets: [{
-                    label: 'IFR(2)',
-                    data: [2.0, 4.0, 9.6, 12.0, 12.6, 13.2, 17.1, 17.7],
-                    backgroundColor: '#d4af37',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, max: 100, grid: { color: '#f1f5f9' } },
-                    x: { grid: { display: false } }
-                },
-                plugins: { legend: { display: false } }
-            }
-        });
-
-        // Motor de Ordenação Dinâmica
-        let direcaoOrdenacao = {};
-        function ordenarTabela(colIndex, tipo) {
-            const tabela = document.getElementById('tabelaDados');
-            const tbody = tabela.querySelector('tbody');
-            const linhas = Array.from(tbody.querySelectorAll('tr'));
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-success shadow-sm">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                        <span class="fw-bold"><i class="bi bi-lightning-charge-fill"></i> 🔥 OPORTUNIDADES DETECTADAS HOJE (INTRADAY)</span>
+                        <span class="badge bg-light text-success fw-bold">Ao Vivo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+        
+                            <div class="col-md-4 col-sm-6">
+                                <div class="p-3 border rounded bg-light border-2 border-success position-relative">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h4 class="fw-bold text-dark m-0">#BBDC3</h4>
+                                        <span class="badge bg-dark">FLUXO_NY</span>
+                                    </div>
+                                    <div class="fs-5 fw-bold text-success mb-1">R$ 17.50</div>
+                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger">9.00</span></div>
+                                    <div class="small text-muted mb-1"><strong>MM200:</strong> R$ 15.84</div>
+                                    <div class="small text-muted"><strong>Fundamentos:</strong> 83 (Excelente)</div>
+                                    <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às 10:36:46</div>
+                                </div>
+                            </div>
             
-            // Alterna ascendente e descendente
-            const ascendente = !direcaoOrdenacao[colIndex];
-            direcaoOrdenacao = {}; // reseta outros
-            direcaoOrdenacao[colIndex] = ascendente;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 
-            linhas.sort((a, b) => {
-                let valA = a.cells[colIndex].getAttribute('data-val') || a.cells[colIndex].innerText.trim();
-                let valB = b.cells[colIndex].getAttribute('data-val') || b.cells[colIndex].innerText.trim();
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white fw-bold py-3">
+                <i class="bi bi-table"></i> Panorama Consolidado de Ativos
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Ticker</th>
+                                <th>Preço (R$)</th>
+                                <th>RSI(2)</th>
+                                <th>SMA 200</th>
+                                <th>Volume > Média</th>
+                                <th>Score Fund.</th>
+                                <th>Sinal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>ALOS3</td><td>R$ 35.26</td><td><span class="badge bg-light text-dark">51.8</span></td><td>R$ 28.12</td><td><span class="badge bg-success">70 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ALPA4</td><td>R$ 17.40</td><td><span class="badge bg-warning text-dark">17.7</span></td><td>R$ 13.08</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ABEV3</td><td>R$ 16.69</td><td><span class="badge bg-light text-dark">44.6</span></td><td>R$ 15.48</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ANIM3</td><td>R$ 5.00</td><td><span class="badge bg-light text-dark">26.8</span></td><td>R$ 3.55</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ASAI3</td><td>R$ 13.84</td><td><span class="badge bg-light text-dark">74.2</span></td><td>R$ 8.98</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>AURE3</td><td>R$ 15.23</td><td><span class="badge bg-light text-dark">84.6</span></td><td>R$ 12.16</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>AXIA3</td><td>R$ 58.58</td><td><span class="badge bg-light text-dark">27.3</span></td><td>R$ 55.74</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>AZZA3</td><td>R$ 25.80</td><td><span class="badge bg-light text-dark">43.2</span></td><td>R$ 20.87</td><td><span class="badge bg-success">70 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>B3SA3</td><td>R$ 23.51</td><td><span class="badge bg-light text-dark">74.4</span></td><td>R$ 16.58</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>BBSE3</td><td>R$ 42.46</td><td><span class="badge bg-light text-dark">77.9</span></td><td>R$ 35.69</td><td><span class="badge bg-success">90 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>BBDC3</td><td>R$ 18.27</td><td><span class="badge bg-light text-dark">75.4</span></td><td>R$ 15.81</td><td><span class="badge bg-success">83 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>BBDC4</td><td>R$ 20.65</td><td><span class="badge bg-light text-dark">64.4</span></td><td>R$ 18.20</td><td><span class="badge bg-success">76 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>BRAP4</td><td>R$ 19.55</td><td><span class="badge bg-danger">4.0</span></td><td>R$ 22.42</td><td><span class="badge bg-primary">53 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa (Sobrevendido)</span></td></tr>
+<tr><td>SAUD3</td><td>R$ 15.42</td><td><span class="badge bg-light text-dark">42.2</span></td><td>R$ 13.68</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>BBAS3</td><td>R$ 24.10</td><td><span class="badge bg-light text-dark">57.7</span></td><td>R$ 22.01</td><td><span class="badge bg-success">75 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>BRAV3</td><td>R$ 21.04</td><td><span class="badge bg-light text-dark">86.1</span></td><td>R$ 18.94</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>BPAC11</td><td>R$ 80.56</td><td><span class="badge bg-light text-dark">61.2</span></td><td>R$ 57.59</td><td><span class="badge bg-primary">65 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CXSE3</td><td>R$ 21.38</td><td><span class="badge bg-light text-dark">65.0</span></td><td>R$ 18.50</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CBAV3</td><td>R$ 11.22</td><td><span class="badge bg-danger">9.6</span></td><td>R$ 10.56</td><td><span class="badge bg-primary">64 (Bom)</span></td><td><span class="badge bg-success">🔥 COMPRA ALTA PROBABILIDADE</span></td></tr>
+<tr><td>CEAB3</td><td>R$ 13.85</td><td><span class="badge bg-light text-dark">59.3</span></td><td>R$ 10.91</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CMIG4</td><td>R$ 11.70</td><td><span class="badge bg-light text-dark">37.9</span></td><td>R$ 11.13</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>COGN3</td><td>R$ 3.02</td><td><span class="badge bg-light text-dark">33.5</span></td><td>R$ 2.81</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CSMG3</td><td>R$ 63.00</td><td><span class="badge bg-light text-dark">53.9</span></td><td>R$ 55.79</td><td><span class="badge bg-primary">64 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CPLE3</td><td>R$ 17.36</td><td><span class="badge bg-danger">13.2</span></td><td>R$ 14.88</td><td><span class="badge bg-success">72 (Bom)</span></td><td><span class="badge bg-warning text-dark">Atenção: Sobrevendido em Alta</span></td></tr>
+<tr><td>CSAN3</td><td>R$ 5.09</td><td><span class="badge bg-light text-dark">40.0</span></td><td>R$ 4.63</td><td><span class="badge bg-secondary">10 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CPFE3</td><td>R$ 49.51</td><td><span class="badge bg-light text-dark">34.6</span></td><td>R$ 46.19</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CMIN3</td><td>R$ 4.96</td><td><span class="badge bg-light text-dark">49.8</span></td><td>R$ 5.16</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>CURY3</td><td>R$ 32.36</td><td><span class="badge bg-light text-dark">59.4</span></td><td>R$ 32.19</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CVCB3</td><td>R$ 1.61</td><td><span class="badge bg-light text-dark">56.0</span></td><td>R$ 1.81</td><td><span class="badge bg-secondary">10 (Fraco)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>CYRE3</td><td>R$ 34.39</td><td><span class="badge bg-light text-dark">90.2</span></td><td>R$ 25.54</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>DIRR3</td><td>R$ 11.46</td><td><span class="badge bg-light text-dark">82.4</span></td><td>R$ 12.93</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>ECOR3</td><td>R$ 13.33</td><td><span class="badge bg-light text-dark">39.8</span></td><td>R$ 8.72</td><td><span class="badge bg-secondary">46 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>EMBJ3</td><td>R$ 91.83</td><td><span class="badge bg-light text-dark">59.9</span></td><td>R$ 86.62</td><td><span class="badge bg-primary">53 (Regular)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>ENGI11</td><td>R$ 66.00</td><td><span class="badge bg-light text-dark">37.3</span></td><td>R$ 50.81</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ENEV3</td><td>R$ 32.17</td><td><span class="badge bg-light text-dark">92.2</span></td><td>R$ 25.09</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>EGIE3</td><td>R$ 31.10</td><td><span class="badge bg-light text-dark">47.8</span></td><td>R$ 31.45</td><td><span class="badge bg-success">75 (Bom)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>EQTL3</td><td>R$ 48.63</td><td><span class="badge bg-light text-dark">36.6</span></td><td>R$ 40.31</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>EZTC3</td><td>R$ 19.19</td><td><span class="badge bg-light text-dark">92.2</span></td><td>R$ 13.65</td><td><span class="badge bg-success">85 (Excelente)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>FLRY3</td><td>R$ 28.12</td><td><span class="badge bg-light text-dark">81.0</span></td><td>R$ 17.32</td><td><span class="badge bg-primary">64 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>GGBR4</td><td>R$ 26.52</td><td><span class="badge bg-light text-dark">91.4</span></td><td>R$ 22.49</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>GOAU4</td><td>R$ 11.95</td><td><span class="badge bg-light text-dark">91.3</span></td><td>R$ 9.95</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>GGPS3</td><td>R$ 16.13</td><td><span class="badge bg-light text-dark">48.3</span></td><td>R$ 14.59</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>GMAT3</td><td>R$ 5.42</td><td><span class="badge bg-light text-dark">42.2</span></td><td>R$ 4.55</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>SBFG3</td><td>R$ 11.50</td><td><span class="badge bg-light text-dark">64.6</span></td><td>R$ 10.70</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>HAPV3</td><td>R$ 8.74</td><td><span class="badge bg-light text-dark">36.3</span></td><td>R$ 10.45</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>HYPE3</td><td>R$ 26.81</td><td><span class="badge bg-light text-dark">59.1</span></td><td>R$ 22.29</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>IGTI11</td><td>R$ 31.97</td><td><span class="badge bg-light text-dark">45.2</span></td><td>R$ 26.52</td><td><span class="badge bg-primary">61 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>INTB3</td><td>R$ 19.45</td><td><span class="badge bg-light text-dark">64.9</span></td><td>R$ 13.77</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>IRBR3</td><td>R$ 66.95</td><td><span class="badge bg-danger">12.0</span></td><td>R$ 55.53</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-warning text-dark">Atenção: Sobrevendido em Alta</span></td></tr>
+<tr><td>ISAE4</td><td>R$ 28.98</td><td><span class="badge bg-light text-dark">62.8</span></td><td>R$ 27.72</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ITSA4</td><td>R$ 15.71</td><td><span class="badge bg-light text-dark">58.3</span></td><td>R$ 13.50</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ITUB3</td><td>R$ 53.31</td><td><span class="badge bg-light text-dark">83.9</span></td><td>R$ 43.21</td><td><span class="badge bg-success">83 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>ITUB4</td><td>R$ 48.90</td><td><span class="badge bg-light text-dark">78.3</span></td><td>R$ 42.44</td><td><span class="badge bg-success">90 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>JHSF3</td><td>R$ 14.27</td><td><span class="badge bg-light text-dark">90.9</span></td><td>R$ 10.48</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>KLBN11</td><td>R$ 18.20</td><td><span class="badge bg-light text-dark">38.4</span></td><td>R$ 18.35</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>RENT3</td><td>R$ 52.54</td><td><span class="badge bg-light text-dark">75.0</span></td><td>R$ 42.23</td><td><span class="badge bg-primary">56 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>LREN3</td><td>R$ 14.75</td><td><span class="badge bg-light text-dark">71.5</span></td><td>R$ 13.44</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>MGLU3</td><td>R$ 13.04</td><td><span class="badge bg-light text-dark">66.1</span></td><td>R$ 7.27</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>POMO4</td><td>R$ 4.68</td><td><span class="badge bg-light text-dark">35.5</span></td><td>R$ 5.49</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>MBRF3</td><td>R$ 18.81</td><td><span class="badge bg-light text-dark">70.8</span></td><td>R$ 17.79</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>BEEF3</td><td>R$ 4.29</td><td><span class="badge bg-light text-dark">47.9</span></td><td>R$ 4.25</td><td><span class="badge bg-primary">60 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>MOTV3</td><td>R$ 20.40</td><td><span class="badge bg-light text-dark">93.1</span></td><td>R$ 15.16</td><td><span class="badge bg-primary">68 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>MDNE3</td><td>R$ 30.58</td><td><span class="badge bg-light text-dark">78.1</span></td><td>R$ 28.08</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>MOVI3</td><td>R$ 18.92</td><td><span class="badge bg-light text-dark">56.6</span></td><td>R$ 10.72</td><td><span class="badge bg-secondary">46 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>MRVE3</td><td>R$ 8.23</td><td><span class="badge bg-light text-dark">72.5</span></td><td>R$ 6.64</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>MULT3</td><td>R$ 37.25</td><td><span class="badge bg-light text-dark">31.6</span></td><td>R$ 30.29</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>NATU3</td><td>R$ 7.63</td><td><span class="badge bg-light text-dark">89.7</span></td><td>R$ 8.76</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>ORVR3</td><td>R$ 20.50</td><td><span class="badge bg-light text-dark">59.0</span></td><td>R$ 18.35</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>PGMN3</td><td>R$ 5.60</td><td><span class="badge bg-light text-dark">68.7</span></td><td>R$ 4.91</td><td><span class="badge bg-primary">63 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>PETR3</td><td>R$ 64.75</td><td><span class="badge bg-light text-dark">44.3</span></td><td>R$ 46.27</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>PETR4</td><td>R$ 57.75</td><td><span class="badge bg-light text-dark">33.1</span></td><td>R$ 41.76</td><td><span class="badge bg-success">100 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>RECV3</td><td>R$ 12.40</td><td><span class="badge bg-light text-dark">26.8</span></td><td>R$ 11.04</td><td><span class="badge bg-success">85 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>PLPL3</td><td>R$ 8.06</td><td><span class="badge bg-light text-dark">74.2</span></td><td>R$ 10.45</td><td><span class="badge bg-success">86 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>PSSA3</td><td>R$ 51.73</td><td><span class="badge bg-light text-dark">33.2</span></td><td>R$ 49.37</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>PRIO3</td><td>R$ 71.31</td><td><span class="badge bg-light text-dark">99.7</span></td><td>R$ 59.45</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>RADL3</td><td>R$ 21.12</td><td><span class="badge bg-light text-dark">39.5</span></td><td>R$ 20.82</td><td><span class="badge bg-primary">56 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>RDOR3</td><td>R$ 43.71</td><td><span class="badge bg-light text-dark">52.6</span></td><td>R$ 37.52</td><td><span class="badge bg-secondary">46 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>RAIL3</td><td>R$ 18.96</td><td><span class="badge bg-light text-dark">50.4</span></td><td>R$ 15.09</td><td><span class="badge bg-secondary">28 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>SBSP3</td><td>R$ 32.03</td><td><span class="badge bg-light text-dark">28.5</span></td><td>R$ 28.90</td><td><span class="badge bg-success">79 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>SAPR11</td><td>R$ 41.11</td><td><span class="badge bg-light text-dark">82.2</span></td><td>R$ 39.60</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>SANB11</td><td>R$ 28.13</td><td><span class="badge bg-light text-dark">76.4</span></td><td>R$ 28.96</td><td><span class="badge bg-primary">68 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>SMTO3</td><td>R$ 20.85</td><td><span class="badge bg-light text-dark">32.3</span></td><td>R$ 17.06</td><td><span class="badge bg-primary">63 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>CSNA3</td><td>R$ 5.71</td><td><span class="badge bg-warning text-dark">17.1</span></td><td>R$ 6.61</td><td><span class="badge bg-secondary">20 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>SIMH3</td><td>R$ 16.42</td><td><span class="badge bg-light text-dark">70.2</span></td><td>R$ 9.90</td><td><span class="badge bg-secondary">12 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>SLCE3</td><td>R$ 16.97</td><td><span class="badge bg-light text-dark">35.4</span></td><td>R$ 15.95</td><td><span class="badge bg-secondary">40 (Regular)</span></td><td><span class="badge bg-success">Pullback em Alta (Aguardando Gatilho)</span></td></tr>
+<tr><td>SMFT3</td><td>R$ 25.25</td><td><span class="badge bg-light text-dark">52.2</span></td><td>R$ 19.43</td><td><span class="badge bg-secondary">38 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>SUZB3</td><td>R$ 42.64</td><td><span class="badge bg-light text-dark">51.4</span></td><td>R$ 46.50</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>TAEE11</td><td>R$ 45.24</td><td><span class="badge bg-light text-dark">49.0</span></td><td>R$ 40.26</td><td><span class="badge bg-primary">68 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>VIVT3</td><td>R$ 32.64</td><td><span class="badge bg-light text-dark">98.2</span></td><td>R$ 34.08</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>TEND3</td><td>R$ 28.60</td><td><span class="badge bg-light text-dark">76.3</span></td><td>R$ 30.30</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>TIMS3</td><td>R$ 19.37</td><td><span class="badge bg-light text-dark">91.7</span></td><td>R$ 22.37</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-secondary">Lateralização / Neutro</span></td></tr>
+<tr><td>TOTS3</td><td>R$ 43.24</td><td><span class="badge bg-light text-dark">95.9</span></td><td>R$ 34.40</td><td><span class="badge bg-primary">61 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>UGPA3</td><td>R$ 40.03</td><td><span class="badge bg-light text-dark">86.0</span></td><td>R$ 29.23</td><td><span class="badge bg-success">71 (Bom)</span></td><td><span class="badge bg-success">Sobrecomprado (Risco de Correção)</span></td></tr>
+<tr><td>USIM5</td><td>R$ 6.65</td><td><span class="badge bg-light text-dark">28.3</span></td><td>R$ 7.62</td><td><span class="badge bg-secondary">45 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa</span></td></tr>
+<tr><td>VALE3</td><td>R$ 64.03</td><td><span class="badge bg-danger">2.0</span></td><td>R$ 77.23</td><td><span class="badge bg-primary">55 (Regular)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa (Sobrevendido)</span></td></tr>
+<tr><td>VAMO3</td><td>R$ 6.40</td><td><span class="badge bg-light text-dark">58.2</span></td><td>R$ 3.69</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>VBBR3</td><td>R$ 36.83</td><td><span class="badge bg-light text-dark">72.8</span></td><td>R$ 31.79</td><td><span class="badge bg-success">78 (Bom)</span></td><td><span class="badge bg-success">Pullback em Alta (Aguardando Gatilho)</span></td></tr>
+<tr><td>VIVA3</td><td>R$ 27.28</td><td><span class="badge bg-light text-dark">37.8</span></td><td>R$ 25.04</td><td><span class="badge bg-success">93 (Excelente)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
+<tr><td>WEGE3</td><td>R$ 45.21</td><td><span class="badge bg-danger">12.6</span></td><td>R$ 47.68</td><td><span class="badge bg-success">75 (Bom)</span></td><td><span class="badge bg-light text-dark">Tendência de Baixa (Sobrevendido)</span></td></tr>
+<tr><td>YDUQ3</td><td>R$ 14.00</td><td><span class="badge bg-light text-dark">41.7</span></td><td>R$ 10.62</td><td><span class="badge bg-secondary">30 (Fraco)</span></td><td><span class="badge bg-light text-dark">Tendência de Alta Forte</span></td></tr>
 
-                if (tipo === 'num') {
-                    valA = parseFloat(valA) || 0;
-                    valB = parseFloat(valB) || 0;
-                    return ascendente ? valA - valB : valB - valA;
-                } else {
-                    return ascendente ? valA.localeCompare(valB) : valB.localeCompare(valA);
-                }
-            });
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-            // Atualiza ícones dos cabeçalhos
-            const headers = tabela.querySelectorAll('th i');
-            headers.forEach(i => i.className = 'fa-solid fa-sort ml-1 text-slate-400');
-            const iconeAtivo = tabela.querySelectorAll('th')[colIndex].querySelector('i');
-            iconeAtivo.className = ascendente ? 'fa-solid fa-sort-up ml-1 text-amber-400' : 'fa-solid fa-sort-down ml-1 text-amber-400';
-
-            linhas.forEach(linha => tbody.appendChild(linha));
-        }
-    </script>
+        <footer class="text-center text-muted small py-3 border-top mt-4">
+            WF Investimentos • Automação Quantitativa Integrada • Dados B3 via yfinance
+        </footer>
+    </div>
 </body>
 </html>
