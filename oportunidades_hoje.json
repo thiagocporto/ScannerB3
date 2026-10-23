@@ -1,5 +1,14 @@
 [
     {
+        "ticker": "ISAE4",
+        "preco": 28.15,
+        "rsi2": 13.5,
+        "mm200": 27.74,
+        "score": "93 (Excelente)",
+        "regime": "FLUXO_NY",
+        "hora": "11:37:18"
+    },
+    {
         "ticker": "SMFT3",
         "preco": 24.35,
         "rsi2": 14.8,
