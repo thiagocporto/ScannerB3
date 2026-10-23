@@ -1,5 +1,23 @@
 [
     {
+        "ticker": "VIVA3",
+        "preco": 26.8,
+        "rsi2": 13.3,
+        "mm200": 25.0,
+        "score": "93 (Excelente)",
+        "regime": "FLUXO_NY",
+        "hora": "11:04:21"
+    },
+    {
+        "ticker": "ECOR3",
+        "preco": 12.65,
+        "rsi2": 14.1,
+        "mm200": 8.75,
+        "score": "46 (Regular)",
+        "regime": "FLUXO_NY",
+        "hora": "11:03:08"
+    },
+    {
         "ticker": "BBDC3",
         "preco": 17.5,
         "rsi2": 9.0,
