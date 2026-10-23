@@ -1,26 +1,37 @@
 import sys
-from coletor_ibrx100 import obter_carteira_ibrx100
 from engine_analise import executar_scanner
 from gerar_site import gerar_dashboard_html
+from alertas_telegram import enviar_alerta_telegram
 
-def rodar_pipeline_completo():
-    print("=== INICIANDO PIPELINE QUANTITATIVO B3 ===")
+def main():
+    print("=" * 60)
+    print("WF INVESTIMENTOS | INICIANDO PIPELINE DIÁRIO B3")
+    print("=" * 60)
     
-    # 1. Coleta da carteira teórica e atualização do ibrx100_tickers.json
-    tickers = obter_carteira_ibrx100()
-    print(f"Total de ativos capturados: {len(tickers)}")
-    
-    # 2. Execução do motor de análise técnica e fundamentalista
-    # (Lê internamente a lista salva em ibrx100_tickers.json)
-    executar_scanner()
-    
-    # 3. Compilação do dashboard com a marca WF Investimentos e gráficos interativos
-    print("Compilando dashboard visual...")
-    gerar_dashboard_html(
-        caminho_csv="scanner_fechamento.csv",
-        caminho_saida="index.html"
-    )
+    # 1. Executa a análise quantitativa e fundamentalista
+    try:
+        executar_scanner()
+    except Exception as e:
+        print(f"[ERRO CRÍTICO] Falha no motor de análise: {e}")
+        sys.exit(1)
+        
+    # 2. Compila o index.html com os gráficos e ordenação
+    try:
+        gerar_dashboard_html()
+    except Exception as e:
+        print(f"[ERRO CRÍTICO] Falha ao compilar o dashboard: {e}")
+        sys.exit(1)
+        
+    # 3. Dispara o relatório executivo para o seu Telegram
+    try:
+        print("\nEnviando resumo para o Telegram...")
+        enviar_alerta_telegram()
+    except Exception as e:
+        print(f"[AVISO] Não foi possível enviar para o Telegram: {e}")
+        
+    print("\n" + "=" * 60)
     print("=== PIPELINE FINALIZADO COM SUCESSO ===")
+    print("=" * 60)
 
 if __name__ == "__main__":
-    rodar_pipeline_completo()
+    main()
