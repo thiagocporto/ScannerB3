@@ -1,5 +1,23 @@
 [
     {
+        "ticker": "ORVR3",
+        "preco": 19.75,
+        "rsi2": 9.6,
+        "mm200": 18.37,
+        "score": "45 (Regular)",
+        "regime": "ZONA_MORTA",
+        "hora": "13:17:27"
+    },
+    {
+        "ticker": "EMBJ3",
+        "preco": 86.82,
+        "rsi2": 10.0,
+        "mm200": 86.57,
+        "score": "53 (Regular)",
+        "regime": "ZONA_MORTA",
+        "hora": "13:16:47"
+    },
+    {
         "ticker": "VIVA3",
         "preco": 26.58,
         "rsi2": 9.7,
@@ -61,15 +79,6 @@
         "score": "79 (Bom)",
         "regime": "FLUXO_NY",
         "hora": "11:20:58"
-    },
-    {
-        "ticker": "ORVR3",
-        "preco": 19.87,
-        "rsi2": 12.0,
-        "mm200": 18.37,
-        "score": "45 (Regular)",
-        "regime": "FLUXO_NY",
-        "hora": "11:20:45"
     },
     {
         "ticker": "MOTV3",
