@@ -1,5 +1,68 @@
 [
     {
+        "ticker": "SMFT3",
+        "preco": 24.35,
+        "rsi2": 14.8,
+        "mm200": 19.45,
+        "score": "38 (Fraco)",
+        "regime": "FLUXO_NY",
+        "hora": "11:21:06"
+    },
+    {
+        "ticker": "SBSP3",
+        "preco": 31.69,
+        "rsi2": 13.3,
+        "mm200": 28.95,
+        "score": "79 (Bom)",
+        "regime": "FLUXO_NY",
+        "hora": "11:20:58"
+    },
+    {
+        "ticker": "ORVR3",
+        "preco": 19.87,
+        "rsi2": 12.0,
+        "mm200": 18.37,
+        "score": "45 (Regular)",
+        "regime": "FLUXO_NY",
+        "hora": "11:20:45"
+    },
+    {
+        "ticker": "MOTV3",
+        "preco": 19.83,
+        "rsi2": 13.3,
+        "mm200": 15.22,
+        "score": "68 (Bom)",
+        "regime": "FLUXO_NY",
+        "hora": "11:20:38"
+    },
+    {
+        "ticker": "GMAT3",
+        "preco": 5.12,
+        "rsi2": 14.9,
+        "mm200": 4.56,
+        "score": "78 (Bom)",
+        "regime": "FLUXO_NY",
+        "hora": "11:20:17"
+    },
+    {
+        "ticker": "GOAU4",
+        "preco": 11.44,
+        "rsi2": 14.4,
+        "mm200": 9.97,
+        "score": "55 (Regular)",
+        "regime": "FLUXO_NY",
+        "hora": "11:20:14"
+    },
+    {
+        "ticker": "ENGI11",
+        "preco": 64.96,
+        "rsi2": 14.6,
+        "mm200": 50.99,
+        "score": "30 (Fraco)",
+        "regime": "FLUXO_NY",
+        "hora": "11:20:06"
+    },
+    {
         "ticker": "VIVA3",
         "preco": 26.8,
         "rsi2": 13.3,
