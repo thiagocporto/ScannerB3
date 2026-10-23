@@ -2,9 +2,9 @@ name: Scanner Diario B3
 
 on:
   schedule:
-    # Roda de segunda a sexta às 21:30 UTC (18:30 no horário de Brasília)
-    - cron: '30 21 * * 1-5'
-  workflow_dispatch: # Permite disparar manualmente
+    # Roda de segunda a sexta às 12:00 UTC (09:00 no horário de Brasília)
+    - cron: '0 12 * * 1-5'
+  workflow_dispatch: # Permite disparar manualmente a qualquer momento
 
 permissions:
   contents: write
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Configurar Python
         uses: actions/setup-python@v5
@@ -35,6 +37,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Executar Pipeline do Scanner
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PIPEDREAM_WEBHOOK_URL: ${{ secrets.PIPEDREAM_WEBHOOK_URL }}
         run: python main.py
 
       - name: Commit e push dos dados atualizados
@@ -43,7 +49,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add scanner_fechamento.csv ibrx100_tickers.json index.html
           git commit -m "Auto-update: Relatório B3 [skip ci]" || echo "Nenhuma alteração detectada"
-          git push
+          git pull --rebase origin main || true
+          git push origin main
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4
