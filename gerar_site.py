@@ -16,7 +16,7 @@ def formatar_badge_swing(valor):
         return f'<span class="badge badge-sobrecomprado">{val_str}</span>'
     elif "BAIXA" in val_upper:
         return f'<span class="badge badge-baixa">{val_str}</span>'
-    return f'<span class="badge bg-secondary">{val_str}</span>'
+    return f'<span class="badge bg-secondary text-white">{val_str}</span>'
 
 def formatar_badge_pos(valor):
     val_str = str(valor).strip()
@@ -24,7 +24,7 @@ def formatar_badge_pos(valor):
         return f'<span class="badge badge-pos-alta">{val_str}</span>'
     elif "Baixa" in val_str or "Abaixo" in val_str:
         return f'<span class="badge badge-pos-baixa">{val_str}</span>'
-    return f'<span class="badge bg-secondary">{val_str}</span>'
+    return f'<span class="badge bg-secondary text-white">{val_str}</span>'
 
 def formatar_badge_score(score_raw):
     s = str(score_raw).strip()
@@ -39,7 +39,7 @@ def formatar_badge_score(score_raw):
         else:
             return f'<span class="badge badge-score-fra">{s}</span>'
     except Exception:
-        return f'<span class="badge bg-secondary">{s}</span>'
+        return f'<span class="badge bg-secondary text-white">{s}</span>'
 
 def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="index.html"):
     df = pd.DataFrame()
@@ -64,10 +64,10 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
         cards_html += """
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card card-custom border-1 border-warning">
-                    <div class="card-header bg-dark d-flex justify-content-between align-items-center border-bottom border-warning">
-                        <span class="fw-bold text-warning"><i class="bi bi-lightning-charge-fill"></i> 🔥 OPORTUNIDADES DETECTADAS HOJE (INTRADAY)</span>
-                        <span class="badge bg-success text-white fw-bold">Ao Vivo</span>
+                <div class="card card-custom border-2 border-warning shadow">
+                    <div class="card-header bg-dark d-flex justify-content-between align-items-center border-bottom border-warning py-3">
+                        <span class="fw-bold text-warning fs-5"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> 🔥 OPORTUNIDADES DETECTADAS HOJE (INTRADAY)</span>
+                        <span class="badge bg-success text-white fw-bold px-3 py-2 fs-6">Ao Vivo</span>
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
@@ -75,16 +75,16 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
         for op in oportunidades:
             cards_html += f"""
                             <div class="col-md-4 col-sm-6">
-                                <div class="p-3 rounded bg-dark border border-success position-relative">
+                                <div class="p-3 rounded bg-dark-card border border-success position-relative">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <h4 class="fw-bold text-white m-0">#{op.get('ticker')}</h4>
-                                        <span class="badge bg-primary">{op.get('regime')}</span>
+                                        <span class="badge bg-primary text-white fw-bold">{op.get('regime')}</span>
                                     </div>
-                                    <div class="fs-4 fw-bold text-success mb-1">R$ {op.get('preco', 0.0):.2f}</div>
-                                    <div class="small text-muted mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger fs-6">{op.get('rsi2', 0.0):.2f}</span></div>
-                                    <div class="small text-muted mb-1"><strong>MM200:</strong> R$ {op.get('mm200', 0.0):.2f}</div>
-                                    <div class="small text-muted"><strong>Fundamentos:</strong> {op.get('score', '-')}</div>
-                                    <div class="text-end text-muted mt-2" style="font-size: 0.75rem;">Detectado às {op.get('hora', '-')}</div>
+                                    <div class="fs-4 fw-bold text-success-bright mb-2">R$ {op.get('preco', 0.0):.2f}</div>
+                                    <div class="text-light mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger text-white fw-bold px-2 py-1">{op.get('rsi2', 0.0):.2f}</span></div>
+                                    <div class="text-light mb-1"><strong>MM200:</strong> <span class="text-white fw-bold">R$ {op.get('mm200', 0.0):.2f}</span></div>
+                                    <div class="text-light"><strong>Fundamentos:</strong> <span class="text-white fw-bold">{op.get('score', '-')}</span></div>
+                                    <div class="text-end text-light-muted mt-2" style="font-size: 0.8rem;"><i class="bi bi-clock me-1"></i>Detectado às {op.get('hora', '-')}</div>
                                 </div>
                             </div>
             """
@@ -102,7 +102,6 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
     menores_ifr = []
 
     if not df.empty:
-        # Gráficos
         if "Swing Trade" in df.columns:
             dist_swing = df["Swing Trade"].value_counts().to_dict()
 
@@ -121,14 +120,20 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
             pos = row.get("Position (Semanal)", "-")
             sc = row.get("Score Fund.", row.get("Score Fundamentalista", "-"))
 
-            ifr_color = "text-danger fw-bold" if float(ifr) <= 15 else ("text-warning" if float(ifr) <= 25 else "text-muted")
+            ifr_val = float(ifr)
+            if ifr_val <= 15:
+                ifr_html = f'<span class="badge bg-danger text-white fw-bold">{ifr_val:.1f}</span>'
+            elif ifr_val <= 25:
+                ifr_html = f'<span class="badge bg-warning text-dark fw-bold">{ifr_val:.1f}</span>'
+            else:
+                ifr_html = f'<span class="text-white fw-semibold">{ifr_val:.1f}</span>'
 
             tabela_linhas += f"""
             <tr>
-                <td class="fw-bold text-white">{t}</td>
-                <td>R$ {float(p):.2f}</td>
-                <td>R$ {float(mm):.2f}</td>
-                <td class="{ifr_color}">{float(ifr):.1f}</td>
+                <td class="fw-bold text-white fs-6">{t}</td>
+                <td class="text-white fw-semibold">R$ {float(p):.2f}</td>
+                <td class="text-light">R$ {float(mm):.2f}</td>
+                <td>{ifr_html}</td>
                 <td>{formatar_badge_swing(sw)}</td>
                 <td>{formatar_badge_pos(pos)}</td>
                 <td>{formatar_badge_score(sc)}</td>
@@ -157,58 +162,75 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
     <style>
         body {{
             background-color: #0b132b;
-            color: #e0e6ed;
+            color: #f1f5f9;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }}
         .navbar-custom {{
             background-color: #1c2541;
             border-bottom: 2px solid #3a506b;
-            padding: 12px 24px;
+            padding: 14px 24px;
         }}
         .card-custom {{
             background-color: #1c2541;
             border: 1px solid #3a506b;
             border-radius: 10px;
         }}
+        .bg-dark-card {{
+            background-color: #111827 !important;
+        }}
+        .text-light-muted {{
+            color: #94a3b8 !important;
+        }}
+        .text-success-bright {{
+            color: #22c55e !important;
+        }}
         .table-custom {{
-            color: #d1d5db;
+            color: #f8fafc !important;
         }}
         .table-custom th {{
             background-color: #0f172a !important;
-            color: #94a3b8;
+            color: #facc15 !important;
             font-size: 0.85rem;
             text-transform: uppercase;
             border-bottom: 2px solid #3a506b;
+            padding: 12px 8px;
         }}
         .table-custom td {{
             background-color: transparent !important;
-            border-bottom: 1px solid #1e293b;
-            font-size: 0.9rem;
+            border-bottom: 1px solid #334155 !important;
+            font-size: 0.95rem;
+            padding: 12px 8px;
         }}
         .table-hover tbody tr:hover td {{
-            background-color: #233152 !important;
+            background-color: #2e3d63 !important;
         }}
-        /* Badges Temáticas WF */
-        .badge-trend-alta {{ background-color: #10b981; color: white; }}
-        .badge-pullback {{ background-color: #ec4899; color: white; }}
-        .badge-lateral {{ background-color: #8b5cf6; color: white; }}
-        .badge-sobrecomprado {{ background-color: #f59e0b; color: white; }}
-        .badge-baixa {{ background-color: #ef4444; color: white; }}
-        .badge-pos-alta {{ background-color: transparent; border: 1px solid #10b981; color: #10b981; }}
-        .badge-pos-baixa {{ background-color: transparent; border: 1px solid #ef4444; color: #ef4444; }}
-        .badge-score-exc {{ background-color: transparent; border: 1px solid #10b981; color: #10b981; }}
-        .badge-score-bom {{ background-color: transparent; border: 1px solid #3b82f6; color: #3b82f6; }}
-        .badge-score-reg {{ background-color: transparent; border: 1px solid #f59e0b; color: #f59e0b; }}
-        .badge-score-fra {{ background-color: transparent; border: 1px solid #ef4444; color: #ef4444; }}
+        /* Badges de Alto Contraste */
+        .badge-trend-alta {{ background-color: #16a34a; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
+        .badge-pullback {{ background-color: #db2777; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
+        .badge-lateral {{ background-color: #7c3aed; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
+        .badge-sobrecomprado {{ background-color: #d97706; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
+        .badge-baixa {{ background-color: #dc2626; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
+        
+        .badge-pos-alta {{ background-color: rgba(22, 163, 74, 0.2); border: 1px solid #22c55e; color: #4ade80; font-weight: 600; }}
+        .badge-pos-baixa {{ background-color: rgba(220, 38, 38, 0.2); border: 1px solid #ef4444; color: #f87171; font-weight: 600; }}
+        
+        .badge-score-exc {{ background-color: rgba(22, 163, 74, 0.25); border: 1.5px solid #22c55e; color: #4ade80; font-weight: bold; }}
+        .badge-score-bom {{ background-color: rgba(59, 130, 246, 0.25); border: 1.5px solid #3b82f6; color: #60a5fa; font-weight: bold; }}
+        .badge-score-reg {{ background-color: rgba(217, 119, 6, 0.25); border: 1.5px solid #f59e0b; color: #fbbf24; font-weight: bold; }}
+        .badge-score-fra {{ background-color: rgba(220, 38, 38, 0.25); border: 1.5px solid #ef4444; color: #f87171; font-weight: bold; }}
+
         .search-box {{
             background-color: #0f172a;
-            border: 1px solid #3a506b;
-            color: white;
+            border: 1px solid #64748b;
+            color: #ffffff;
+        }}
+        .search-box::placeholder {{
+            color: #94a3b8;
         }}
         .search-box:focus {{
             background-color: #0f172a;
-            color: white;
-            border-color: #60a5fa;
+            color: #ffffff;
+            border-color: #facc15;
             box-shadow: none;
         }}
     </style>
@@ -220,16 +242,16 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <div class="rounded-circle d-flex align-items-center justify-content-center me-3 border border-warning" style="width: 48px; height: 48px; background-color: #0b132b;">
-                    <span class="fw-bold text-warning" style="font-size: 1.1rem;">WF</span>
+                    <span class="fw-bold text-warning" style="font-size: 1.2rem;">WF</span>
                 </div>
                 <div>
                     <h4 class="fw-bold text-white m-0">WF INVESTIMENTOS</h4>
-                    <span class="text-warning small text-uppercase" style="letter-spacing: 1px; font-size: 0.75rem;">Avaliação de Ativos & Mercado</span>
+                    <span class="text-warning small text-uppercase fw-semibold" style="letter-spacing: 1.2px; font-size: 0.8rem;">Avaliação de Ativos & Mercado</span>
                 </div>
             </div>
-            <div class="text-end text-muted small">
-                <div><i class="bi bi-clock me-1 text-primary"></i> Atualizado em: <strong class="text-white">{data_agora}</strong></div>
-                <div>Universo: <strong class="text-white">{total_ativos} IBrX 100</strong></div>
+            <div class="text-end text-light small">
+                <div><i class="bi bi-clock me-1 text-warning"></i> Atualizado em: <strong class="text-white fs-6">{data_agora}</strong></div>
+                <div>Universo: <strong class="text-warning">{total_ativos} IBrX 100</strong></div>
             </div>
         </div>
     </nav>
@@ -242,16 +264,16 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
         <!-- Gráficos -->
         <div class="row g-4 mb-4">
             <div class="col-lg-6">
-                <div class="card card-custom p-3 h-100 shadow-sm">
-                    <h6 class="fw-bold text-warning mb-3"><i class="bi bi-pie-chart-fill me-2"></i> DISTRIBUIÇÃO DE TENDÊNCIAS (SWING TRADE)</h6>
+                <div class="card card-custom p-3 h-100 shadow">
+                    <h6 class="fw-bold text-warning mb-3 fs-6"><i class="bi bi-pie-chart-fill me-2"></i> DISTRIBUIÇÃO DE TENDÊNCIAS (SWING TRADE)</h6>
                     <div style="position: relative; height: 260px;">
                         <canvas id="chartTendencias"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="card card-custom p-3 h-100 shadow-sm">
-                    <h6 class="fw-bold text-warning mb-3"><i class="bi bi-bar-chart-fill me-2"></i> RADAR IFR(2) - MENORES NÍVEIS (PULLBACKS)</h6>
+                <div class="card card-custom p-3 h-100 shadow">
+                    <h6 class="fw-bold text-warning mb-3 fs-6"><i class="bi bi-bar-chart-fill me-2"></i> RADAR IFR(2) - MENORES NÍVEIS (PULLBACKS)</h6>
                     <div style="position: relative; height: 260px;">
                         <canvas id="chartIfr"></canvas>
                     </div>
@@ -260,11 +282,11 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
         </div>
 
         <!-- Tabela -->
-        <div class="card card-custom shadow-sm">
+        <div class="card card-custom shadow">
             <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3 border-bottom border-secondary">
                 <div>
                     <h5 class="fw-bold text-white m-0">Scanner Consolidado de Ativos</h5>
-                    <div class="text-muted small">Clique no cabeçalho das colunas para ordenar</div>
+                    <div class="text-light-muted small">Clique no cabeçalho das colunas para ordenar</div>
                 </div>
                 <div class="w-25">
                     <input type="text" id="filtroTicker" class="form-control form-control-sm search-box" placeholder="🔍 Pesquisar Ticker (ex: VALE3)...">
@@ -292,7 +314,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
             </div>
         </div>
 
-        <footer class="text-center text-muted small py-4 mt-4 border-top border-secondary">
+        <footer class="text-center text-light-muted small py-4 mt-4 border-top border-secondary">
             WF Investimentos • Automação Quantitativa Integrada • Dados B3 via yfinance
         </footer>
     </div>
@@ -306,7 +328,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
                 labels: {chart_labels},
                 datasets: [{{
                     data: {chart_values},
-                    backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#3b82f6', '#ec4899', '#06b6d4'],
+                    backgroundColor: ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#3b82f6', '#db2777', '#06b6d4'],
                     borderWidth: 0
                 }}]
             }},
@@ -314,7 +336,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {{
-                    legend: {{ position: 'right', labels: {{ color: '#94a3b8', font: {{ size: 10 }} }} }}
+                    legend: {{ position: 'right', labels: {{ color: '#f8fafc', font: {{ size: 11, weight: 'bold' }} }} }}
                 }}
             }}
         }});
@@ -328,7 +350,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
                 datasets: [{{
                     label: 'IFR(2)',
                     data: {bar_values},
-                    backgroundColor: '#d97706',
+                    backgroundColor: '#f59e0b',
                     borderRadius: 4
                 }}]
             }},
@@ -336,8 +358,8 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {{
-                    y: {{ min: 0, max: 100, ticks: {{ color: '#94a3b8' }}, grid: {{ color: '#1e293b' }} }},
-                    x: {{ ticks: {{ color: '#94a3b8' }}, grid: {{ display: false }} }}
+                    y: {{ min: 0, max: 100, ticks: {{ color: '#cbd5e1' }}, grid: {{ color: '#334155' }} }},
+                    x: {{ ticks: {{ color: '#f8fafc', font: {{ weight: 'bold' }} }}, grid: {{ display: false }} }}
                 }},
                 plugins: {{ legend: {{ display: false }} }}
             }}
