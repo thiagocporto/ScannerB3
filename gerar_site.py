@@ -1,356 +1,245 @@
-﻿import os
-import json
-from datetime import datetime
+﻿import json
+import os
 import pandas as pd
+from datetime import datetime
 
 def formatar_badge_swing(valor):
-    val_str = str(valor).strip()
-    val_upper = val_str.upper()
-    if "ALTA FORTE" in val_upper or "COMPRA" in val_upper:
-        return f'<span class="badge badge-trend-alta">{val_str}</span>'
-    elif "PULLBACK" in val_upper:
-        return f'<span class="badge badge-pullback">{val_str}</span>'
-    elif "LATERAL" in val_upper or "NEUTRO" in val_upper:
-        return f'<span class="badge badge-lateral">{val_str}</span>'
-    elif "SOBRECOMPRADO" in val_upper:
-        return f'<span class="badge badge-sobrecomprado">{val_str}</span>'
-    elif "BAIXA" in val_upper:
-        return f'<span class="badge badge-baixa">{val_str}</span>'
-    return f'<span class="badge bg-secondary text-white">{val_str}</span>'
-
-def formatar_badge_pos(valor):
-    val_str = str(valor).strip()
-    if "Alta" in val_str:
-        return f'<span class="badge badge-pos-alta">{val_str}</span>'
-    elif "Baixa" in val_str or "Abaixo" in val_str:
-        return f'<span class="badge badge-pos-baixa">{val_str}</span>'
-    return f'<span class="badge bg-secondary text-white">{val_str}</span>'
-
-def formatar_badge_score(score_raw):
-    s = str(score_raw).strip()
-    try:
-        val = int(s.split()[0])
-        if val >= 80:
-            return f'<span class="badge badge-score-exc">{s}</span>'
-        elif val >= 60:
-            return f'<span class="badge badge-score-bom">{s}</span>'
-        elif val >= 40:
-            return f'<span class="badge badge-score-reg">{s}</span>'
-        else:
-            return f'<span class="badge badge-score-fra">{s}</span>'
-    except Exception:
-        return f'<span class="badge bg-secondary text-white">{s}</span>'
+    v = str(valor).lower()
+    if "🔥 compra" in v:
+        return f'<span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-500 text-white shadow-sm animate-pulse">{valor}</span>'
+    elif "pullback em alta" in v or "atenção" in v:
+        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 border border-amber-300">{valor}</span>'
+    elif "alta forte" in v:
+        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">{valor}</span>'
+    elif "sobrecomprado" in v:
+        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">{valor}</span>'
+    elif "baixa" in v:
+        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">{valor}</span>'
+    else:
+        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">{valor}</span>'
 
 def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="index.html"):
-    df = pd.DataFrame()
-    if os.path.exists(caminho_csv):
-        try:
-            df = pd.read_csv(caminho_csv)
-        except Exception:
-            pass
+    df = pd.read_csv(caminho_csv)
+    data_atualizacao = datetime.now().strftime("%d/%m/%Y às %H:%M")
 
-    # Carregar alertas intraday de hoje
-    oportunidades = []
+    # Ler oportunidades do radar intraday, se houver
+    cards_oportunidades = ""
     if os.path.exists("oportunidades_hoje.json"):
         try:
             with open("oportunidades_hoje.json", "r", encoding="utf-8") as f:
-                oportunidades = json.load(f)
-        except Exception:
-            oportunidades = []
-
-    # Construir Cards de Oportunidades Intraday
-    cards_html = ""
-    if oportunidades:
-        cards_html += """
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card card-custom border-2 border-warning shadow">
-                    <div class="card-header bg-dark d-flex justify-content-between align-items-center border-bottom border-warning py-3">
-                        <span class="fw-bold text-warning fs-5"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> 🔥 OPORTUNIDADES DETECTADAS HOJE (INTRADAY)</span>
-                        <span class="badge bg-success text-white fw-bold px-3 py-2 fs-6">Ao Vivo</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-        """
-        for op in oportunidades:
-            cards_html += f"""
-                            <div class="col-md-4 col-sm-6">
-                                <div class="p-3 rounded bg-dark-card border border-success position-relative">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h4 class="fw-bold text-white m-0">#{op.get('ticker')}</h4>
-                                        <span class="badge bg-primary text-white fw-bold">{op.get('regime')}</span>
-                                    </div>
-                                    <div class="fs-4 fw-bold text-success-bright mb-2">R$ {op.get('preco', 0.0):.2f}</div>
-                                    <div class="text-light mb-1"><strong>RSI(2):</strong> <span class="badge bg-danger text-white fw-bold px-2 py-1">{op.get('rsi2', 0.0):.2f}</span></div>
-                                    <div class="text-light mb-1"><strong>MM200:</strong> <span class="text-white fw-bold">R$ {op.get('mm200', 0.0):.2f}</span></div>
-                                    <div class="text-light"><strong>Fundamentos:</strong> <span class="text-white fw-bold">{op.get('score', '-')}</span></div>
-                                    <div class="text-end text-light-muted mt-2" style="font-size: 0.8rem;"><i class="bi bi-clock me-1"></i>Detectado às {op.get('hora', '-')}</div>
-                                </div>
-                            </div>
-            """
-        cards_html += """
+                ops = json.load(f)
+            if ops:
+                cards_html = []
+                for op in ops[:4]:
+                    cards_html.append(f"""
+                    <div class="bg-slate-900 border-2 border-amber-500/80 rounded-xl p-4 shadow-lg text-white">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xl font-black text-amber-400">#{op.get('ticker')}</span>
+                            <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full font-mono">{op.get('hora', '')}</span>
+                        </div>
+                        <div class="text-sm space-y-1">
+                            <p class="text-slate-300">Entrada: <span class="font-bold text-white">R$ {op.get('preco', 0):.2f}</span></p>
+                            <p class="text-emerald-400 font-semibold">Alvo SMA 5: R$ {op.get('alvo_sma5', 0):.2f} (+{op.get('upside', 0):.1f}%)</p>
+                            <p class="text-xs text-slate-400">IFR(2): <span class="text-white font-mono">{op.get('rsi2', 0):.1f}</span> | CRSI: <span class="text-white font-mono">{op.get('crsi', 0):.1f}</span></p>
                         </div>
                     </div>
+                    """)
+                cards_oportunidades = f"""
+                <div class="mb-8">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-amber-600 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt animate-bounce text-amber-500"></i> Oportunidades Rastreadas no Radar (Hoje)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {''.join(cards_html)}
+                    </div>
                 </div>
-            </div>
-        </div>
+                """
+        except Exception:
+            cards_oportunidades = ""
+
+    # Donut de Tendências
+    distribuicao_swing = df['Swing Trade'].value_counts().to_dict()
+    labels_chart_donut = list(distribuicao_swing.keys())
+    valores_chart_donut = list(distribuicao_swing.values())
+
+    # Menores IFR(2)
+    df_sorted_rsi = df.sort_values(by="IFR(2)" if "IFR(2)" in df.columns else "RSI(2)").head(8)
+    col_rsi_nome = "IFR(2)" if "IFR(2)" in df.columns else "RSI(2)"
+    labels_chart_bar = df_sorted_rsi['Ticker'].tolist()
+    valores_chart_bar = df_sorted_rsi[col_rsi_nome].tolist()
+
+    # Linhas da tabela
+    linhas_tabela = ""
+    for _, row in df.iterrows():
+        badge_swing = formatar_badge_swing(row.get('Swing Trade', '-'))
+        pos_trade = row.get('Position Trade', '-')
+        badge_position = "text-emerald-600 font-semibold" if "Alta" in str(pos_trade) else "text-slate-500"
+        
+        rsi_val = float(row.get('IFR(2)', row.get('RSI(2)', 0)))
+        cor_rsi = "text-emerald-700 font-bold" if rsi_val <= 15 else ("text-rose-700 font-bold" if rsi_val >= 85 else "text-slate-700")
+
+        crsi_val = float(row.get('ConnorsRSI', 50.0))
+        cor_crsi = "text-emerald-700 font-bold" if crsi_val <= 15 else "text-slate-700"
+
+        pct_b = float(row.get('%b Bollinger', 0.5))
+        cor_pct_b = "text-amber-700 font-bold" if pct_b <= 0.20 else "text-slate-700"
+
+        alvo_sma5 = float(row.get('Alvo SMA 5', row.get('Preço (R$)', 0)))
+        upside = float(row.get('Upside (%)', 0))
+        cor_upside = "text-emerald-600 font-semibold" if upside > 0 else "text-slate-500"
+
+        linhas_tabela += f"""
+        <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
+            <td class="px-4 py-3 font-bold text-slate-900">{row.get('Ticker', '-')}</td>
+            <td class="px-4 py-3 text-right text-slate-800 font-medium">R$ {row.get('Preço (R$)', 0):.2f}</td>
+            <td class="px-4 py-3 text-right {cor_upside}">R$ {alvo_sma5:.2f} <span class="text-xs">({upside:+.1f}%)</span></td>
+            <td class="px-4 py-3 text-right text-slate-600">R$ {row.get('SMA 200', 0):.2f}</td>
+            <td class="px-4 py-3 text-right font-mono {cor_rsi}">{rsi_val:.1f}</td>
+            <td class="px-4 py-3 text-right font-mono {cor_crsi}">{crsi_val:.1f}</td>
+            <td class="px-4 py-3 text-right font-mono {cor_pct_b}">{pct_b:.2f}</td>
+            <td class="px-4 py-3 text-center">{badge_swing}</td>
+            <td class="px-4 py-3 text-center text-xs {badge_position}">{pos_trade}</td>
+            <td class="px-4 py-3 text-center font-bold text-slate-800">{row.get('Score Fundamentalista', '-')}</td>
+        </tr>
         """
 
-    # Montar tabela e dados para gráficos
-    tabela_linhas = ""
-    dist_swing = {}
-    menores_ifr = []
-
-    if not df.empty:
-        if "Swing Trade" in df.columns:
-            dist_swing = df["Swing Trade"].value_counts().to_dict()
-
-        if "IFR(2)" in df.columns or "RSI(2)" in df.columns:
-            col_rsi = "IFR(2)" if "IFR(2)" in df.columns else "RSI(2)"
-            df_sorted = df.dropna(subset=[col_rsi]).sort_values(by=col_rsi).head(8)
-            for _, r in df_sorted.iterrows():
-                menores_ifr.append({"ticker": str(r.get("Ticker", "")), "ifr": float(r.get(col_rsi, 0))})
-
-        for _, row in df.iterrows():
-            t = str(row.get("Ticker", ""))
-            p = row.get("Preço (R$)", 0.0)
-            mm = row.get("SMA 200", 0.0)
-            ifr = row.get("IFR(2)", row.get("RSI(2)", 0.0))
-            sw = row.get("Swing Trade", "-")
-            pos = row.get("Position (Semanal)", "-")
-            sc = row.get("Score Fund.", row.get("Score Fundamentalista", "-"))
-
-            ifr_val = float(ifr)
-            if ifr_val <= 15:
-                ifr_html = f'<span class="badge bg-danger text-white fw-bold">{ifr_val:.1f}</span>'
-            elif ifr_val <= 25:
-                ifr_html = f'<span class="badge bg-warning text-dark fw-bold">{ifr_val:.1f}</span>'
-            else:
-                ifr_html = f'<span class="text-white fw-semibold">{ifr_val:.1f}</span>'
-
-            tabela_linhas += f"""
-            <tr>
-                <td class="fw-bold text-white fs-6">{t}</td>
-                <td class="text-white fw-semibold">R$ {float(p):.2f}</td>
-                <td class="text-light">R$ {float(mm):.2f}</td>
-                <td>{ifr_html}</td>
-                <td>{formatar_badge_swing(sw)}</td>
-                <td>{formatar_badge_pos(pos)}</td>
-                <td>{formatar_badge_score(sc)}</td>
-            </tr>
-            """
-
-    data_agora = datetime.now().strftime("%d/%m/%Y às %H:%M")
-    total_ativos = len(df) if not df.empty else 83
-
-    # Dados Chart JS
-    chart_labels = json.dumps(list(dist_swing.keys()))
-    chart_values = json.dumps(list(dist_swing.values()))
-    bar_labels = json.dumps([x["ticker"] for x in menores_ifr])
-    bar_values = json.dumps([x["ifr"] for x in menores_ifr])
-
-    html_completo = f"""<!DOCTYPE html>
+    html_template = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="300">
-    <title>WF Investimentos - Avaliação de Ativos & Mercado</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <title>WF Investimentos | Scanner Quantitativo B3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {{
-            background-color: #0b132b;
-            color: #f1f5f9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }}
-        .navbar-custom {{
-            background-color: #1c2541;
-            border-bottom: 2px solid #3a506b;
-            padding: 14px 24px;
-        }}
-        .card-custom {{
-            background-color: #1c2541;
-            border: 1px solid #3a506b;
-            border-radius: 10px;
-        }}
-        .bg-dark-card {{
-            background-color: #111827 !important;
-        }}
-        .text-light-muted {{
-            color: #94a3b8 !important;
-        }}
-        .text-success-bright {{
-            color: #22c55e !important;
-        }}
-        .table-custom {{
-            color: #f8fafc !important;
-        }}
-        .table-custom th {{
-            background-color: #0f172a !important;
-            color: #facc15 !important;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            border-bottom: 2px solid #3a506b;
-            padding: 12px 8px;
-        }}
-        .table-custom td {{
-            background-color: transparent !important;
-            border-bottom: 1px solid #334155 !important;
-            font-size: 0.95rem;
-            padding: 12px 8px;
-        }}
-        .table-hover tbody tr:hover td {{
-            background-color: #2e3d63 !important;
-        }}
-        /* Badges de Alto Contraste */
-        .badge-trend-alta {{ background-color: #16a34a; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
-        .badge-pullback {{ background-color: #db2777; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
-        .badge-lateral {{ background-color: #7c3aed; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
-        .badge-sobrecomprado {{ background-color: #d97706; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
-        .badge-baixa {{ background-color: #dc2626; color: #ffffff; font-weight: 600; padding: 6px 10px; }}
-        
-        .badge-pos-alta {{ background-color: rgba(22, 163, 74, 0.2); border: 1px solid #22c55e; color: #4ade80; font-weight: 600; }}
-        .badge-pos-baixa {{ background-color: rgba(220, 38, 38, 0.2); border: 1px solid #ef4444; color: #f87171; font-weight: 600; }}
-        
-        .badge-score-exc {{ background-color: rgba(22, 163, 74, 0.25); border: 1.5px solid #22c55e; color: #4ade80; font-weight: bold; }}
-        .badge-score-bom {{ background-color: rgba(59, 130, 246, 0.25); border: 1.5px solid #3b82f6; color: #60a5fa; font-weight: bold; }}
-        .badge-score-reg {{ background-color: rgba(217, 119, 6, 0.25); border: 1.5px solid #f59e0b; color: #fbbf24; font-weight: bold; }}
-        .badge-score-fra {{ background-color: rgba(220, 38, 38, 0.25); border: 1.5px solid #ef4444; color: #f87171; font-weight: bold; }}
-
-        .search-box {{
-            background-color: #0f172a;
-            border: 1px solid #64748b;
-            color: #ffffff;
-        }}
-        .search-box::placeholder {{
-            color: #94a3b8;
-        }}
-        .search-box:focus {{
-            background-color: #0f172a;
-            color: #ffffff;
-            border-color: #facc15;
-            box-shadow: none;
-        }}
+        .gold-gradient {{ background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%); }}
+        .gold-border {{ border-color: #c5a059; }}
+        .gold-text {{ color: #d4af37; }}
     </style>
 </head>
-<body class="pb-5">
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Top Navbar -->
-    <nav class="navbar navbar-custom mb-4">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle d-flex align-items-center justify-content-center me-3 border border-warning" style="width: 48px; height: 48px; background-color: #0b132b;">
-                    <span class="fw-bold text-warning" style="font-size: 1.2rem;">WF</span>
-                </div>
+    <!-- Top Header Institucional -->
+    <header class="gold-gradient text-white border-b-4 gold-border shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <img src="logo.png" alt="WF Investimentos" class="w-16 h-16 rounded-full border-2 gold-border shadow-md object-cover bg-slate-900" onerror="this.style.display='none'">
                 <div>
-                    <h4 class="fw-bold text-white m-0">WF INVESTIMENTOS</h4>
-                    <span class="text-warning small text-uppercase fw-semibold" style="letter-spacing: 1.2px; font-size: 0.8rem;">Avaliação de Ativos & Mercado</span>
+                    <h1 class="text-2xl font-black tracking-wider uppercase flex items-center gap-2">
+                        <span>WF INVESTIMENTOS</span>
+                    </h1>
+                    <p class="text-xs gold-text uppercase tracking-widest font-semibold">Motor Quantitativo B3 • Larry Connors + %b</p>
                 </div>
             </div>
-            <div class="text-end text-light small">
-                <div><i class="bi bi-clock me-1 text-warning"></i> Atualizado em: <strong class="text-white fs-6">{data_agora}</strong></div>
-                <div>Universo: <strong class="text-warning">{total_ativos} IBrX 100</strong></div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container-fluid px-4">
-
-        <!-- Banner Intraday -->
-        {cards_html}
-
-        <!-- Gráficos -->
-        <div class="row g-4 mb-4">
-            <div class="col-lg-6">
-                <div class="card card-custom p-3 h-100 shadow">
-                    <h6 class="fw-bold text-warning mb-3 fs-6"><i class="bi bi-pie-chart-fill me-2"></i> DISTRIBUIÇÃO DE TENDÊNCIAS (SWING TRADE)</h6>
-                    <div style="position: relative; height: 260px;">
-                        <canvas id="chartTendencias"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card card-custom p-3 h-100 shadow">
-                    <h6 class="fw-bold text-warning mb-3 fs-6"><i class="bi bi-bar-chart-fill me-2"></i> RADAR IFR(2) - MENORES NÍVEIS (PULLBACKS)</h6>
-                    <div style="position: relative; height: 260px;">
-                        <canvas id="chartIfr"></canvas>
-                    </div>
-                </div>
+            <div class="text-right text-xs text-slate-300">
+                <p><i class="fa-regular fa-clock mr-1"></i> Atualizado em: <span class="font-bold text-white">{data_atualizacao}</span></p>
+                <p class="text-slate-400">Universo: B3 IBrX 100</p>
             </div>
         </div>
+    </header>
 
-        <!-- Tabela -->
-        <div class="card card-custom shadow">
-            <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3 border-bottom border-secondary">
-                <div>
-                    <h5 class="fw-bold text-white m-0">Scanner Consolidado de Ativos</h5>
-                    <div class="text-light-muted small">Clique no cabeçalho das colunas para ordenar</div>
-                </div>
-                <div class="w-25">
-                    <input type="text" id="filtroTicker" class="form-control form-control-sm search-box" placeholder="🔍 Pesquisar Ticker (ex: VALE3)...">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
+
+        {cards_oportunidades}
+
+        <!-- Seção de Gráficos Analíticos -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Gráfico 1: Fases de Mercado -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie gold-text"></i> Distribuição de Tendências
+                </h3>
+                <div class="relative h-56">
+                    <canvas id="chartDonut"></canvas>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-custom table-hover align-middle mb-0 text-center" id="tabelaScanner">
-                        <thead>
-                            <tr>
-                                <th>TICKER ⇕</th>
-                                <th>PREÇO ⇕</th>
-                                <th>SMA 200 ⇕</th>
-                                <th>IFR(2) ⇕</th>
-                                <th>SWING TRADE ⇕</th>
-                                <th>POSITION (SEMANAL) ⇕</th>
-                                <th>SCORE FUND. ⇕</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tabela_linhas}
-                        </tbody>
-                    </table>
+
+            <!-- Gráfico 2: Ativos Mais Sobrevendidos -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-bar gold-text"></i> Radar IFR(2) - Menores Níveis (Pullbacks)
+                </h3>
+                <div class="relative h-56">
+                    <canvas id="chartBar"></canvas>
                 </div>
             </div>
         </div>
 
-        <footer class="text-center text-light-muted small py-4 mt-4 border-top border-secondary">
-            WF Investimentos • Automação Quantitativa Integrada • Dados B3 via yfinance
-        </footer>
-    </div>
+        <!-- Seção de Tabela com Busca -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50">
+                <h2 class="text-base font-bold text-slate-800">Scanner Consolidado Multi-Fatorial</h2>
+                <div class="relative w-full sm:w-72">
+                    <input type="text" id="filtroTicker" placeholder="Pesquisar Ticker (ex: VALE3)..." class="w-full pl-9 pr-4 py-1.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm" id="tabelaDados">
+                    <thead class="bg-slate-900 text-white text-xs uppercase tracking-wider">
+                        <tr>
+                            <th class="px-4 py-3">Ticker</th>
+                            <th class="px-4 py-3 text-right">Preço</th>
+                            <th class="px-4 py-3 text-right">Alvo SMA 5</th>
+                            <th class="px-4 py-3 text-right">SMA 200</th>
+                            <th class="px-4 py-3 text-right">IFR(2)</th>
+                            <th class="px-4 py-3 text-right">ConnorsRSI</th>
+                            <th class="px-4 py-3 text-right">%b Bandas</th>
+                            <th class="px-4 py-3 text-center">Swing Trade</th>
+                            <th class="px-4 py-3 text-center">Position</th>
+                            <th class="px-4 py-3 text-center">Score Fund.</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {linhas_tabela}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-4 text-center text-xs border-t gold-border">
+        <p>© {datetime.now().year} WF Investimentos. Modelo Quantitativo Baseado em Larry Connors & Volatilidade.</p>
+    </footer>
 
     <script>
-        // Gráfico Rosca
-        const ctxPie = document.getElementById('chartTendencias').getContext('2d');
-        new Chart(ctxPie, {{
+        document.getElementById('filtroTicker').addEventListener('keyup', function() {{
+            let filter = this.value.toUpperCase();
+            let rows = document.querySelectorAll('#tabelaDados tbody tr');
+            rows.forEach(row => {{
+                let ticker = row.cells[0].innerText;
+                row.style.display = ticker.toUpperCase().includes(filter) ? '' : 'none';
+            }});
+        }});
+
+        new Chart(document.getElementById('chartDonut'), {{
             type: 'doughnut',
             data: {{
-                labels: {chart_labels},
+                labels: {json.dumps(labels_chart_donut)},
                 datasets: [{{
-                    data: {chart_values},
-                    backgroundColor: ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#3b82f6', '#db2777', '#06b6d4'],
-                    borderWidth: 0
+                    data: {json.dumps(valores_chart_donut)},
+                    backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#64748b', '#3b82f6', '#ec4899'],
+                    borderWidth: 1
                 }}]
             }},
             options: {{
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {{
-                    legend: {{ position: 'right', labels: {{ color: '#f8fafc', font: {{ size: 11, weight: 'bold' }} }} }}
-                }}
+                plugins: {{ legend: {{ position: 'right', labels: {{ boxWidth: 12, font: {{ size: 10 }} }} }} }}
             }}
         }});
 
-        // Gráfico Barras
-        const ctxBar = document.getElementById('chartIfr').getContext('2d');
-        new Chart(ctxBar, {{
+        new Chart(document.getElementById('chartBar'), {{
             type: 'bar',
             data: {{
-                labels: {bar_labels},
+                labels: {json.dumps(labels_chart_bar)},
                 datasets: [{{
                     label: 'IFR(2)',
-                    data: {bar_values},
-                    backgroundColor: '#f59e0b',
+                    data: {json.dumps(valores_chart_bar)},
+                    backgroundColor: '#d4af37',
                     borderRadius: 4
                 }}]
             }},
@@ -358,31 +247,19 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {{
-                    y: {{ min: 0, max: 100, ticks: {{ color: '#cbd5e1' }}, grid: {{ color: '#334155' }} }},
-                    x: {{ ticks: {{ color: '#f8fafc', font: {{ weight: 'bold' }} }}, grid: {{ display: false }} }}
+                    y: {{ beginAtZero: true, max: 100, grid: {{ color: '#f1f5f9' }} }},
+                    x: {{ grid: {{ display: false }} }}
                 }},
                 plugins: {{ legend: {{ display: false }} }}
             }}
-        }});
-
-        // Filtro de Busca
-        document.getElementById('filtroTicker').addEventListener('keyup', function() {{
-            const val = this.value.toUpperCase();
-            const trs = document.querySelectorAll('#tabelaScanner tbody tr');
-            trs.forEach(tr => {{
-                const td = tr.querySelector('td');
-                if (td) {{
-                    tr.style.display = td.innerText.toUpperCase().indexOf(val) > -1 ? '' : 'none';
-                }}
-            }});
         }});
     </script>
 </body>
 </html>
 """
-
     with open(caminho_saida, "w", encoding="utf-8") as f:
-        f.write(html_completo)
+        f.write(html_template)
+    print(f"✅ Dashboard reconstruído com sucesso em '{caminho_saida}'.")
 
 if __name__ == "__main__":
     gerar_dashboard_html()
