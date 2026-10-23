@@ -1,59 +1,124 @@
 import json
-import pandas as pd
 from datetime import datetime
+import pandas as pd
+
 
 def formatar_badge_swing(valor):
-    v = str(valor).lower()
-    if "🔥 compra" in v:
-        return f'<span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-500 text-white shadow-sm">{valor}</span>'
-    elif "pullback em alta" in v or "atenção" in v:
-        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 border border-amber-300">{valor}</span>'
-    elif "alta forte" in v:
-        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">{valor}</span>'
-    elif "sobrecomprado" in v:
-        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800 border border-purple-300">{valor}</span>'
-    elif "baixa" in v:
-        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100 text-rose-800 border border-rose-300">{valor}</span>'
-    else:
-        return f'<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600 border border-slate-300">{valor}</span>'
+  """Aplica selos visuais conforme a fase de mercado e o gatilho de Swing Trade."""
+  v = str(valor).lower()
+  if "🔥 compra" in v:
+    return (
+        '<span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-500'
+        f' text-white shadow-sm">{valor}</span>'
+    )
+  elif "pullback em alta" in v or "atenção" in v:
+    return (
+        '<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100'
+        f' text-amber-800 border border-amber-300">{valor}</span>'
+    )
+  elif "alta forte" in v:
+    return (
+        '<span class="px-2 py-0.5 text-xs font-medium rounded-full'
+        ' bg-emerald-100 text-emerald-800 border'
+        f' border-emerald-300">{valor}</span>'
+    )
+  elif "sobrecomprado" in v:
+    return (
+        '<span class="px-2 py-0.5 text-xs font-medium rounded-full'
+        ' bg-purple-100 text-purple-800 border'
+        f' border-purple-300">{valor}</span>'
+    )
+  elif "baixa" in v:
+    return (
+        '<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-rose-100'
+        f' text-rose-800 border border-rose-300">{valor}</span>'
+    )
+  else:
+    return (
+        '<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100'
+        f' text-slate-600 border border-slate-300">{valor}</span>'
+    )
 
-def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="index.html"):
-    df = pd.read_csv(caminho_csv)
-    data_atualizacao = datetime.now().strftime("%d/%m/%Y às %H:%M")
 
-    # Contagem para o gráfico de tendências
-    distribuicao_swing = df['Swing Trade'].value_counts().to_dict()
-    labels_chart_donut = list(distribuicao_swing.keys())
-    valores_chart_donut = list(distribuicao_swing.values())
+def formatar_badge_score(score_raw):
+  """Aplica selos visuais para a nota de fundamentos contábeis."""
+  score_str = str(score_raw)
+  if "Excelente" in score_str or "Bom" in score_str:
+    return (
+        '<span class="px-2.5 py-1 text-xs font-bold rounded bg-emerald-50'
+        f' text-emerald-700 border border-emerald-300">{score_str}</span>'
+    )
+  elif "Regular" in score_str:
+    return (
+        '<span class="px-2.5 py-1 text-xs font-semibold rounded bg-amber-50'
+        f' text-amber-700 border border-amber-300">{score_str}</span>'
+    )
+  elif "Fraco" in score_str:
+    return (
+        '<span class="px-2.5 py-1 text-xs font-medium rounded bg-rose-50'
+        f' text-rose-700 border border-rose-300">{score_str}</span>'
+    )
+  else:
+    return (
+        f'<span class="text-xs text-slate-400 font-medium">{score_str}</span>'
+    )
 
-    # Top 10 menores IFR(2) para o gráfico de barras
-    df_sorted_rsi = df.sort_values(by="RSI(2)").head(8)
-    labels_chart_bar = df_sorted_rsi['Ticker'].tolist()
-    valores_chart_bar = df_sorted_rsi['RSI(2)'].tolist()
 
-    # Linhas da tabela
-    linhas_tabela = ""
-    for _, row in df.iterrows():
-        badge_swing = formatar_badge_swing(row.get('Swing Trade', '-'))
-        pos_trade = row.get('Position Trade', '-')
-        badge_position = "text-emerald-600 font-semibold" if "Alta" in str(pos_trade) else "text-slate-500"
-        
-        rsi_val = row.get('RSI(2)', 0)
-        cor_rsi = "text-emerald-700 font-bold" if rsi_val <= 15 else ("text-rose-700 font-bold" if rsi_val >= 85 else "text-slate-700")
+def gerar_dashboard_html(
+    caminho_csv="scanner_fechamento.csv", caminho_saida="index.html"
+):
+  """Compila os dados quantitativos em uma interface interativa com Chart.js e Tailwind CSS."""
+  df = pd.read_csv(caminho_csv)
+  data_atualizacao = datetime.now().strftime("%d/%m/%Y às %H:%M")
 
-        linhas_tabela += f"""
+  # 1. Distribuição de Fases de Mercado (Gráfico Donut)
+  distribuicao_swing = df["Swing Trade"].value_counts().to_dict()
+  labels_chart_donut = list(distribuicao_swing.keys())
+  valores_chart_donut = list(distribuicao_swing.values())
+
+  # 2. Top 8 menores IFR(2) (Gráfico de Barras)
+  df_sorted_rsi = df.sort_values(by="RSI(2)").head(8)
+  labels_chart_bar = df_sorted_rsi["Ticker"].tolist()
+  valores_chart_bar = df_sorted_rsi["RSI(2)"].tolist()
+
+  # 3. Montagem das Linhas da Tabela
+  linhas_tabela = ""
+  for _, row in df.iterrows():
+    badge_swing = formatar_badge_swing(row.get("Swing Trade", "-"))
+    badge_score = formatar_badge_score(row.get("Score Fundamentalista", "N/D"))
+
+    pos_trade = row.get("Position Trade", "-")
+    badge_position = (
+        "text-emerald-600 font-semibold"
+        if "Alta" in str(pos_trade)
+        else "text-slate-500"
+    )
+
+    rsi_val = row.get("RSI(2)", 0.0)
+    cor_rsi = (
+        "text-emerald-700 font-bold"
+        if rsi_val <= 15
+        else (
+            "text-rose-700 font-bold" if rsi_val >= 85 else "text-slate-700"
+        )
+    )
+
+    preco = row.get("Preço (R$)", 0.0)
+    sma200 = row.get("SMA 200", 0.0)
+
+    linhas_tabela += f"""
         <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
             <td class="px-4 py-3 font-bold text-slate-900">{row.get('Ticker', '-')}</td>
-            <td class="px-4 py-3 text-right text-slate-800 font-medium">R$ {row.get('Preço (R$)', 0):.2f}</td>
-            <td class="px-4 py-3 text-right text-slate-600">R$ {row.get('SMA 200', 0):.2f}</td>
+            <td class="px-4 py-3 text-right text-slate-800 font-medium">R$ {preco:.2f}</td>
+            <td class="px-4 py-3 text-right text-slate-600">R$ {sma200:.2f}</td>
             <td class="px-4 py-3 text-right {cor_rsi}">{rsi_val:.1f}</td>
             <td class="px-4 py-3 text-center">{badge_swing}</td>
             <td class="px-4 py-3 text-center text-xs {badge_position}">{pos_trade}</td>
-            <td class="px-4 py-3 text-center font-bold text-slate-800">{row.get('Score Fundamentalista', '-')}</td>
+            <td class="px-4 py-3 text-center">{badge_score}</td>
         </tr>
         """
 
-    html_template = f"""<!DOCTYPE html>
+  html_template = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -70,7 +135,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Top Header Institucional -->
+    <!-- Top Header Institucional WF Investimentos -->
     <header class="gold-gradient text-white border-b-4 gold-border shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4">
@@ -93,7 +158,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
 
         <!-- Seção de Gráficos Analíticos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Gráfico 1: Fases de Mercado -->
+            <!-- Gráfico 1: Tendências e Fases -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-pie gold-text"></i> Distribuição de Tendências (Swing Trade)
@@ -103,7 +168,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
                 </div>
             </div>
 
-            <!-- Gráfico 2: Ativos Mais Sobrevendidos -->
+            <!-- Gráfico 2: Menores IFR(2) -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-bar gold-text"></i> Radar IFR(2) - Menores Níveis (Pullbacks)
@@ -151,7 +216,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
     </footer>
 
     <script>
-        // Filtro de Tickers
+        // Filtro em tempo real para os Tickers
         document.getElementById('filtroTicker').addEventListener('keyup', function() {{
             let filter = this.value.toUpperCase();
             let rows = document.querySelectorAll('#tabelaDados tbody tr');
@@ -161,7 +226,7 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
             }});
         }});
 
-        // Gráfico Donut (Tendências)
+        // Gráfico Donut de Fases de Mercado
         new Chart(document.getElementById('chartDonut'), {{
             type: 'doughnut',
             data: {{
@@ -175,11 +240,16 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
             options: {{
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {{ legend: {{ position: 'right', labels: {{ boxWidth: 12, font: {{ size: 10 }} }} }} }}
+                plugins: {{
+                    legend: {{
+                        position: 'right',
+                        labels: {{ boxWidth: 12, font: {{ size: 10 }} }}
+                    }}
+                }}
             }}
         }});
 
-        // Gráfico de Barras (IFR2)
+        // Gráfico de Barras do IFR(2)
         new Chart(document.getElementById('chartBar'), {{
             type: 'bar',
             data: {{
@@ -205,9 +275,10 @@ def gerar_dashboard_html(caminho_csv="scanner_fechamento.csv", caminho_saida="in
 </body>
 </html>
 """
-    with open(caminho_saida, "w", encoding="utf-8") as f:
-        f.write(html_template)
-    print(f"Dashboard gerado com sucesso em '{caminho_saida}'.")
+  with open(caminho_saida, "w", encoding="utf-8") as f:
+    f.write(html_template)
+  print(f"Dashboard gerado com sucesso em '{caminho_saida}'.")
+
 
 if __name__ == "__main__":
-    gerar_dashboard_html()
+  gerar_dashboard_html()
