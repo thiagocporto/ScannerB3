@@ -1,5 +1,41 @@
 [
     {
+        "ticker": "UGPA3",
+        "preco": 38.43,
+        "rsi2": 13.0,
+        "mm200": 29.42,
+        "score": "71 (Bom)",
+        "regime": "JANELA_OURO",
+        "hora": "14:45:45"
+    },
+    {
+        "ticker": "ITSA4",
+        "preco": 15.2,
+        "rsi2": 11.9,
+        "mm200": 13.54,
+        "score": "93 (Excelente)",
+        "regime": "JANELA_OURO",
+        "hora": "14:44:56"
+    },
+    {
+        "ticker": "GMAT3",
+        "preco": 5.08,
+        "rsi2": 13.1,
+        "mm200": 4.56,
+        "score": "78 (Bom)",
+        "regime": "JANELA_OURO",
+        "hora": "14:44:44"
+    },
+    {
+        "ticker": "GOAU4",
+        "preco": 11.41,
+        "rsi2": 13.3,
+        "mm200": 9.97,
+        "score": "55 (Regular)",
+        "regime": "JANELA_OURO",
+        "hora": "14:44:41"
+    },
+    {
         "ticker": "ORVR3",
         "preco": 19.75,
         "rsi2": 9.6,
@@ -88,24 +124,6 @@
         "score": "68 (Bom)",
         "regime": "FLUXO_NY",
         "hora": "11:20:38"
-    },
-    {
-        "ticker": "GMAT3",
-        "preco": 5.12,
-        "rsi2": 14.9,
-        "mm200": 4.56,
-        "score": "78 (Bom)",
-        "regime": "FLUXO_NY",
-        "hora": "11:20:17"
-    },
-    {
-        "ticker": "GOAU4",
-        "preco": 11.44,
-        "rsi2": 14.4,
-        "mm200": 9.97,
-        "score": "55 (Regular)",
-        "regime": "FLUXO_NY",
-        "hora": "11:20:14"
     },
     {
         "ticker": "ENGI11",
