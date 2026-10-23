@@ -1,5 +1,23 @@
 [
     {
+        "ticker": "IRBR3",
+        "preco": 66.72,
+        "rsi2": 9.6,
+        "mm200": 55.68,
+        "score": "55 (Regular)",
+        "regime": "ZONA_MORTA",
+        "hora": "12:11:03"
+    },
+    {
+        "ticker": "ALPA4",
+        "preco": 16.59,
+        "rsi2": 5.6,
+        "mm200": 13.12,
+        "score": "79 (Bom)",
+        "regime": "ZONA_MORTA",
+        "hora": "12:10:08"
+    },
+    {
         "ticker": "ITUB4",
         "preco": 47.69,
         "rsi2": 15.0,
