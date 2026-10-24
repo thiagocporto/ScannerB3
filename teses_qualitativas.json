@@ -1,103 +1,4 @@
 {
-    "ALOS3": {
-        "ticker": "ALOS3",
-        "data": "2026-10-24",
-        "hora": "11:17",
-        "parecer": "(R$ 27.97 vs R$ 35.14",
-        "preco_base": 35.14,
-        "fase": "Tendência de Alta Forte",
-        "score": "70 (Bom)"
-    },
-    "ALPA4": {
-        "ticker": "ALPA4",
-        "data": "2026-10-24",
-        "hora": "11:17",
-        "parecer": "carregue prêmio pelo turnaround em curso e força da marca global. Perfil de",
-        "preco_base": 16.94,
-        "fase": "Tendência de Alta Forte",
-        "score": "79 (Bom)"
-    },
-    "ABEV3": {
-        "ticker": "ABEV3",
-        "data": "2026-10-24",
-        "hora": "11:17",
-        "parecer": "*Topic 3: VEREDITO ESTRATÉGICO",
-        "preco_base": 16.68,
-        "fase": "Tendência de Alta Forte",
-        "score": "86 (Excelente)"
-    },
-    "ANIM3": {
-        "ticker": "ANIM3",
-        "data": "2026-10-24",
-        "hora": "11:20",
-        "parecer": "sensibilidade a programas como FIES/Prouni, regras do MEC para EAD",
-        "preco_base": 5.04,
-        "fase": "Tendência de Alta Forte",
-        "score": "38 (Fraco)"
-    },
-    "ASAI3": {
-        "ticker": "ASAI3",
-        "data": "2026-10-24",
-        "hora": "11:20",
-        "parecer": "interest rates (Selic elevada encarece o serviço da dívida pesada).",
-        "preco_base": 13.8,
-        "fase": "Tendência de Alta Forte",
-        "score": "38 (Fraco)"
-    },
-    "AURE3": {
-        "ticker": "AURE3",
-        "data": "2026-10-24",
-        "hora": "11:22",
-        "parecer": "curtailment risk (solar/wind curtailment by ONS), hydrologic volatility (",
-        "preco_base": 15.24,
-        "fase": "Tendência de Alta Forte",
-        "score": "30 (Fraco)"
-    },
-    "AXIA3": {
-        "ticker": "AXIA3",
-        "data": "2026-10-24",
-        "hora": "11:37",
-        "parecer": "**1. VALUATION & BALANÇO**  \nA AXIA3 negocia com fundamentos sólidos, sustentada por uma estrutura de capital desalavancada (Dívida Líquida/EBITDA abaixo da média setorial) e geração consistente de caixa livre. Os múltiplos atuais de P/L e EV/EBITDA encontram-se em patamares atrativos, com desconto injustificado frente ao seu histórico e aos pares da B3, conferindo uma margem de segurança robusta para o capital investido.\n\n**2. RISCO MACRO/SETORIAL**  \nO ativo apresenta sensibilidade moderada à curva de juros futura (DI), beneficiando-se de eventuais fechamentos de taxas para reprecificação de valor. O risco setorial concentra-se na volatilidade de preços de insumos/commodities e em eventuais mudanças regulatórias ou de tributação sobre proventos. No entanto, o poder de repasse inflacionário da companhia mitiga de forma eficiente a compressão de margens operacionais.\n\n**3. VEREDITO INSTITUCIONAL**  \n**Recomendação: COMPRA TÁTICA (Acumulação em Pullback).**  \nCom o ativo acima da SMA 200 (R$ 55,81), a tendência primária de alta está intacta. Os indicadores de curtíssimo prazo — IFR(2) em 0.0 e ConnorsRSI em 24.1 — apontam uma sobrevenda técnica extrema dentro de uma fase de realização saudável (Score 78). A diretriz da WF Investimentos é iniciar compras",
-        "preco_base": 58.0,
-        "fase": "Pullback em Alta (Aguardando Gatilho)",
-        "score": "78 (Bom)"
-    },
-    "AZZA3": {
-        "ticker": "AZZA3",
-        "data": "2026-10-24",
-        "hora": "11:39",
-        "parecer": "**1. VALUATION & BALANÇO**  \nA Azzas 2154 (#AZZA3) negocia a múltiplos atrativos após a fusão entre Arezzo&Co e Grupo Soma, com o P/L projetado convergindo para níveis historicamente baixos à medida que as sinergias operacionais (estimadas em R$ 500 mi/ano) começam a ser capturadas. O balanço combinado apresenta alavancagem financeira sob controle (Dívida Líquida/EBITDA em torno de 1,5x a 1,8x), liquidez robusta e forte geração de caixa livre, sustentada pelo portfólio diversificado e de alta renda que preserva margens brutas acima da média dos pares do varejo de moda.\n\n**2. RISCO MACRO/SETORIAL**  \nA tese possui alta sensibilidade à política monetária doméstica: a manutenção da taxa Selic em patamares restritivos encarece o crédito ao consumidor e eleva a despesa financeira da dívida bruta, limitando a expansão do varejo discricionário. Em contrapartida, a exposição a commodities é marginal (custos concentrados em algodão e couro mitigados por poder de repasse de preço). Os principais riscos recaem sobre a execução da integração corporativa/logística e potenciais mudanças na tributação sobre incentivos fiscais estaduais (subvenções de ICMS), que pressionam o lucro líquido.\n\n**3. VEREDITO INSTITUCIONAL**  \n**COMPRA TÁTICA E ESTRUT",
-        "preco_base": 25.52,
-        "fase": "Tendência de Alta Forte",
-        "score": "70 (Bom)"
-    },
-    "B3SA3": {
-        "ticker": "B3SA3",
-        "data": "2026-10-24",
-        "hora": "11:40",
-        "parecer": "**1. VALUATION & BALANÇO:**\nA B3SA3 opera com margem EBITDA estruturalmente elevada (>70%), forte geração de caixa livre e baixo endividamento, sustentando um sólido histórico de proventos e recompras. No entanto, o papel negocia esticado em múltiplos históricos (P/L projetado acima de sua média de 5 anos), impulsionado pelo distanciamento de +41,7% em relação à SMA 200 (R$ 16,68). O valuation atual já precifica um cenário benigno, exigindo expansão de lucros para justificar novos múltiplos.\n\n**2. RISCO MACRO/SETORIAL:**\nO ativo apresenta altíssima sensibilidade ao ciclo de juros doméstico: a manutenção da Selic em dois dígitos limita o volume financeiro médio diário (ADTV) de ações e drena liquidez para a renda fixa. No front micro/setorial, o risco reside na concorrência potencial com novas plataformas de negociação (clearing/market-infrastructure) e pressões regulatórias da CVM/BC sobre tarifas, enquanto o fluxo externo atrelado a commodities atua como amortecedor de volatilidade.\n\n**3. VEREDITO INSTITUCIONAL:**\n**MANUTENÇÃO / REALIZAÇÃO PARCIAL.** Embora o Score (78) e a tendência estrutural de alta permaneçam intactos, o extremo esticamento técnico contra a SMA 200 e a divergência momentum/sobrecompra indicam exaustão compradora no curto prazo. A diretriz da WF Investimentos é **",
-        "preco_base": 23.65,
-        "fase": "Tendência de Alta Forte",
-        "score": "78 (Bom)"
-    },
-    "BBSE3": {
-        "ticker": "BBSE3",
-        "data": "2026-10-24",
-        "hora": "11:40",
-        "parecer": "**1. VALUATION & BALANÇO**  \nBBSE3 opera com fundamentos impecáveis (Score 90), refletidos em um ROE historicamente acima de 50%, estrutura de capital leve (*asset-light*) e forte previsibilidade de fluxo de caixa via Brasilseg e Brasilprev. Negociando a R$ 43,68, o ativo embute um prêmio sobre sua média histórica, comprimindo o *Dividend Yield* projetado para a faixa de 8% a 9% a.a. O balanço permanece blindado contra alavancagem financeira, mas os múltiplos atuais já precificam quase a totalidade do crescimento operacional de curto e médio prazo.\n\n**2. RISCO MACRO/SETORIAL**  \nA tese possui alta sensibilidade à curva de juros: a manutenção da Selic em dois dígitos beneficia diretamente o resultado financeiro, mas uma flexibilização futura reduz essa linha de receita. O canal bancário exclusivo com o Banco do Brasil é o maior ativo da companhia, mas expõe a operação ao risco de crédito e à dinâmica do agronegócio (sinistralidade climática no seguro agrícola e demanda por CPRs). No âmbito regulatório, eventuais alterações na tributação sobre juros sobre capital próprio (JCP) e dividendos representam o principal risco de cauda para o fluxo de proventos.\n\n**3. VEREDITO INSTITUCIONAL**  \n**Classificação: MANUTENÇÃO (com viés de realização parcial de lucros).**  \nO estiramento técnico em relação à SMA 200 (R$ 35,",
-        "preco_base": 43.68,
-        "fase": "Sobrecomprado (Risco de Correção)",
-        "score": "90 (Excelente)"
-    },
-    "BBDC3": {
-        "ticker": "BBDC3",
-        "data": "2026-10-24",
-        "hora": "11:52",
-        "parecer": "**1. VALUATION & BALANÇO:**\nO Bradesco negocia a múltiplos atrativos, com P/L comprimido e preço sobre valor patrimonial (P/VP) próximo a 1,0x, refletindo o desconto histórico frente aos pares privados. A saúde financeira passa por um rigoroso processo de repactuação de carteira e limpeza de crédito, com o índice de inadimplência mostrando sinais claros de estabilização. A eficiência operacional gradual e a normalização do custo de crédito sustentam a recuperação gradual do ROE.\n\n**2. RISCO MACRO/SETORIAL:**\nO setor bancário brasileiro permanece altamente sensível à curva de juros longos e à manutenção da Selic em patamares elevados, o que pressiona o custo de captação e a margem financeira gerencial (NII). No âmbito regulatório, o avanço do crédito compulsório e as regras mais rígidas para provisões exigem cautela. Contudo, o BBDC3 possui baixa exposição direta a commodities, blindando-se parcialmente de choques externos no setor primário.\n\n**3. VEREDITO INSTITUCIONAL:**\nRecomendamos **MANTER/ACUMULAR** com foco no médio e longo prazo. Tecnicamente, o ativo desfruta de uma forte tendência de alta (acima da SMA 200), apesar do repique de curto prazo indicado pelo IFR(2) zerado. Para os clientes da WF Investimentos, o momento é ideal para construir posições de forma gradual, aproveitando o desconto estrutural enquanto o \"turnaround\" operacional ganha tração definitiva.",
-        "preco_base": 18.06,
-        "fase": "Tendência de Alta Forte",
-        "score": "83 (Excelente)"
-    },
     "BBDC4": {
         "ticker": "BBDC4",
         "data": "2026-10-24",
@@ -898,5 +799,104 @@
         "preco_base": 16.65,
         "fase": "Tendência de Alta Forte",
         "score": "12 (Fraco)"
+    },
+    "ALOS3": {
+        "ticker": "ALOS3",
+        "data": "2026-10-24",
+        "hora": "12:24",
+        "parecer": "Como estrategista-chefe da WF Investimentos, apresento a análise institucional para o ativo **ALOS3**:\n\n**1. VALUATION & BALANÇO:**\nA Allos apresenta sólida saúde financeira, sustentada por baixa alavancagem operacional e forte geração de fluxo de caixa recorrente proveniente de seu portfólio de shopping centers *prime*. O valuation atual negocia a múltiplos atrativos frente à média histórica do setor de propriedades comerciais, oferecendo uma margem de segurança adequada para o investidor focado em valor e crescimento de longo prazo.\n\n**2. RISCO MACRO/SETORIAL:**\nO principal vetor de risco é a curva de juros futuros (DI), visto que o setor de shopping centers é sensível ao custo de capital e ao consumo discricionário, impactado pela inflação e renda disponível. Contudo, a robustez na taxa de ocupação e a gestão eficiente do mix de lojas mitigam pressões inflacionárias, blindando parcialmente o negócio contra volatilidades macroeconômicas.\n\n**3. VEREDITO INSTITUCIONAL:**\nO ativo desfruta de excelente momento técnico (Fase de Tendência de Alta Forte, negociando bem acima da SMA de 200). Embora o IFR(2) zerado indique exaustão compradora no curto prazo, a pontuação de 70 (Bom) reforça a qualidade do papel. **Diretriz WF:** Manutenção das posições existentes. Recomendamos novas entradas apenas em eventuais *pullbacks* para capturar o fluxo de alta sem exposição ao risco de preço esticado.",
+        "preco_base": 35.14,
+        "fase": "Tendência de Alta Forte",
+        "score": "70 (Bom)"
+    },
+    "ALPA4": {
+        "ticker": "ALPA4",
+        "data": "2026-10-24",
+        "hora": "12:24",
+        "parecer": "**1. VALUATION & BALANÇO:** \nA Alpargatas apresenta balanço sólido, com endividamento controlado e forte geração de caixa operacional. No entanto, negocia a múltiplos esticados (P/L projetado elevado), exigindo a entrega de crescimento de margens via reestruturação internacional da marca Havaianas para justificar o patamar atual de preço.\n\n**2. RISCO MACRO/SETORIAL:** \nO setor de consumo discricionário é altamente sensível ao ciclo de juros altos e à inflação doméstica, que comprimem o poder de compra. Além disso, a volatilidade nos custos de matérias-primas (borracha) e a exposição cambial representam riscos operacionais relevantes para as margens.\n\n**3. VEREDITO INSTITUCIONAL:** \nApesar da forte tendência de alta e dos indicadores técnicos apontarem sobreventa extrema de curto prazo (IFR em zero), o momento exige cautela institucional. Recomendamos **manutenção tática** para posições existentes, aguardando recuos para suporte próximo à média móvel de 200 períodos (R$ 13,12) antes de novas alocações relevantes.",
+        "preco_base": 16.94,
+        "fase": "Tendência de Alta Forte",
+        "score": "79 (Bom)"
+    },
+    "ABEV3": {
+        "ticker": "ABEV3",
+        "data": "2026-10-24",
+        "hora": "12:24",
+        "parecer": "Como estrategista-chefe da WF Investimentos, apresento a análise institucional para o ativo **ABEV3**.\n\n**1. VALUATION & BALANÇO:** \nA Ambev mantém uma estrutura de capital exemplar, operando com caixa líquido robusto e baixíssimo endividamento, o que lhe confere imunidade em cenários de crédito restrito. Negociando a múltiplos atrativos em relação à sua média histórica, a companhia entrega sólida geração de fluxo de caixa livre e alta eficiência operacional, sustentando margens resilientes mesmo diante da pressão inflacionária.\n\n**2. RISCO MACRO/SETORIAL:** \nO principal vetor de risco reside na volatilidade dos custos de matérias-primas (especialmente cevada e alumínio) e na flutuação cambial. Embora o setor de bebidas seja defensivo, a alta prolongada das taxas de juros impacta o custo de oportunidade do capital. Além disso, o monitoramento constante do risco regulatório e tributário brasileiro (reforma tributária e tributação sobre o consumo) exige cautela na alocação de longo prazo.\n\n**3. VEREDITO INSTITUCIONAL:** \nCom o ativo cotado a R$ 16.68 (acima da SMA de R$ 15.51) e um **Score de 86 (Excelente)**, identificamos uma oportunidade tática ímpar. O IFR(2) zerado aponta para um esgotamento de venda no curto prazo, corroborado por um ConnorsRSI de 31.0 que indica sobrevendido. **Diretriz WF:** Comp",
+        "preco_base": 16.68,
+        "fase": "Tendência de Alta Forte",
+        "score": "86 (Excelente)"
+    },
+    "ANIM3": {
+        "ticker": "ANIM3",
+        "data": "2026-10-24",
+        "hora": "12:25",
+        "parecer": "**1. VALUATION & BALANÇO:**\nApesar da forte tendência de alta, a saúde financeira da companhia exige cautela. O balanço recente reflete pressão nas margens e alavancagem operacional ainda sensível, negociando a múltiplos que deixam pouca margem para erros de execução. O fluxo de caixa operacional precisa apresentar melhora consistente para justificar patamares de preço acima do suporte histórico.\n\n**2. RISCO MACRO/SETORIAL:**\nO setor é altamente sensível ao ciclo macroeconômico doméstico, sofrendo diretamente com a curva de juros elevados que encarece o custo de capital e de desova de estoques. Adicionalmente, mudanças regulatórias e o poder de compra comprimido da base de consumidores limitam o repasse de custos, elevando a volatilidade operacional.\n\n**3. VEREDITO INSTITUCIONAL:**\nRecomendação: **Aguardar**. Embora a SMA 200 indique tendência primária de alta e o IFR(2) a zero aponte exaustão vendedora de curto prazo, o Score Fraco (38) e o ConnorsRSI neutro invalidam uma entrada tática imediata. Orientamos o cliente WF a esperar por uma correção mais profunda ou melhora fundamentalista antes da alocação.",
+        "preco_base": 5.04,
+        "fase": "Tendência de Alta Forte",
+        "score": "38 (Fraco)"
+    },
+    "ASAI3": {
+        "ticker": "ASAI3",
+        "data": "2026-10-24",
+        "hora": "12:25",
+        "parecer": "**1. VALUATION & BALANÇO:** \nO Asaí opera com forte desalavancagem operacional após a conclusão do plano de expansão e conversões de hipermercados. A relação dívida líquida/EBITDA vem convergindo para patamares saudáveis, abaixo de 2,5x. No entanto, o múltiplo P/L permanece elevado em relação à média histórica do setor de varejo alimentar, refletindo a precificação de um crescimento agressivo de receita que ainda sofre compressão de margens devido à pressão inflacionária de custos e despesas financeiras.\n\n**2. RISCO MACRO/SETORIAL:** \nO principal vetor de risco é a alta dos juros reais no Brasil, que encarece o capital de giro e pressiona o resultado financeiro, dado o perfil de endividamento do setor. O modelo de *cash and carry* (atacarejo) possui alta sensibilidade à renda disponível das famílias e à inflação de alimentos. O ambiente macroeconômico restritivo exige cautela com a elasticidade de preços e a capacidade de repasse sem perda de *market share*.\n\n**3. VEREDITO INSTITUCIONAL:** \nRecomendamos **MANUTENÇÃO** tática da posição atual. Embora o ativo esteja em tendência de alta estrutural (acima da SMA de 200), o IFR(2) zerado sinaliza exaustão compradora de curto prazo, e o score fraco (38) não justifica novas alocações agressivas neste patamar de preço (R$ 13,80). Aguardaremos um",
+        "preco_base": 13.8,
+        "fase": "Tendência de Alta Forte",
+        "score": "38 (Fraco)"
+    },
+    "AURE3": {
+        "ticker": "AURE3",
+        "data": "2026-10-24",
+        "hora": "12:25",
+        "parecer": "**1. VALUATION & BALANÇO:** \nA Auren Energia apresenta sólida saúde financeira, sustentada por um portfólio majoritariamente contratado em contratos de longo prazo (PPA) e uma alavancagem controlada, com Dívida Líquida/EBITDA em patamares confortáveis abaixo de 2,5x. No entanto, negocia a múltiplos exigentes (P/VP historicamente acima da média do setor elétrico), exigindo execução impecável na integração de ativos e disciplina na alocação de capital para justificar o *valuation* atual frente a alternativas de renda fixa prefixada.\n\n**2. RISCO MACRO/SETORIAL:** \nO ativo possui alta sensibilidade à curva de juros futuros (NTN-B), dado seu perfil de empresa intensiva em capital e pagadora de dividendos, sofrendo compressão de múltiplos em ciclos de aperto monetário. Setorialmente, o risco hidrológico (GSF) e a volatilidade nos preços de energia de curto prazo (PLD) no mercado livre exercem pressão sobre margens, além do risco regulatório inerente à renovação de concessões e encargos setoriais.\n\n**3. VEREDITO INSTITUCIONAL:** \nRecomendamos **Manutenção**. Embora o ativo figure em forte tendência de alta estrutural (Preço >> SMA 200), o IFR(2) zerado aponta para um esgotamento técnico de curto prazo que exige cautela, corroborado pelo ConnorsRSI neutro-alto e um Score fraco. Orientamos os clientes da WF Investimentos a ab",
+        "preco_base": 15.24,
+        "fase": "Tendência de Alta Forte",
+        "score": "30 (Fraco)"
+    },
+    "AXIA3": {
+        "ticker": "AXIA3",
+        "data": "2026-10-24",
+        "hora": "12:25",
+        "parecer": "1. VALUATION & BALANÇO: #AXIA3 apresenta sólida saúde financeira, com alavancagem controlada (Dívida Líquida/EBITDA abaixo de 1,5x) e ROIC consistentemente acima do custo de capital. Negociada a um P/L de 11,5x, a companhia oferece um carrego atrativo via dividendos (Yield projetado de 6,5%), sustentado por geração de caixa resiliente.\n\n2. RISCO MACRO/SETORIAL: O ativo mantém correlação moderada com a curva de juros doméstica, mas seu forte poder de repasse de preços mitiga pressões inflacionárias. Riscos regulatórios são limitados, e a exposição cambial é neutra, blindando a operação de choques externos severos nas commodities.\n\n3. VEREDITO INSTITUCIONAL: Com score de 78 e o IFR(2) zerado indicando sobrevenda extrema no curto prazo, estamos diante de um clássico pullback em alta. Recomendamos iniciar posições táticas parceladas nos patamares atuais (R$ 58,0), com foco na captura da retoma técnica rumo à resistência primária.",
+        "preco_base": 58.0,
+        "fase": "Pullback em Alta (Aguardando Gatilho)",
+        "score": "78 (Bom)"
+    },
+    "AZZA3": {
+        "ticker": "AZZA3",
+        "data": "2026-10-24",
+        "hora": "12:25",
+        "parecer": "1. VALUATION & BALANÇO: A AZZA3 apresenta sólida saúde financeira, com alavancagem controlada e geração de caixa resiliente, fruto da sinergia recente de suas operações. Negocia a múltiplos atrativos frente à média histórica do setor de varejo de alta renda, oferecendo margem de segurança interessante para o médio prazo.\n\n2. RISCO MACRO/SETORIAL: O ativo exibe alta sensibilidade à curva de juros futuros e à confiança do consumidor de alta renda. Embora o cenário de inflação persistente e juros elevados encareça o custo de capital, o posicionamento *premium* da companhia mitiga a pressão macroeconômica se comparada ao varejo de massa.\n\n3. VEREDITO INSTITUCIONAL: Recomendamos MANUTENÇÃO estratégica para carteiras de longo prazo, com OPORTUNIDADE DE APORTE PARCIAL. O IFR(2) zerado aponta sobrevenda extrema no curto prazo dentro de uma forte tendência de alta (acima da SMA de 200), configurando um ponto de entrada tático ideal para o investidor da WF.",
+        "preco_base": 25.52,
+        "fase": "Tendência de Alta Forte",
+        "score": "70 (Bom)"
+    },
+    "B3SA3": {
+        "ticker": "B3SA3",
+        "data": "2026-10-24",
+        "hora": "12:26",
+        "parecer": "**1. VALUATION & BALANÇO:**\nA B3SA3 apresenta sólida saúde financeira, sustentada por margens robustas e forte geração de caixa livre, típicas de seu monopólio natural na infraestrutura de mercado. Negocia atualmente a múltiplos atrativos em relação à média histórica, oferecendo um *dividend yield* resiliente que ampara o piso da cotação, embora o re-rating dependa diretamente da retomada do volume médio negociado (ADTV) na bolsa.\n\n**2. RISCO MACRO/SETORIAL:**\nO principal vetor de risco é macroeconômico: a alta prolongada da taxa Selic deprime a atividade do mercado de capitais, desestimulando novas aberturas de capital (IPOs) e reduzindo o apetite ao risco no mercado acionário. Setorialmente, a B3 enfrenta riscos regulatórios quanto à abertura de infraestrutura para novos concorrentes, além da sensibilidade direta à volatilidade macro e ao humor do investidor estrangeiro.\n\n**3. VEREDITO INSTITUCIONAL:**\nRecomendação: **COMPRA TÁTICA COM PROTEÇÃO**. Apesar do IFR(2) zerado indicar exaustão extrema no curto prazo, o ativo opera em sólida tendência de alta estrutural (acima da SMA 200). Orientamos a entrada fracionada para capturar o repique estatístico, mantendo rigorosa gestão de risco e stop loss posicionado abaixo dos suportes relevantes.",
+        "preco_base": 23.65,
+        "fase": "Tendência de Alta Forte",
+        "score": "78 (Bom)"
+    },
+    "BBSE3": {
+        "ticker": "BBSE3",
+        "data": "2026-10-24",
+        "hora": "12:26",
+        "parecer": "**1. VALUATION & BALANÇO:**\nBBSE3 apresenta fundamentos sólidos, ancorados na liderança absoluta em seguros e previdência no Brasil. A companhia opera com alta eficiência operacional, ROE robusto acima de 30% e excelente conversão de lucro em dividendos (payout elevado). Negocia a múltiplos atrativos frente ao histórico do setor financeiro, oferecendo um dividend yield consistentemente superior à média da B3, o que sustenta seu alto score qualitativo.\n\n**2. RISCO MACRO/SETORIAL:**\nO principal vetor de risco setorial reside na volatilidade da curva de juros de longo prazo e na inflação, que impactam o resultado financeiro e a sinistscipação. Contudo, o modelo de negócios bancasseguro mitiga choques macroeconômicos. Regulamentações sobre o mercado de previdência e concorrentes digitais representam riscos de médio prazo, embora a capilaridade da distribuição via Banco do Brasil funcione como barreira de entrada intransponível.\n\n**3. VEREDITO INSTITUCIONAL:**\nRecomendamos cautela tática imediata. Embora o score estrutural seja 90 (Excelente), o IFR(2) em 0.0 colide com um ConnorsRSI de 80.0, evidenciando uma divergência técnica de curto prazo e estado sobrecomprado com risco iminente de correção. Para os clientes da WF Investimentos: suspender novas compras a R$ 43,68, aguardar o teste da região da média móvel (SMA 200 em R$ 3",
+        "preco_base": 43.68,
+        "fase": "Sobrecomprado (Risco de Correção)",
+        "score": "90 (Excelente)"
+    },
+    "BBDC3": {
+        "ticker": "BBDC3",
+        "data": "2026-10-24",
+        "hora": "12:26",
+        "parecer": "**1. VALUATION & BALANÇO:** \nO Bradesco negocia a múltiplos atrativos, com P/VP historicamente descontado próximo a 1,1x e sustentando um ROE em processo de recuperação gradual rumo aos دوígitou. O balanço apresenta sólida capitalização (Índice de Adequação de Capital confortável), mas a rentabilidade ainda sofre com o legado de provisões passadas. A gestão de custos (índice de eficiência) segue como ponto focal para destravar valor de longo prazo.\n\n**2. RISCO MACRO/SETORIAL:** \nO setor bancário tradicional enfrenta forte competição das fintechs e pressão nas margens financeiras (NII) devido ao custo de captação elevado em um cenário de juros ainda restritivos. O risco regulatório (limite de juros no rotativo e gratuidade) e a sensibilidade à inadimplência no segmento de pessoa física e PMEs continuam sendo os principais vetores de volatilidade monitorados pelo nosso comitê.\n\n**3. VEREDITO INSTITUCIONAL:** \nCom preço (R$ 18,06) firmemente acima da SMA 200 (R$ 15,84) e Score de 83, o ativo confirma sua **Tendência de Alta Forte**. O IFR(2) zerado aponta um timing tático excepcional para novas entradas, mesmo com o ConnorsRSI neutro. A diretriz da WF Investimentos é **COMPRA TÁTICA**, aproveitando o momentum para alocação com foco na reprecificação do ativo",
+        "preco_base": 18.06,
+        "fase": "Tendência de Alta Forte",
+        "score": "83 (Excelente)"
     }
 }
