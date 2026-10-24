@@ -1,6 +1,5 @@
 ﻿import os
 import json
-import re
 from datetime import datetime
 import pandas as pd
 
@@ -17,24 +16,40 @@ def carregar_teses():
             return {}
     return {}
 
-def classificar_tom_tese(ticker, teses):
-    """Identifica o tom do veredito da IA e retorna as classes de cores."""
-    if ticker not in teses:
-        return "Pendente", "bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700", "bg-slate-500"
+def classificar_botao_tese(ticker, teses):
+    if ticker not in teses or not teses[ticker].get("parecer"):
+        return (
+            "Pendente",
+            "background-color: #1e293b; color: #94a3b8; border: 1px solid #334155;",
+            "background-color: #64748b;"
+        )
     
     parecer = str(teses[ticker].get("parecer", "")).lower()
     
-    # 1. Padrões Desfavoráveis / Alerta
     termos_vermelho = ["desfavorável", "desfavoravel", "venda", "alto risco", "deterioração", "desinvestir", "evitar", "pessimista"]
-    # 2. Padrões Favoráveis / Compra
     termos_verde = ["favorável", "favoravel", "compra", "acumular", "acumulação", "positivo", "oportunidade", "atrativo", "alta convicção"]
     
     if any(p in parecer for p in termos_vermelho):
-        return "Desfavorável", "bg-rose-950/40 text-rose-300 border-rose-500/40 hover:bg-rose-900/50", "bg-rose-400 shadow-[0_0_8px_rgba(244,63,94,0.6)]"
+        # Vermelho / Desfavorável
+        return (
+            "Desfavorável",
+            "background-color: rgba(225, 29, 72, 0.2); color: #fda4af; border: 1px solid #f43f5e;",
+            "background-color: #f43f5e; box-shadow: 0 0 6px #f43f5e;"
+        )
     elif any(p in parecer for p in termos_verde):
-        return "Favorável", "bg-emerald-950/40 text-emerald-300 border-emerald-500/40 hover:bg-emerald-900/50", "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
+        # Verde / Favorável
+        return (
+            "Favorável",
+            "background-color: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid #10b981;",
+            "background-color: #10b981; box-shadow: 0 0 6px #10b981;"
+        )
     else:
-        return "Cautela", "bg-amber-950/40 text-amber-300 border-amber-500/40 hover:bg-amber-900/50", "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+        # Amarelo / Cautela / Regular
+        return (
+            "Cautela",
+            "background-color: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid #f59e0b;",
+            "background-color: #f59e0b; box-shadow: 0 0 6px #f59e0b;"
+        )
 
 def formatar_badge_swing(valor):
     v = str(valor).lower()
@@ -71,7 +86,6 @@ def gerar_dashboard_html():
     teses = carregar_teses()
     data_atualizacao = datetime.now().strftime("%d/%m/%Y às %H:%M")
 
-    # Gráficos
     dist_swing = df["Swing Trade"].value_counts().to_dict()
     labels_donut = list(dist_swing.keys())
     valores_donut = list(dist_swing.values())
@@ -95,10 +109,9 @@ def gerar_dashboard_html():
         cor_pos = "text-emerald-400 font-semibold" if "Alta" in str(pos_trade) else "text-slate-400"
         cor_rsi = "text-emerald-400 font-bold" if rsi_val <= 15 else ("text-rose-400 font-bold" if rsi_val >= 85 else "text-slate-200")
 
-        # Botão Inteligente com Selo de Tom da Tese
-        tom_nome, classes_btn, classe_led = classificar_tom_tese(ticker, teses)
-        btn_tese = f'''<button onclick="abrirModalTese('{ticker}')" class="px-2.5 py-1 text-xs font-semibold rounded-md border transition-all duration-150 inline-flex items-center gap-1.5 {classes_btn}">
-            <span class="w-1.5 h-1.5 rounded-full {classe_led}"></span>
+        nome_tom, estilo_btn, estilo_led = classificar_botao_tese(ticker, teses)
+        btn_tese = f'''<button onclick="abrirModalTese('{ticker}')" style="{estilo_btn}" class="px-2.5 py-1 text-xs font-bold rounded-lg cursor-pointer transition-transform hover:scale-105 inline-flex items-center gap-1.5 shadow-sm">
+            <span style="{estilo_led}" class="w-2 h-2 rounded-full inline-block"></span>
             Tese IA
         </button>'''
 
@@ -131,7 +144,7 @@ def gerar_dashboard_html():
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
 
-    <!-- Header Dark Navy Oficial -->
+    <!-- Header Dark Navy -->
     <header class="bg-slate-900 border-b-2 gold-border shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4">
@@ -145,26 +158,32 @@ def gerar_dashboard_html():
             </div>
             <div class="text-right text-xs text-slate-300">
                 <p><i class="fa-regular fa-clock mr-1 gold-text"></i> Atualizado em: <span class="font-bold text-white">{data_atualizacao}</span></p>
-                <p class="text-slate-400">Universo: B3 IBrX 100 • 100% Teses Integradas</p>
+                <p class="text-slate-400">Universo: B3 IBrX 100 • Teses Qualitativas IA</p>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
 
-        <!-- Legenda Visual Rápida -->
-        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300">
-            <span class="font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                <i class="fa-solid fa-brain gold-text"></i> Termômetro das Teses IA:
+        <!-- Barra de Legenda do Termômetro IA -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs shadow-md">
+            <span class="font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <i class="fa-solid fa-brain gold-text"></i> Termômetro das Teses IA (Semafórico):
             </span>
             <div class="flex items-center gap-4">
-                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]"></span> Parecer Favorável</span>
-                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.8)]"></span> Cautela / Neutro</span>
-                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.8)]"></span> Desfavorável</span>
+                <span class="inline-flex items-center gap-1.5 font-medium text-emerald-300">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]"></span> Parecer Favorável
+                </span>
+                <span class="inline-flex items-center gap-1.5 font-medium text-amber-300">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]"></span> Cautela / Regular
+                </span>
+                <span class="inline-flex items-center gap-1.5 font-medium text-rose-300">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_8px_#f43f5e]"></span> Desfavorável
+                </span>
             </div>
         </div>
 
-        <!-- Seção de Gráficos -->
+        <!-- Gráficos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-lg">
                 <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
@@ -185,7 +204,7 @@ def gerar_dashboard_html():
             </div>
         </div>
 
-        <!-- Tabela Consolidada -->
+        <!-- Tabela -->
         <div class="bg-slate-900 rounded-xl border border-slate-800 shadow-xl overflow-hidden">
             <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-900/60">
                 <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -199,7 +218,7 @@ def gerar_dashboard_html():
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm" id="tabelaDados">
-                    <thead class="bg-slate-950/80 text-slate-300 text-xs uppercase tracking-wider border-b border-slate-800">
+                    <thead class="bg-slate-950 text-slate-300 text-xs uppercase tracking-wider border-b border-slate-800">
                         <tr>
                             <th class="px-4 py-3">Ticker</th>
                             <th class="px-4 py-3 text-right">Preço</th>
@@ -208,7 +227,7 @@ def gerar_dashboard_html():
                             <th class="px-4 py-3 text-center">Swing Trade</th>
                             <th class="px-4 py-3 text-center">Position (Sem.)</th>
                             <th class="px-4 py-3 text-center">Score Fund.</th>
-                            <th class="px-4 py-3 text-center">Análise IA</th>
+                            <th class="px-4 py-3 text-center">Parecer IA</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-800 text-slate-200">
@@ -220,24 +239,23 @@ def gerar_dashboard_html():
 
     </main>
 
-    <!-- Modal Dark Navy da Tese IA -->
-    <div id="modalTese" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <!-- Modal Dark Navy para Tese Institucional -->
+    <div id="modalTese" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border-2 gold-border rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div class="flex items-center gap-3">
-                    <span class="w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]"></span>
                     <h3 id="modalTitulo" class="text-lg font-black text-white tracking-wide uppercase">Tese Institucional</h3>
                 </div>
-                <button onclick="fecharModalTese()" class="text-slate-400 hover:text-white text-lg transition-colors">&times;</button>
+                <button onclick="fecharModalTese()" class="text-slate-400 hover:text-white text-2xl font-bold cursor-pointer transition-colors">&times;</button>
             </div>
             
-            <div id="modalCorpo" class="text-xs sm:text-sm text-slate-300 space-y-3 whitespace-pre-line leading-relaxed max-h-[65vh] overflow-y-auto pr-2">
-                <!-- Conteúdo injetado via JS -->
+            <div id="modalCorpo" class="text-xs sm:text-sm text-slate-200 space-y-3 whitespace-pre-line leading-relaxed max-h-[65vh] overflow-y-auto pr-2">
             </div>
 
             <div class="border-t border-slate-800 pt-3 flex justify-between items-center text-xs text-slate-500">
                 <span>WF Investimentos • Inteligência Gemini</span>
-                <button onclick="fecharModalTese()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-lg transition-colors">Fechar</button>
+                <button onclick="fecharModalTese()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-lg cursor-pointer transition-colors">Fechar</button>
             </div>
         </div>
     </div>
@@ -247,7 +265,7 @@ def gerar_dashboard_html():
     </footer>
 
     <script>
-        const BANCO_TESES = {json.dumps(teses)};
+        const BANCO_TESES = {json.dumps(teses, ensure_ascii=False)};
 
         function abrirModalTese(ticker) {{
             const modal = document.getElementById('modalTese');
@@ -259,7 +277,7 @@ def gerar_dashboard_html():
             if (BANCO_TESES[ticker] && BANCO_TESES[ticker].parecer) {{
                 corpo.innerText = BANCO_TESES[ticker].parecer;
             }} else {{
-                corpo.innerText = 'A tese institucional deste ativo está em processamento pelo motor analítico da WF.';
+                corpo.innerText = 'Tese institucional em processamento pelo motor analítico da WF.';
             }}
 
             modal.classList.remove('hidden');
@@ -272,13 +290,11 @@ def gerar_dashboard_html():
             modal.classList.remove('flex');
         }}
 
-        // Fechar com ESC ou clique fora
         window.addEventListener('keydown', (e) => {{ if (e.key === 'Escape') fecharModalTese(); }});
         document.getElementById('modalTese').addEventListener('click', (e) => {{
             if (e.target.id === 'modalTese') fecharModalTese();
         }});
 
-        // Filtro Ticker
         document.getElementById('filtroTicker').addEventListener('keyup', function() {{
             let filter = this.value.toUpperCase();
             let rows = document.querySelectorAll('#tabelaDados tbody tr');
@@ -288,7 +304,6 @@ def gerar_dashboard_html():
             }});
         }});
 
-        // Donut Chart
         new Chart(document.getElementById('chartDonut'), {{
             type: 'doughnut',
             data: {{
@@ -312,7 +327,6 @@ def gerar_dashboard_html():
             }}
         }});
 
-        // Bar Chart
         new Chart(document.getElementById('chartBar'), {{
             type: 'bar',
             data: {{
