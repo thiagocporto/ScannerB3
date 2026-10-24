@@ -45,7 +45,7 @@ def classificar_estilo_botao(ticker, teses):
 
 def gerar_dashboard_html():
     if not os.path.exists(ARQUIVO_CSV):
-        print(f"[ERRO] {ARQUIVO_CSV} não encontrado.")
+        print(f"[ERRO] {ARQUIVO_CSV} nao encontrado.")
         return
 
     df = pd.read_csv(ARQUIVO_CSV)
@@ -53,22 +53,26 @@ def gerar_dashboard_html():
     agora_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
 
     # 1. Gráficos Analíticos Superiores (Chart.js)
-    dist_swing = df["Swing Trade"].value_counts().to_dict()
+    col_swing = "Swing Trade" if "Swing Trade" in df.columns else df.columns[4]
+    dist_swing = df[col_swing].value_counts().to_dict()
     labels_donut = list(dist_swing.keys())
     valores_donut = list(dist_swing.values())
 
-    df_sorted_rsi = df.sort_values(by="RSI(2)").head(8)
+    col_rsi = "RSI(2)" if "RSI(2)" in df.columns else df.columns[3]
+    df_temp = df.copy()
+    df_temp[col_rsi] = pd.to_numeric(df_temp[col_rsi], errors="coerce").fillna(50.0)
+    df_sorted_rsi = df_temp.sort_values(by=col_rsi).head(8)
     labels_bar = df_sorted_rsi["Ticker"].tolist()
-    valores_bar = [float(v) for v in df_sorted_rsi["RSI(2)"].tolist()]
+    valores_bar = [round(float(v), 1) for v in df_sorted_rsi[col_rsi].tolist()]
 
     # 2. Tabela Consolidada Dark Navy
     linhas_tabela = ""
     for _, row in df.iterrows():
         ticker = str(row.get("Ticker", "")).strip().upper()
-        preco = float(row.get("Preço (R$)", 0.0))
-        sma200 = float(row.get("SMA 200", 0.0))
-        rsi2 = float(row.get("RSI(2)", 0.0))
-        crsi = float(row.get("ConnorsRSI", rsi2))
+        preco = float(pd.to_numeric(row.get("Preço (R$)", 0.0), errors="coerce") or 0.0)
+        sma200 = float(pd.to_numeric(row.get("SMA 200", 0.0), errors="coerce") or 0.0)
+        rsi2 = float(pd.to_numeric(row.get("RSI(2)", 0.0), errors="coerce") or 0.0)
+        crsi = float(pd.to_numeric(row.get("ConnorsRSI", rsi2), errors="coerce") or rsi2)
         fase = str(row.get("Swing Trade", "Neutro"))
         score = str(row.get("Score Fundamentalista", "Regular"))
 
@@ -140,7 +144,7 @@ def gerar_dashboard_html():
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
 
-        <!-- Barra do Termômetro Semafórico das Teses IA -->
+        <!-- Barra de Termômetro Semafórico das Teses IA -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs shadow-md">
             <span class="font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                 <i class="fa-solid fa-brain gold-text"></i> Termômetro das Teses IA:
@@ -335,7 +339,7 @@ def gerar_dashboard_html():
 """
     with open(ARQUIVO_HTML, "w", encoding="utf-8") as f:
         f.write(html)
-    print(f"✅ index.html regerado com layout completo restaurado!")
+    print(f"Sucesso: index.html regerado com layout completo às {agora_str}!")
 
 if __name__ == "__main__":
     gerar_dashboard_html()
