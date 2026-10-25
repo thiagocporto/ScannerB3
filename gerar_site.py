@@ -26,13 +26,12 @@ def resolver_fase_tecnica(preco, sma200, rsi2):
         return {"rotulo": "Tendência de Baixa", "status": "venda"}
 
 def escapar_json_script(objeto: dict) -> str:
-    """Serializa JSON com escape rigoroso de tags HTML para mitigar injeção de script (XSS)."""
     bruto = json.dumps(objeto, ensure_ascii=False)
     return bruto.replace("<", "\\u003c").replace(">", "\\u003e")
 
 def construir_painel():
     if not os.path.exists('scanner_fechamento.csv'):
-        print("Erro: CSV de fechamento não encontrado.")
+        print("Erro: CSV não encontrado.")
         return
 
     df = pd.read_csv('scanner_fechamento.csv')
@@ -96,9 +95,7 @@ def construir_painel():
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' data:; img-src 'self' data:; connect-src 'self';">
     <title>WF Investimentos | Scanner Quantitativo</title>
-    <!-- Folha Estatica Pre-compilada Tailwind (Sem JIT de terceiros) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
-    <!-- Chart.js 4.4.1 Oficial Versao Fixada -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
     <style>
         body {{ background-color: #0f172a; color: #cbd5e1; font-family: ui-sans-serif, system-ui, sans-serif; }}
@@ -161,7 +158,7 @@ def construir_painel():
             </div>
         </div>
 
-        <!-- Tabela -->
+        <!-- Tabela Estruturada -->
         <div class="bg-card rounded-xl border border-card shadow-lg overflow-hidden">
             <div class="p-6 border-b border-card flex flex-col sm:flex-row justify-between items-center gap-4">
                 <h2 class="text-xl font-bold text-white">Matriz de Ativos B3</h2>
@@ -205,10 +202,9 @@ def construir_painel():
         </div>
     </div>
 
-    <!-- Script de Dados Protegido contra quebra de tag -->
     <script id="dados-iniciais" type="application/json">{json_seguro}</script>
 
-    <!-- JavaScript com Event Delegation e Renderização Segura via DOM -->
+    <!-- SCRIPT DE MONTAGEM NATIVA E SEGURA DO DOM (ITEM 3) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {{
             const rawElement = document.getElementById('dados-iniciais');
@@ -227,28 +223,34 @@ def construir_painel():
                 "neutro": {{ classe: "btn-neutro", led: "led-neutro", label: "Neutro" }}
             }};
 
+            // 1. MONTAGEM SEGURA DO DOM (createElement + textContent: Imune a XSS)
             function renderizarTabela(lista) {{
-                tbody.textContent = '';
+                tbody.textContent = ''; // Limpa de forma nativa e segura
                 lista.forEach((ativo, idx) => {{
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-slate-800 transition-colors';
 
+                    // Ticker
                     const tdTicker = document.createElement('td');
                     tdTicker.className = 'px-6 py-4 font-bold text-white';
                     tdTicker.textContent = ativo.ticker;
 
+                    // Preço Formatado
                     const tdPreco = document.createElement('td');
                     tdPreco.className = 'px-6 py-4 text-right font-medium text-slate-200';
                     tdPreco.textContent = ativo.preco_br;
 
+                    // SMA 200
                     const tdSma = document.createElement('td');
                     tdSma.className = 'px-6 py-4 text-right text-slate-400';
                     tdSma.textContent = ativo.sma200_br;
 
+                    // IFR(2)
                     const tdIfr = document.createElement('td');
                     tdIfr.className = 'px-6 py-4 text-right font-mono text-slate-300';
                     tdIfr.textContent = ativo.rsi2;
 
+                    // Fase Técnica
                     const tdFase = document.createElement('td');
                     tdFase.className = 'px-6 py-4 text-center';
                     const spanFase = document.createElement('span');
@@ -256,10 +258,12 @@ def construir_painel():
                     spanFase.textContent = ativo.fase;
                     tdFase.appendChild(spanFase);
 
+                    // Score Fundamentalista
                     const tdScore = document.createElement('td');
                     tdScore.className = 'px-6 py-4 text-center text-slate-300 font-medium';
                     tdScore.textContent = ativo.score_fund;
 
+                    // Botão Parecer IA (dataset.index numérico: zero interpolação textual)
                     const tdBtn = document.createElement('td');
                     tdBtn.className = 'px-6 py-4 text-center';
 
@@ -284,12 +288,14 @@ def construir_painel():
 
             renderizarTabela(ativosVisiveis);
 
+            // Filtro em tempo real
             document.getElementById('busca-ticker').addEventListener('input', (e) => {{
                 const termo = e.target.value.toUpperCase();
                 ativosVisiveis = db.ativos.filter(a => a.ticker.includes(termo));
                 renderizarTabela(ativosVisiveis);
             }});
 
+            // 2. DELEGAÇÃO DE EVENTOS ÚNICA (Event Delegation: Sem onclicks inline)
             tbody.addEventListener('click', (e) => {{
                 const botao = e.target.closest('.btn-parecer');
                 if (!botao) return;
@@ -303,6 +309,7 @@ def construir_painel():
                 }}
             }});
 
+            // Fechamento do Modal
             const modal = document.getElementById('modal-tese');
             const fecharModal = () => modal.classList.add('hidden');
             document.getElementById('btn-fechar').addEventListener('click', fecharModal);
@@ -310,6 +317,7 @@ def construir_painel():
             modal.addEventListener('click', (e) => {{ if (e.target === modal) fecharModal(); }});
             document.addEventListener('keydown', (e) => {{ if (e.key === 'Escape') fecharModal(); }});
 
+            // Gráficos Chart.js
             const c = db.grafico_tendencias;
             new Chart(document.getElementById('graficoTendencias').getContext('2d'), {{
                 type: 'doughnut',
@@ -365,9 +373,7 @@ def construir_painel():
                             ticks: {{ color: '#cbd5e1' }}
                         }}
                     }},
-                    plugins: {{
-                        legend: {{ display: false }}
-                    }}
+                    plugins: {{ legend: {{ display: false }} }}
                 }}
             }});
         }});
@@ -377,7 +383,7 @@ def construir_painel():
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Sucesso: index.html regerado com layout seguro, CSP e sem inline handlers!")
+    print("Sucesso: index.html regerado com DOM Nativo Seguro e Event Delegation!")
 
 if __name__ == "__main__":
     construir_painel()
