@@ -297,8 +297,8 @@ def gerar_dashboard_html():
             </div>
         </div>
         <div style="display: flex; align-items: center; gap: 18px;">
-            <a href="https://thiagocporto.github.io/QuantLab/" target="_blank" style="background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; padding: 8px 16px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);">🔬 QUANTLAB</a>
-            <div class="meta">
+            
+            <a href="https://thiagocporto.github.io/QuantLab/" target="_blank" style="background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; padding: 8px 16px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); margin-left: auto; margin-right: 20px;">🔬 QUANTLAB</a><div class="meta">
                 <div>Atualizado em: <strong>{agora_br}</strong></div>
                 <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Horário de Brasília)</div>
                 <div style="margin-top: 4px;">Universo Monitorado: <strong>{len(ativos_validos)} Ativos</strong></div>
@@ -495,3 +495,4 @@ def gerar_dashboard_html():
 
 if __name__ == "__main__":
     gerar_dashboard_html()
+
