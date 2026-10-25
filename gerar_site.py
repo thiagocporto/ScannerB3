@@ -208,7 +208,7 @@ def gerar_dashboard_html():
         body {{ background-color: #0b1120; color: #f8fafc; padding: 24px; }}
         .header {{ display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eab308; padding-bottom: 16px; margin-bottom: 24px; }}
         .logo-box {{ display: flex; align-items: center; gap: 14px; }}
-        .logo-img {{ width: 52px; height: 52px; border-radius: 50%; border: 2px solid #eab308; object-fit: cover; box-shadow: 0 0 12px rgba(234, 179, 8, 0.4); }}
+        .logo-img {{ width: 52px; height: 52px; border-radius: 50%; border: 2px solid #eab308; object-fit: cover; object-position: center top; box-shadow: 0 0 12px rgba(234, 179, 8, 0.4); }}
         .logo-circle {{ width: 52px; height: 52px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }}
         .title h1 {{ font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #ffffff; }}
         .title p {{ font-size: 11px; color: #eab308; font-weight: 600; letter-spacing: 0.5px; }}
