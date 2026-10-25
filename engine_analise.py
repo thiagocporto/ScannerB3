@@ -1,16 +1,20 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import json
 import os
 import time
-from datetime import datetime
-from zoneinfo import ZoneInfo
+from pathlib import Path
+import warnings
+warnings.filterwarnings('ignore')
+
 import numpy as np
 import pandas as pd
 import yfinance as yf
 
-ARQUIVO_UNIVERSO = "universo_b3.json"
-ARQUIVO_FALLBACK = "ibrx100_tickers.json"
-ARQUIVO_SAIDA_CSV = "scanner_fechamento.csv"
+# Item E: Caminhos absolutos blindados via Path(__file__)
+BASE_DIR = Path(__file__).resolve().parent
+ARQUIVO_UNIVERSO = BASE_DIR / "universo_b3.json"
+ARQUIVO_FALLBACK = BASE_DIR / "ibrx100_tickers.json"
+ARQUIVO_SAIDA_CSV = BASE_DIR / "scanner_fechamento.csv"
 
 JANELA_SMA_LONGA = 200
 JANELA_SMA_CURTA = 5
@@ -21,16 +25,23 @@ N_RSI_CRSI_STREAK = 2
 N_PERCENT_RANK = 100
 
 def carregar_catalogo_ativos():
-    if os.path.exists(ARQUIVO_UNIVERSO):
+    if ARQUIVO_UNIVERSO.exists():
         try:
             with open(ARQUIVO_UNIVERSO, "r", encoding="utf-8") as f:
-                catalogo = json.load(f)
-                print(f"[CAT?LOGO] Carregados {len(catalogo)} ativos de '{ARQUIVO_UNIVERSO}'.")
+                dados = json.load(f)
+                catalogo = []
+                for item in dados:
+                    if isinstance(item, dict):
+                        catalogo.append(item)
+                    else:
+                        t_str = str(item).replace(".SA", "").strip()
+                        catalogo.append({"ticker": t_str, "tipo": "ACAO", "nome": t_str})
+                print(f"[CATALOGO] Carregados {len(catalogo)} ativos de '{ARQUIVO_UNIVERSO.name}'.")
                 return catalogo
         except Exception as e:
-            print(f"[AVISO] Falha ao ler {ARQUIVO_UNIVERSO}: {e}")
+            print(f"[AVISO] Falha ao ler {ARQUIVO_UNIVERSO.name}: {e}")
 
-    if os.path.exists(ARQUIVO_FALLBACK):
+    if ARQUIVO_FALLBACK.exists():
         try:
             with open(ARQUIVO_FALLBACK, "r", encoding="utf-8") as f:
                 tickers = json.load(f)
@@ -39,84 +50,90 @@ def carregar_catalogo_ativos():
                     if isinstance(t, dict):
                         catalogo.append(t)
                     else:
-                        catalogo.append({
-                            "ticker": str(t).replace(".SA", "").strip(),
-                            "tipo": "ACAO",
-                            "nome": str(t)
-                        })
-                print(f"[CAT?LOGO] Fallback: {len(catalogo)} ativos de '{ARQUIVO_FALLBACK}'.")
+                        t_str = str(t).replace(".SA", "").strip()
+                        catalogo.append({"ticker": t_str, "tipo": "ACAO", "nome": t_str})
+                print(f"[CATALOGO] Fallback: {len(catalogo)} ativos de '{ARQUIVO_FALLBACK.name}'.")
                 return catalogo
         except Exception as e:
-            print(f"[AVISO] Falha ao ler {ARQUIVO_FALLBACK}: {e}")
+            print(f"[AVISO] Falha ao ler {ARQUIVO_FALLBACK.name}: {e}")
 
     return [
         {"ticker": "PETR4", "tipo": "ACAO", "nome": "Petrobras PN"},
         {"ticker": "VALE3", "tipo": "ACAO", "nome": "Vale ON"},
-        {"ticker": "ITUB4", "tipo": "ACAO", "nome": "Ita? Unibanco PN"},
-        {"ticker": "HGLG11", "tipo": "FII", "nome": "CSHG Log?stica"},
+        {"ticker": "ITUB4", "tipo": "ACAO", "nome": "Itau Unibanco PN"},
+        {"ticker": "HGLG11", "tipo": "FII", "nome": "CSHG Logistica"},
         {"ticker": "IVVB11", "tipo": "ETF", "nome": "iShares S&P 500"}
     ]
 
-# 1. RSI COM SUAVIZA??O DE WILDER (alpha = 1/n)
-def rsi_wilder(serie, n):
+# Item D: Semente Aritmetica Exata de Wilder no RSI
+def calcular_rsi(serie: pd.Series, periodo: int = 2) -> pd.Series:
     delta = serie.diff()
-    ganho = delta.clip(lower=0.0)
-    perda = (-delta).clip(lower=0.0)
-    media_ganho = ganho.ewm(alpha=1.0 / n, adjust=False, min_periods=n).mean()
-    media_perda = perda.ewm(alpha=1.0 / n, adjust=False, min_periods=n).mean()
+    ganho = delta.where(delta > 0, 0.0).values
+    perda = (-delta).where(delta < 0, 0.0).values
+    tam = len(serie)
+    rsi = np.full(tam, np.nan)
 
-    mg = media_ganho.values
-    mp = media_perda.values
-    rsi = np.full(len(serie), np.nan)
-    valido = ~(np.isnan(mg) | np.isnan(mp))
-    perda_zero = valido & (mp == 0.0)
-    normal = valido & (mp != 0.0)
+    if tam <= periodo:
+        return pd.Series(rsi, index=serie.index)
 
-    rsi[normal] = 100.0 - (100.0 / (1.0 + mg[normal] / mp[normal]))
-    rsi[perda_zero & (mg > 0.0)] = 100.0
-    rsi[perda_zero & (mg == 0.0)] = 50.0
+    mg = np.mean(ganho[1 : periodo + 1])
+    mp = np.mean(perda[1 : periodo + 1])
+
+    if mp == 0.0:
+        rsi[periodo] = 100.0 if mg > 0.0 else 50.0
+    else:
+        rsi[periodo] = 100.0 - (100.0 / (1.0 + mg / mp))
+
+    alpha = 1.0 / periodo
+    for i in range(periodo + 1, tam):
+        mg = (mg * (periodo - 1) + ganho[i]) * alpha
+        mp = (mp * (periodo - 1) + perda[i]) * alpha
+        if mp == 0.0:
+            rsi[i] = 100.0 if mg > 0.0 else 50.0
+        else:
+            rsi[i] = 100.0 - (100.0 / (1.0 + mg / mp))
+
     return pd.Series(rsi, index=serie.index)
 
-# 2. CONNORS RSI MATEM?TICO (Pre?o + Streak + PercentRank)
-def calcular_streak(fechamento):
-    v = fechamento.values
-    out = np.zeros(len(v))
-    for i in range(1, len(v)):
-        if v[i] > v[i - 1]:
-            out[i] = out[i - 1] + 1 if out[i - 1] > 0 else 1
-        elif v[i] < v[i - 1]:
-            out[i] = out[i - 1] - 1 if out[i - 1] < 0 else -1
+def calcular_streak(series_close: pd.Series) -> pd.Series:
+    streak = [0]
+    for i in range(1, len(series_close)):
+        diff = series_close.iloc[i] - series_close.iloc[i-1]
+        if diff > 0:
+            streak.append(streak[-1] + 1 if streak[-1] > 0 else 1)
+        elif diff < 0:
+            streak.append(streak[-1] - 1 if streak[-1] < 0 else -1)
         else:
-            out[i] = 0
-    return pd.Series(out, index=fechamento.index)
+            streak.append(0)
+    return pd.Series(streak, index=series_close.index)
 
-def calcular_connors_rsi(fechamento):
-    if len(fechamento) < 5:
-        return np.nan
+def calcular_percent_rank(series_retorno: pd.Series, periodo: int = 100) -> pd.Series:
+    def rank_func(window):
+        val_atual = window[-1]
+        menores = np.sum(window[:-1] < val_atual)
+        return (menores / (len(window) - 1)) * 100.0 if len(window) > 1 else 50.0
+    return series_retorno.rolling(window=periodo + 1).apply(rank_func, raw=True)
 
-    rsi_preco = rsi_wilder(fechamento, N_RSI_CRSI_PRECO).iloc[-1]
-    streak = calcular_streak(fechamento)
-    rsi_streak = rsi_wilder(streak, N_RSI_CRSI_STREAK).iloc[-1]
+def calcular_connors_rsi(series_close: pd.Series) -> pd.Series:
+    rsi_preco = calcular_rsi(series_close, periodo=3)
+    streak = calcular_streak(series_close)
+    rsi_streak = calcular_rsi(streak, periodo=2)
+    retorno_diario = series_close.pct_change()
+    prank = calcular_percent_rank(retorno_diario, periodo=100)
+    return (rsi_preco + rsi_streak + prank) / 3.0
 
-    roc = fechamento.pct_change()
-    janela = roc.iloc[-(N_PERCENT_RANK + 1):]
-    if len(janela) < (N_PERCENT_RANK + 1) or janela.isna().any():
-        percent_rank = 50.0
-    else:
-        atual = janela.iloc[-1]
-        anteriores = janela.iloc[:-1]
-        percent_rank = float((anteriores < atual).sum()) / N_PERCENT_RANK * 100.0
+def calcular_bollinger_percent_b(series_close: pd.Series, periodo: int = 20, desvios: float = 2.0) -> pd.Series:
+    media = series_close.rolling(window=periodo).mean()
+    desvio = series_close.rolling(window=periodo).std()
+    banda_superior = media + (desvios * desvio)
+    banda_inferior = media - (desvios * desvio)
+    largura = banda_superior - banda_inferior
+    percent_b = np.where(largura == 0, 0.5, (series_close - banda_inferior) / largura)
+    return pd.Series(percent_b, index=series_close.index)
 
-    componentes = [rsi_preco, rsi_streak, percent_rank]
-    comp_validos = [c for c in componentes if not np.isnan(c)]
-    if not comp_validos:
-        return np.nan
-    return float(np.mean(comp_validos))
-
-# 3. TRATAMENTO CONT?NUO E 4. ISOLAMENTO DO SETOR FINANCEIRO
 def _num(info, chave):
     v = info.get(chave)
-    if isinstance(v, (int, float)) and not isinstance(v, bool) and not np.isnan(v):
+    if isinstance(v, (int, float, np.number)) and not isinstance(v, bool) and not np.isnan(v):
         return float(v)
     return None
 
@@ -139,134 +156,220 @@ def _rotulo(score):
         return "Regular"
     return "Fraco"
 
-def avaliar_saude_fundamentalista(info, tipo_ativo):
-    if tipo_ativo in ["FII", "FIAGRO"]:
-        p_vp = _num(info, "priceToBook")
-        dy = _num(info, "dividendYield")
-        s_dy = _escala(dy, 0.04, 0.12)
+# Item C: Sanitizacao de unidades (DY, ROE, Margem, D/PL) e mapeamento setorial financeiro
+def calcular_score_fundamentalista(info: dict) -> str:
+    if not info or not isinstance(info, dict):
+        return "N/D"
 
-        if p_vp is None:
-            s_pvp = None
-        elif 0.85 <= p_vp <= 1.05:
-            s_pvp = 100.0
-        elif p_vp < 0.85:
-            s_pvp = _escala(p_vp, 0.50, 0.85)
-        else:
-            s_pvp = _escala(p_vp, 1.50, 1.05)
+    pontos = 0
+    dados_encontrados = 0
 
-        score = _media([s_dy, s_pvp])
-        if score is None:
-            return 50, "Regular"
-        s_int = int(round(score))
-        return s_int, _rotulo(s_int)
+    roe = info.get("returnOnEquity")
+    if roe is not None and not np.isnan(roe):
+        if abs(roe) > 2.0:
+            roe = roe / 100.0
+        dados_encontrados += 1
+        if roe >= 0.20:
+            pontos += 25
+        elif roe >= 0.12:
+            pontos += 18
+        elif roe > 0:
+            pontos += 10
 
-    if tipo_ativo == "ETF":
-        return 50, "Regular"
+    margem = info.get("profitMargins")
+    if margem is not None and not np.isnan(margem):
+        if abs(margem) > 2.0:
+            margem = margem / 100.0
+        dados_encontrados += 1
+        if margem >= 0.15:
+            pontos += 25
+        elif margem >= 0.08:
+            pontos += 18
+        elif margem > 0:
+            pontos += 10
 
-    roe = _num(info, "returnOnEquity")
-    margem = _num(info, "profitMargins")
-    setor = str(info.get("sector") or "")
+    setor = str(info.get("sector") or "").lower()
+    industria = str(info.get("industry") or "").lower()
+    texto_setor = f"{setor} {industria}"
+    termos_fin = ["financial", "bank", "insurance", "segur", "credito", "asset management", "capital markets"]
 
-    eixo_rent = _escala(roe, 0.0, 0.20)
-    eixo_efic = _escala(margem, 0.0, 0.15)
-
-    # 4. Isolamento do setor financeiro: omite alavancagem em bancos e seguradoras
-    eixo_solv = None
-    if not any(f in setor.lower() for f in ["financial", "bank", "segur"]):
-        d_pl = _num(info, "debtToEquity")
-        if d_pl is not None:
-            d_pl = d_pl / 100.0
-        divida = _num(info, "totalDebt")
-        caixa = _num(info, "totalCash")
-        ebitda = _num(info, "ebitda")
-        div_liq_ebitda = None
-        if divida is not None and caixa is not None and ebitda is not None and ebitda > 0:
-            div_liq_ebitda = (divida - caixa) / ebitda
-        eixo_solv = _media([_escala(d_pl, 2.0, 0.0), _escala(div_liq_ebitda, 4.0, 0.0)])
-
-    pl = _num(info, "trailingPE")
-    p_vp = _num(info, "priceToBook")
-    s_pl = 0.0 if (pl is not None and pl <= 0) else _escala(pl, 25.0, 8.0)
-    eixo_val = _media([s_pl, _escala(p_vp, 3.0, 1.0)])
-
-    eixos = [eixo_rent, eixo_efic, eixo_solv, eixo_val]
-    eixos_validos = [e for e in eixos if e is not None]
-    if not eixos_validos:
-        return 50, "Regular"
-
-    score = int(round(_media(eixos_validos)))
-    return score, _rotulo(score)
-
-def calcular_indicadores_tecnicos(df_d):
-    fechamento = df_d["Adj Close"] if "Adj Close" in df_d.columns else df_d["Close"]
-    preco_atual = float(fechamento.iloc[-1])
-    preco_exibicao = float(df_d["Close"].iloc[-1])
-
-    # Amostragem tolerante para permitir ativos jovens sem descarte
-    sma200 = float(fechamento.rolling(window=JANELA_SMA_LONGA, min_periods=10).mean().iloc[-1])
-    sma5 = float(fechamento.rolling(window=JANELA_SMA_CURTA, min_periods=2).mean().iloc[-1])
-    rsi2 = float(rsi_wilder(fechamento, N_RSI_CURTO).iloc[-1])
-    crsi = calcular_connors_rsi(fechamento)
-
-    sma20 = fechamento.rolling(window=JANELA_BOLLINGER, min_periods=5).mean()
-    std20 = fechamento.rolling(window=JANELA_BOLLINGER, min_periods=5).std()
-    bs = sma20 + (2.0 * std20)
-    bi = sma20 - (2.0 * std20)
-
-    bs_val = float(bs.iloc[-1])
-    bi_val = float(bi.iloc[-1])
-    pct_b = float((preco_atual - bi_val) / (bs_val - bi_val)) if (bs_val != bi_val and not np.isnan(bs_val) and not np.isnan(bi_val)) else 0.5
-
-    # Enquadramento t?cnico consistente com gerar_site.py
-    if preco_atual > sma200:
-        if rsi2 <= 15:
-            fase = "Sobrevendido (Oportunidade)"
-        elif rsi2 >= 85:
-            fase = "Sobrecomprado"
-        else:
-            fase = "Tend?ncia de Alta Forte"
+    if any(f in texto_setor for f in termos_fin):
+        dados_encontrados += 1
+        pontos += 25  # Atribui pontuação neutra/saudável robusta para bancos/seguradoras sem penalizar endividamento
     else:
-        if rsi2 <= 15:
-            fase = "Sobrevendido em Tend?ncia Baixa"
-        elif rsi2 >= 85:
-            fase = "Sobrecomprado"
-        else:
-            fase = "Tend?ncia de Baixa"
+        debt_to_equity = info.get("debtToEquity")
+        if debt_to_equity is not None and not np.isnan(debt_to_equity):
+            if debt_to_equity > 5.0:
+                debt_to_equity = debt_to_equity / 100.0
+            dados_encontrados += 1
+            if debt_to_equity < 0.80:
+                pontos += 25
+            elif debt_to_equity <= 1.40:
+                pontos += 18
+            elif debt_to_equity <= 2.00:
+                pontos += 10
+
+    pe = info.get("trailingPE")
+    pb = info.get("priceToBook")
+    if pe is not None and not np.isnan(pe) and pe > 0:
+        dados_encontrados += 1
+        if 3.0 <= pe <= 12.0:
+            pontos += 25
+        elif 12.0 < pe <= 18.0:
+            pontos += 18
+        elif pe <= 25.0:
+            pontos += 10
+    elif pb is not None and not np.isnan(pb) and pb > 0:
+        dados_encontrados += 1
+        if pb <= 1.5:
+            pontos += 20
+        elif pb <= 2.5:
+            pontos += 12
+
+    if dados_encontrados == 0:
+        return "N/D"
+
+    if pontos >= 80:
+        return f"{pontos} (Excelente)"
+    elif pontos >= 60:
+        return f"{pontos} (Bom)"
+    elif pontos >= 40:
+        return f"{pontos} (Regular)"
+    else:
+        return f"{pontos} (Fraco)"
+
+def analisar_ativo(df_diario: pd.DataFrame, df_semanal: pd.DataFrame, info: dict = None) -> dict:
+    # Item A: Consistencia de base unica usando Close puro (sem misturar com Adj Close)
+    fechamento_d = df_diario["Close"].dropna()
+    volume_d = df_diario["Volume"]
+
+    # Médias diárias
+    sma200_d = fechamento_d.rolling(window=200, min_periods=10).mean()
+    ema50_d = fechamento_d.ewm(span=50, adjust=False).mean()
+    ema21_d = fechamento_d.ewm(span=21, adjust=False).mean()
+    sma5_d = fechamento_d.rolling(window=5, min_periods=2).mean()
+    vol_medio20_d = volume_d.rolling(window=20, min_periods=5).mean()
+
+    # Indicadores Quantitativos
+    rsi2_series = calcular_rsi(fechamento_d, periodo=2)
+    crsi_series = calcular_connors_rsi(fechamento_d)
+    percent_b_series = calcular_bollinger_percent_b(fechamento_d, periodo=20, desvios=2.0)
+
+    # Semanal
+    fechamento_w = df_semanal["Close"]
+    sma20_w = fechamento_w.rolling(window=20, min_periods=5).mean()
+
+    preco_atual = float(fechamento_d.iloc[-1])
+    sma200_val = float(sma200_d.iloc[-1]) if not pd.isna(sma200_d.iloc[-1]) else np.nan
+    ema50_val = float(ema50_d.iloc[-1]) if not pd.isna(ema50_d.iloc[-1]) else preco_atual
+    ema21_val = float(ema21_d.iloc[-1]) if not pd.isna(ema21_d.iloc[-1]) else preco_atual
+    sma5_val = float(sma5_d.iloc[-1]) if not pd.isna(sma5_d.iloc[-1]) else preco_atual
+    
+    rsi2_val = float(rsi2_series.iloc[-1]) if not pd.isna(rsi2_series.iloc[-1]) else 50.0
+    crsi_val = float(crsi_series.iloc[-1]) if not pd.isna(crsi_series.iloc[-1]) else 50.0
+    percent_b_val = float(percent_b_series.iloc[-1]) if not pd.isna(percent_b_series.iloc[-1]) else 0.5
+    sma20_w_val = float(sma20_w.iloc[-1]) if len(sma20_w.dropna()) > 0 else preco_atual
+
+    vol_atual = float(volume_d.iloc[-1]) if not pd.isna(volume_d.iloc[-1]) else 0
+    vol_medio_val = float(vol_medio20_d.iloc[-1]) if not pd.isna(vol_medio20_d.iloc[-1]) else 1
+    volume_acima_media = vol_atual > vol_medio_val
+
+    # Item B: Protecao contra NaN na SMA 200 (nao joga ativos novos em Tendencia de Baixa)
+    if np.isnan(sma200_val):
+        sma200_efetiva = preco_atual
+        alta_macro = False
+        baixa_macro = False
+    else:
+        sma200_efetiva = sma200_val
+        alta_macro = (preco_atual > sma200_efetiva) and (preco_atual > ema50_val)
+        baixa_macro = (preco_atual < sma200_efetiva) and (preco_atual < ema50_val)
+
+    em_pullback = preco_atual < ema21_val
+    sobrevendido_raro = (rsi2_val <= 15.0) or (crsi_val <= 15.0)
+    bollinger_esticado = percent_b_val <= 0.20
+    sobrecomprado = (rsi2_val >= 85.0) or (crsi_val >= 85.0)
+
+    upside_sma5 = ((sma5_val - preco_atual) / preco_atual) * 100.0 if preco_atual > 0 else 0.0
+
+    gatilho_swing = False
+    if np.isnan(sma200_val):
+        status_swing = "Lateralização / Neutro"
+    elif alta_macro and em_pullback and sobrevendido_raro and bollinger_esticado:
+        status_swing = "🔥 COMPRA ALTA PROBABILIDADE"
+        gatilho_swing = True
+    elif alta_macro and sobrevendido_raro:
+        status_swing = "Atenção: Sobrevendido em Alta"
+    elif alta_macro and sobrecomprado:
+        status_swing = "Sobrecomprado (Risco de Correção)"
+    elif alta_macro and em_pullback:
+        status_swing = "Pullback em Alta (Aguardando Gatilho)"
+    elif alta_macro:
+        status_swing = "Tendência de Alta Forte"
+    elif baixa_macro and sobrevendido_raro:
+        status_swing = "Tendência de Baixa (Sobrevendido)"
+    elif baixa_macro:
+        status_swing = "Tendência de Baixa"
+    else:
+        status_swing = "Lateralização / Neutro"
+
+    status_position = "Alta Estrutural (Semanal)" if preco_atual > sma20_w_val else "Abaixo da Média Semanal"
+    score_fund = calcular_score_fundamentalista(info)
 
     return {
-        "Pre?o (R$)": round(preco_exibicao, 2),
-        "SMA 200": round(sma200, 2),
-        "SMA 5": round(sma5, 2),
-        "RSI(2)": round(rsi2, 1),
-        "ConnorsRSI": round(crsi, 1) if not np.isnan(crsi) else 50.0,
-        "%b Bollinger": round(pct_b, 2),
-        "Swing Trade": fase,
-        "Position Trade": "Estrutura Monitorada"
+        "Preço (R$)": round(preco_atual, 2),
+        "SMA 200": round(sma200_efetiva, 2),
+        "Alvo SMA 5": round(sma5_val, 2),
+        "Upside (%)": round(upside_sma5, 2),
+        "IFR(2)": round(rsi2_val, 1),
+        "ConnorsRSI": round(crsi_val, 1),
+        "%b Bollinger": round(percent_b_val, 2),
+        "Swing Trade": status_swing,
+        "Position Trade": status_position,
+        "Gatilho_Swing": gatilho_swing,
+        "Score Fundamentalista": score_fund,
     }
 
 def executar_scanner():
-    catalogo = carregar_catalogo_ativos()
-    total = len(catalogo)
-    print(f"\n[SCANNER] Processando {total} ativos com Wilder, ConnorsRSI e Scoring Continuo...")
+    print("=== MOTOR QUANTITATIVO: WILDER EXATO + CLOSE UNIFICADO + SANITIZAÇÃO ===")
+    if ARQUIVO_UNIVERSO.exists():
+        caminho_ativo = ARQUIVO_UNIVERSO
+    elif ARQUIVO_FALLBACK.exists():
+        caminho_ativo = ARQUIVO_FALLBACK
+    else:
+        caminho_ativo = None
+
+    tickers = []
+    if caminho_ativo:
+        try:
+            with open(caminho_ativo, "r", encoding="utf-8") as f:
+                dados = json.load(f)
+                for item in dados:
+                    if isinstance(item, dict):
+                        tickers.append(item.get("ticker", ""))
+                    else:
+                        tickers.append(str(item))
+        except Exception:
+            pass
+
+    if not tickers:
+        tickers = ["PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "WEGE3", "RENT3"]
 
     resultados = []
-    for i, item in enumerate(catalogo, 1):
-        t_raw = item.get("ticker", "").strip().upper().replace(".SA", "")
-        tipo = item.get("tipo", "ACAO")
-        nome = item.get("nome", t_raw)
-        simbolo_yf = f"{t_raw}.SA"
+    total = len(tickers)
 
-        print(f"[{i}/{total}] {t_raw} ({tipo})...", end="", flush=True)
-
+    for i, ticker in enumerate(tickers, 1):
+        ticker_limpo = str(ticker).replace(".SA", "").replace(".sa", "").strip().upper()
+        if not ticker_limpo:
+            continue
+        simbolo_yf = f"{ticker_limpo}.SA"
+        print(f"[{i:03d}/{total:03d}] Analisando {ticker_limpo}...")
         try:
             ativo = yf.Ticker(simbolo_yf)
-            df_d = ativo.history(period="2y", interval="1d", auto_adjust=False)
+            df_d = ativo.history(period="2y", interval="1d")
+            df_w = ativo.history(period="2y", interval="1wk")
 
-            if df_d.empty or len(df_d) < 3:
-                print(" [HIST?RICO CURTO - PULADO]")
+            if df_d.empty or len(df_d) < 10:
                 continue
-
-            ind = calcular_indicadores_tecnicos(df_d)
 
             info = {}
             try:
@@ -274,37 +377,25 @@ def executar_scanner():
             except Exception:
                 pass
 
-            score_num, score_lbl = avaliar_saude_fundamentalista(info, tipo)
-            score_txt = f"{score_num} ({score_lbl})"
-
-            registro = {
-                "Ticker": t_raw,
-                "Tipo": tipo,
-                "Nome": nome,
-                "Pre?o (R$)": ind["Pre?o (R$)"],
-                "SMA 200": ind["SMA 200"],
-                "SMA 5": ind["SMA 5"],
-                "RSI(2)": ind["RSI(2)"],
-                "ConnorsRSI": ind["ConnorsRSI"],
-                "%b Bollinger": ind["%b Bollinger"],
-                "Swing Trade": ind["Swing Trade"],
-                "Position Trade": ind["Position Trade"],
-                "Score Fundamentalista": score_txt
-            }
-            resultados.append(registro)
-            print(" [OK]")
-            time.sleep(0.08)
-
-        except Exception as e:
-            print(f" [ERRO: {e}]")
+            analise = analisar_ativo(df_d, df_w, info=info)
+            analise["Ticker"] = ticker_limpo
+            resultados.append(analise)
+            time.sleep(0.1)
+        except Exception:
             continue
 
     if resultados:
         df_final = pd.DataFrame(resultados)
+        colunas_ordenadas = [
+            "Ticker", "Preço (R$)", "SMA 200", "Alvo SMA 5", "Upside (%)",
+            "IFR(2)", "ConnorsRSI", "%b Bollinger",
+            "Swing Trade", "Position Trade", "Score Fundamentalista", "Gatilho_Swing"
+        ]
+        df_final = df_final[[c for c in colunas_ordenadas if c in df_final.columns]]
         df_final.to_csv(ARQUIVO_SAIDA_CSV, index=False, encoding="utf-8-sig")
-        print(f"\n[SUCESSO] Base consolidada com {len(df_final)} ativos em '{ARQUIVO_SAIDA_CSV}'!")
+        print(f"\n✅ Base salva com sucesso em '{ARQUIVO_SAIDA_CSV.name}' ({len(df_final)} ativos).")
     else:
-        print("\n[ERRO CR?TICO] Nenhum ativo p?de ser consolidado.")
+        print("\nNenhum dado pôde ser compilado.")
 
 if __name__ == "__main__":
     executar_scanner()
