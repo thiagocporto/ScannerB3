@@ -2,3 +2,12 @@
 __pycache__/
 *.pyc
 automacao.log
+
+.env
+testar_*.py
+diagnostico_*.py
+
+monitor_macro.py
+.env
+testar_*.py
+diagnostico_*.py
