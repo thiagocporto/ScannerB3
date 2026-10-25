@@ -288,7 +288,7 @@ def gerar_dashboard_html():
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="header"><div><a href="https://thiagocporto.github.io/QuantLab/" target="_blank" style="background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; padding: 8px 16px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);">🔬 ACESSAR QUANTLAB</a></div>
         <div class="logo-box">
             {logo_html}
             <div class="title">
@@ -369,8 +369,7 @@ def gerar_dashboard_html():
                     <td>{a['score']}</td>
                     <td>
                         <button class="btn-ia {btn_class}" onclick="abrirModal('{a['ticker']}', `{a['parecer']}`)">
-                            Tese IA ({v.upper()})
-                        </button>
+                            Tese IA ({v.upper()})</button> <a href="https://thiagocporto.github.io/QuantLab/?ticker={a[\x27ticker\x27]}" target="_blank" style="background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 5px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-decoration: none; margin-left: 4px;" title="Simular no QuantLab">🔬</a>
                     </td>
                 </tr>
 """
@@ -491,3 +490,4 @@ def gerar_dashboard_html():
 
 if __name__ == "__main__":
     gerar_dashboard_html()
+
