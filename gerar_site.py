@@ -123,6 +123,28 @@ def construir_painel():
         .text-gold {{ color: #fbbf24; }}
         th.cursor-pointer:hover {{ color: #f59e0b; }}
         
+        /* ESTILO DOS CAMPOS DE DIGITAÇÃO COM CURSOR TERMINAL BLINK */
+        .input-terminal {{
+            background-color: #090e17 !important;
+            color: #ffffff !important;
+            border: 1px solid #475569 !important;
+            caret-color: #fbbf24 !important; /* Cursor Amarelo-Ouro piscante estilo PowerShell/Gemini */
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease-in-out;
+        }}
+        .input-terminal:focus {{
+            border-color: #f59e0b !important;
+            background-color: #06090e !important;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.35) !important;
+            outline: none !important;
+        }}
+        .input-terminal::placeholder {{
+            color: #64748b !important;
+            font-family: ui-sans-serif, system-ui, sans-serif !important;
+            letter-spacing: normal;
+        }}
+
         dialog {{
             background: #1e293b;
             color: #cbd5e1;
@@ -180,13 +202,13 @@ def construir_painel():
                     <p class="text-xs text-slate-400 mt-1">Consulte diagnósticos e teses de Ações, FIIs/FIAGROs, BDRs ou ETFs negociados na bolsa.</p>
                 </div>
                 <div class="flex items-center gap-2 w-full md:w-auto">
-                    <input type="text" id="input-consulta-rapida" placeholder="Digite o Ticker (ex: HGLG11, AAPL34, WEGE3)..." class="bg-slate-900 border border-slate-600 text-white font-mono uppercase text-sm rounded-lg p-2.5 w-full md:w-80 focus:outline-none focus:border-amber-500">
-                    <button type="button" id="btn-consultar-ativo" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold text-sm rounded-lg transition-colors whitespace-nowrap shadow">
+                    <!-- Campo com Cursor Terminal Dourado e Fundo Escuro -->
+                    <input type="text" id="input-consulta-rapida" placeholder="Digite o Ticker (ex: HGLG11, AAPL34, WEGE3)..." class="input-terminal uppercase text-sm rounded-lg p-2.5 w-full md:w-80">
+                    <button type="button" id="btn-consultar-ativo" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold text-sm rounded-lg transition-colors whitespace-nowrap shadow cursor-pointer">
                         Consultar
                     </button>
                 </div>
             </div>
-            <!-- Feedback de Ativo Não Encontrado -->
             <div id="alerta-consulta" class="hidden mt-3 p-3 bg-rose-900/40 border border-rose-500/40 rounded-lg text-rose-300 text-xs"></div>
         </div>
 
@@ -212,12 +234,11 @@ def construir_painel():
             </div>
         </div>
 
-        <!-- Matriz de Ativos B3 com Abas de Categorias -->
+        <!-- Matriz de Ativos B3 -->
         <div class="bg-card rounded-xl border border-card shadow-lg overflow-hidden">
             <div class="p-6 border-b border-card flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-800/60">
                 <div>
                     <h2 class="text-xl font-bold text-white">Matriz de Ativos B3</h2>
-                    <!-- Filtro por Classe de Ativo -->
                     <div class="flex items-center gap-1.5 mt-2 flex-wrap" id="filtros-tipo">
                         <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-amber-500 text-slate-900 border border-amber-500 transition-colors" data-tipo="TODOS">Todos (<span id="cont-todos">0</span>)</button>
                         <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="AÇÃO">Ações</button>
@@ -226,7 +247,8 @@ def construir_painel():
                         <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="ETF">ETFs</button>
                     </div>
                 </div>
-                <input type="text" id="busca-ticker" placeholder="Filtrar tabela..." class="bg-slate-900 border border-slate-600 text-white text-sm rounded-lg p-2.5 w-full md:w-64 focus:outline-none focus:border-amber-500">
+                <!-- Campo de Busca na Tabela com Cursor Terminal -->
+                <input type="text" id="busca-ticker" placeholder="Filtrar tabela..." class="input-terminal text-sm rounded-lg p-2.5 w-full md:w-64">
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-slate-300">
@@ -248,7 +270,7 @@ def construir_painel():
         </div>
     </main>
 
-    <!-- Modal <dialog> com Diagnóstico Completo -->
+    <!-- Modal Institucional -->
     <dialog id="modal-dialog" aria-labelledby="modal-titulo">
         <div class="bg-slate-900 px-6 py-4 border-b border-card flex justify-between items-center">
             <div>
@@ -258,22 +280,20 @@ def construir_painel():
                     <span>Tese Institucional: <span id="modal-ticker" class="text-emerald-400 font-mono"></span></span>
                 </h3>
             </div>
-            <button type="button" id="btn-dialog-close-x" class="text-slate-400 hover:text-white text-2xl font-bold leading-none" aria-label="Fechar modal">&times;</button>
+            <button type="button" id="btn-dialog-close-x" class="text-slate-400 hover:text-white text-2xl font-bold leading-none cursor-pointer" aria-label="Fechar modal">&times;</button>
         </div>
         <div class="p-6 space-y-4">
-            <!-- Resumo dos Indicadores Chave no Topo do Modal -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700 text-xs">
                 <div><span class="text-slate-500 block">Preço:</span> <b id="modal-resumo-preco" class="text-white">-</b></div>
                 <div><span class="text-slate-500 block">Média 200:</span> <b id="modal-resumo-sma" class="text-slate-300">-</b></div>
                 <div><span class="text-slate-500 block">IFR(2):</span> <b id="modal-resumo-ifr" class="text-amber-400 font-mono">-</b></div>
                 <div><span class="text-slate-500 block">Score:</span> <b id="modal-resumo-score" class="text-emerald-400">-</b></div>
             </div>
-            <!-- Parecer dissertativo da IA -->
             <p id="modal-texto" class="text-slate-200 whitespace-pre-line leading-relaxed text-sm"></p>
         </div>
         <div class="bg-slate-900 px-6 py-4 border-t border-card flex justify-between items-center">
             <span class="text-[11px] text-slate-500">Uso interno de apoio decisório • WF Investimentos</span>
-            <button type="button" id="btn-dialog-close" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors" aria-label="Fechar parecer">Fechar</button>
+            <button type="button" id="btn-dialog-close" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer" aria-label="Fechar parecer">Fechar</button>
         </div>
     </dialog>
 
@@ -396,9 +416,9 @@ def construir_painel():
                     const iaInfo = TEMA_IA[ativo.sinal_ia] || TEMA_IA["neutro"];
                     const btn = document.createElement('button');
                     btn.type = 'button';
-                    btn.className = 'btn-tese px-3 py-1 rounded-lg border text-xs font-bold uppercase tracking-wider inline-flex items-center space-x-1.5 transition-colors ' + iaInfo.classe;
+                    btn.className = 'btn-tese px-3 py-1 rounded-lg border text-xs font-bold uppercase tracking-wider inline-flex items-center space-x-1.5 transition-colors cursor-pointer ' + iaInfo.classe;
                     btn.dataset.ticker = ativo.ticker;
-                    btn.setAttribute('aria-label', `Abrir tese institucional de ${{ativo.ticker}}`);
+                    btn.setAttribute('aria-label', `Abrir tese de ${{ativo.ticker}}`);
                     
                     const spanIcone = document.createElement('span');
                     spanIcone.textContent = iaInfo.icone;
@@ -429,7 +449,6 @@ def construir_painel():
                 dialog.showModal();
             }}
 
-            // Evento da Tabela
             tbody.addEventListener('click', (e) => {{
                 const btn = e.target.closest('.btn-tese');
                 if (!btn) return;
@@ -451,7 +470,7 @@ def construir_painel():
                 if (ativo) {{
                     exibirModalAtivo(ativo);
                 }} else {{
-                    alertaConsulta.textContent = `O ativo '${{t}}' não foi encontrado no scanner diário. Verifique se o código está correto ou adicione-o à base ampliada.`;
+                    alertaConsulta.textContent = `O ativo '${{t}}' não foi localizado no scanner diário. Verifique se o código está correto ou adicione-o à base ampliada.`;
                     alertaConsulta.classList.remove('hidden');
                 }}
             }}
@@ -465,7 +484,7 @@ def construir_painel():
             document.getElementById('btn-dialog-close-x').addEventListener('click', fecharDialog);
             dialog.addEventListener('click', (e) => {{ if (e.target === dialog) fecharDialog(); }});
 
-            // Filtros de Categoria (Abas)
+            // Abas de Categorias
             document.querySelectorAll('.btn-filtro-tipo').forEach(btn => {{
                 btn.addEventListener('click', function() {{
                     document.querySelectorAll('.btn-filtro-tipo').forEach(b => {{
@@ -479,13 +498,13 @@ def construir_painel():
                 }});
             }});
 
-            // Campo de Busca na Tabela
+            // Busca na Tabela
             document.getElementById('busca-ticker').addEventListener('input', (e) => {{
                 termoBusca = e.target.value.trim().toUpperCase();
                 renderizarTabela();
             }});
 
-            // Ordenação por Colunas
+            // Ordenação
             function ordenarPor(campo) {{
                 if (ordenacaoAtual.campo === campo) {{
                     ordenacaoAtual.ascendente = !ordenacaoAtual.ascendente;
@@ -521,7 +540,7 @@ def construir_painel():
 
             renderizarTabela();
 
-            // Gráfico 1: Rosca de Fases
+            // Gráfico 1: Rosca
             const contagemFases = {{}};
             db.ativos.forEach(a => {{
                 const rotulo = MAPA_FASES[a.fase_cod]?.rotulo || "Outros";
@@ -546,7 +565,7 @@ def construir_painel():
                 }}
             }});
 
-            // Gráfico 2: Top 8 Pullbacks
+            // Gráfico 2: Top Pullbacks
             const topPullbacks = [...db.ativos]
                 .filter(a => !isNaN(a.rsi2))
                 .sort((a, b) => a.rsi2 - b.rsi2)
@@ -583,7 +602,7 @@ def construir_painel():
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Sucesso: index.html atualizado com Consulta Individual, Filtros de Classe e Seguranca Rigorosa!")
+    print("Sucesso: index.html regerado com input estilo Terminal e Cursor Dourado Blink!")
 
 if __name__ == "__main__":
     construir_painel()
