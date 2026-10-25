@@ -96,24 +96,24 @@ def construir_painel():
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' data:; img-src 'self' data:; connect-src 'self';">
     <title>WF Investimentos | Scanner Quantitativo</title>
-    <!-- Tailwind CSS Estático Pré-Compilado (Sem JIT runtime) -->
+    <!-- Folha Estatica Pre-compilada Tailwind (Sem JIT de terceiros) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
-    <!-- Chart.js 4.4.1 Oficial com Versão Fixa, SRI e crossorigin -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
+    <!-- Chart.js 4.4.1 Oficial Versao Fixada -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
     <style>
         body {{ background-color: #0f172a; color: #cbd5e1; font-family: ui-sans-serif, system-ui, sans-serif; }}
         .bg-card {{ background-color: #1e293b; }}
         .border-card {{ border-color: #334155; }}
         .border-gold {{ border-color: #f59e0b; }}
         .text-gold {{ color: #fbbf24; }}
-        .btn-compra {{ background-color: rgba(6, 78, 59, 0.5); color: #34d399; border-color: rgba(52, 211, 153, 0.4); }}
-        .btn-compra:hover {{ background-color: rgba(6, 78, 59, 0.8); }}
+        .btn-compra {{ background-color: rgba(6, 78, 59, 0.4); color: #34d399; border-color: rgba(52, 211, 153, 0.4); }}
+        .btn-compra:hover {{ background-color: rgba(6, 78, 59, 0.7); }}
         .led-compra {{ background-color: #34d399; }}
-        .btn-alerta {{ background-color: rgba(120, 53, 15, 0.5); color: #fbbf24; border-color: rgba(251, 191, 36, 0.4); }}
-        .btn-alerta:hover {{ background-color: rgba(120, 53, 15, 0.8); }}
+        .btn-alerta {{ background-color: rgba(120, 53, 15, 0.4); color: #fbbf24; border-color: rgba(251, 191, 36, 0.4); }}
+        .btn-alerta:hover {{ background-color: rgba(120, 53, 15, 0.7); }}
         .led-alerta {{ background-color: #fbbf24; }}
-        .btn-venda {{ background-color: rgba(136, 19, 55, 0.5); color: #fb7185; border-color: rgba(251, 113, 133, 0.4); }}
-        .btn-venda:hover {{ background-color: rgba(136, 19, 55, 0.8); }}
+        .btn-venda {{ background-color: rgba(136, 19, 55, 0.4); color: #fb7185; border-color: rgba(251, 113, 133, 0.4); }}
+        .btn-venda:hover {{ background-color: rgba(136, 19, 55, 0.7); }}
         .led-venda {{ background-color: #fb7185; }}
         .btn-neutro {{ background-color: #1e293b; color: #94a3b8; border-color: #475569; }}
         .btn-neutro:hover {{ background-color: #334155; }}
@@ -205,10 +205,10 @@ def construir_painel():
         </div>
     </div>
 
-    <!-- Dados Sanitizados e Protegidos contra quebra de tag -->
+    <!-- Script de Dados Protegido contra quebra de tag -->
     <script id="dados-iniciais" type="application/json">{json_seguro}</script>
 
-    <!-- JavaScript com Event Delegation e Construção Segura via DOM -->
+    <!-- JavaScript com Event Delegation e Renderização Segura via DOM -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {{
             const rawElement = document.getElementById('dados-iniciais');
@@ -227,7 +227,6 @@ def construir_painel():
                 "neutro": {{ classe: "btn-neutro", led: "led-neutro", label: "Neutro" }}
             }};
 
-            // Renderização sem innerHTML nos dados dinâmicos (Proteção contra XSS)
             function renderizarTabela(lista) {{
                 tbody.textContent = '';
                 lista.forEach((ativo, idx) => {{
@@ -268,7 +267,7 @@ def construir_painel():
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'btn-parecer px-3 py-1 rounded-lg border text-xs font-semibold uppercase tracking-wider inline-flex items-center space-x-2 ' + conf.classe;
-                    btn.dataset.index = idx; // Vincula apenas o índice numérico
+                    btn.dataset.index = idx;
 
                     const led = document.createElement('span');
                     led.className = 'w-2 h-2 rounded-full inline-block ' + conf.led;
@@ -285,14 +284,12 @@ def construir_painel():
 
             renderizarTabela(ativosVisiveis);
 
-            // Filtro em tempo real
             document.getElementById('busca-ticker').addEventListener('input', (e) => {{
                 const termo = e.target.value.toUpperCase();
                 ativosVisiveis = db.ativos.filter(a => a.ticker.includes(termo));
                 renderizarTabela(ativosVisiveis);
             }});
 
-            // Delegação de Eventos única no tbody (Elimina todos os onclicks inline)
             tbody.addEventListener('click', (e) => {{
                 const botao = e.target.closest('.btn-parecer');
                 if (!botao) return;
@@ -306,7 +303,6 @@ def construir_painel():
                 }}
             }});
 
-            // Controle do Modal
             const modal = document.getElementById('modal-tese');
             const fecharModal = () => modal.classList.add('hidden');
             document.getElementById('btn-fechar').addEventListener('click', fecharModal);
@@ -314,7 +310,6 @@ def construir_painel():
             modal.addEventListener('click', (e) => {{ if (e.target === modal) fecharModal(); }});
             document.addEventListener('keydown', (e) => {{ if (e.key === 'Escape') fecharModal(); }});
 
-            // Gráfico 1: Rosca de Tendências
             const c = db.grafico_tendencias;
             new Chart(document.getElementById('graficoTendencias').getContext('2d'), {{
                 type: 'doughnut',
@@ -339,7 +334,6 @@ def construir_painel():
                 }}
             }});
 
-            // Gráfico 2: Top 8 Menores IFR
             const topSobrevendidos = [...db.ativos]
                 .filter(a => !isNaN(parseFloat(a.rsi2)))
                 .sort((a, b) => parseFloat(a.rsi2) - parseFloat(b.rsi2))
@@ -383,7 +377,7 @@ def construir_painel():
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Site seguro (Anti-XSS, SRI, CSP e sem inline handlers) gerado com sucesso!")
+    print("Sucesso: index.html regerado com layout seguro, CSP e sem inline handlers!")
 
 if __name__ == "__main__":
     construir_painel()
