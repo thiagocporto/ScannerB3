@@ -1,134 +1,121 @@
-import os
+ï»¿# -*- coding: utf-8 -*-
 import json
+import os
 import time
-from datetime import datetime
 import pandas as pd
-import requests
+from google import genai
+from google.genai import types
 
-ARQUIVO_CSV = r"D:\ScannerB3\scanner_fechamento.csv"
-ARQUIVO_TESES = r"D:\ScannerB3\teses_qualitativas.json"
+def carregar_dados():
+    csv_file = "scanner_fechamento.csv"
+    if not os.path.exists(csv_file):
+        print("Aviso: scanner_fechamento.csv nao encontrado.")
+        return []
+    
+    df = pd.read_csv(csv_file)
+    
+    tipos_map = {}
+    if os.path.exists("universo_b3.json"):
+        with open("universo_b3.json", "r", encoding="utf-8") as f:
+            for item in json.load(f):
+                tipos_map[item["ticker"]] = {
+                    "tipo": item.get("tipo", "ACAO"),
+                    "nome": item.get("nome", item["ticker"])
+                }
+    
+    ativos = []
+    for _, row in df.iterrows():
+        t = str(row.get("Ticker", "")).strip().upper()
+        if not t or t == "NAN": 
+            continue
+        
+        info = tipos_map.get(t, {"tipo": "ACAO", "nome": t})
+        ativos.append({
+            "ticker": t,
+            "tipo": info["tipo"],
+            "nome": info["nome"],
+            "preco": row.get("Preco (R$)", row.get("PreÃ§o (R$)", 0.0)),
+            "sma200": row.get("SMA 200", 0.0),
+            "rsi2": row.get("RSI(2)", 50.0),
+            "score": row.get("Score Fundamentalista", 50)
+        })
+    return ativos
 
-# 1. Carrega a chave diretamente do .env ou ficheiros de texto locais
-API_KEY = None
-for nome_arq in [".env", "chave.txt", "api_key.txt"]:
-    if os.path.exists(nome_arq):
-        with open(nome_arq, "r", encoding="utf-8") as f:
-            for linha in f.read().splitlines():
-                if "API_KEY" in linha or "AIza" in linha:
-                    parte = linha.split("=")[-1].strip().strip('"').strip("'")
-                    if parte:
-                        API_KEY = parte
-                        break
-        if API_KEY:
-            break
-
-if not API_KEY:
-    API_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
-
-MODELO_HOMOLOGADO = "gemini-flash-lite-latest"
-URL_GENERATE = f"https://generativelanguage.googleapis.com/v1beta/models/{MODELO_HOMOLOGADO}:generateContent?key={API_KEY}"
-
-session = requests.Session()
-session.headers.update({"Content-Type": "application/json"})
-
-def gerar_tese_estruturada(ticker, preco, sma200, rsi2, fase, score):
-    prompt = f"""
-Atue como Analista Quant da WF Investimentos. Avalie {ticker}.
-DADOS: Preço: R$ {preco:.2f} | Média 200: R$ {sma200:.2f} | IFR(2): {rsi2}
-CENÁRIO: {fase} | FUNDAMENTOS: {score}
-
-Sintetize a tese sem fantasiar preços-alvo que não estão nos dados. Justifique o risco e a saúde financeira com os números acima.
-"""
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "responseMimeType": "application/json",
-            "responseSchema": {
-                "type": "OBJECT",
-                "properties": {
-                    "veredito_sinal": {
-                        "type": "STRING",
-                        "enum": ["compra", "alerta", "venda", "neutro"],
-                        "description": "Cor que ditará o botão da IA na tabela."
-                    },
-                    "parecer_limpo": {
-                        "type": "STRING",
-                        "description": "Texto em 3 parágrafos curtos diretos (Balanço, Macro, Veredito). Sem uso de asteriscos. Max 400 caracteres."
-                    }
-                },
-                "required": ["veredito_sinal", "parecer_limpo"]
-            },
-            "maxOutputTokens": 400,
-            "temperature": 0.0
-        }
-    }
-
-    for tentativa in range(3):
-        try:
-            resp = session.post(URL_GENERATE, json=payload, timeout=20)
-            if resp.status_code == 200:
-                texto_json = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
-                return json.loads(texto_json)
-            elif resp.status_code == 429:
-                time.sleep(6)
-            elif resp.status_code == 503:
-                time.sleep(4)
-        except Exception:
-            time.sleep(2)
-    return None
-
-def executar_varredura():
-    print("=== MOTOR QUALITATIVO SEGURO (MODELO FLASH-LITE) ===")
-    if not os.path.exists(ARQUIVO_CSV):
-        print("Erro: CSV de fechamento não encontrado.")
+def executar_analise_ia():
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        print("Erro: Variavel GEMINI_API_KEY nao encontrada no ambiente.")
         return
 
-    df = pd.read_csv(ARQUIVO_CSV)
+    client = genai.Client(api_key=api_key)
+    ARQUIVO_TESES = "teses_qualitativas.json"
     
     teses = {}
     if os.path.exists(ARQUIVO_TESES):
-        with open(ARQUIVO_TESES, "r", encoding="utf-8") as f:
-            teses = json.load(f)
+        try:
+            with open(ARQUIVO_TESES, "r", encoding="utf-8") as f:
+                teses = json.load(f)
+        except Exception:
+            teses = {}
 
-    hoje_str = datetime.now().strftime("%Y-%m-%d")
-    total = len(df)
-    concluidos = 0
+    ativos = carregar_dados()
+    pendentes = [a for a in ativos if a["ticker"] not in teses]
+    total = len(pendentes)
     
-    for idx, row in df.iterrows():
-        ticker = str(row.get("Ticker", "")).strip().upper()
-        if not ticker or ticker == "NAN": continue
-        
-        # Só processa se não existir ou se faltar a chave veredito_sinal
-        if ticker not in teses or "veredito_sinal" not in teses.get(ticker, {}):
-            print(f"[{idx+1}/{total}] A gerar JSON para #{ticker}...", end="", flush=True)
-            
-            preco = float(row.get("Preço (R$)", 0.0))
-            sma200 = float(row.get("SMA 200", 0.0))
-            rsi2 = row.get("RSI(2)", 0.0)
-            fase = row.get("Swing Trade", "Neutro")
-            score = row.get("Score Fundamentalista", "Regular")
-            
-            res = gerar_tese_estruturada(ticker, preco, sma200, rsi2, fase, score)
-            
-            if res:
-                teses[ticker] = {
-                    "data": hoje_str,
-                    "parecer": res["parecer_limpo"].replace("**", ""),
-                    "veredito_sinal": res["veredito_sinal"]
-                }
-                with open(ARQUIVO_TESES, "w", encoding="utf-8") as f:
-                    json.dump(teses, f, indent=4, ensure_ascii=False)
-                print(f" OK ({res['veredito_sinal']})")
-                concluidos += 1
-            else:
-                print(" Falha")
-            
-            # Intervalo para respeitar os limites de requisições por minuto
-            time.sleep(4.2)
-        else:
-            concluidos += 1
+    print(f"\nIniciando Varredura Qualitativa da IA ({total} pendentes de {len(ativos)} ativos)...")
 
-    print(f"\nConcluído com sucesso! {concluidos}/{total} teses consolidadas.")
+    for i, a in enumerate(pendentes, 1):
+        ticker = a["ticker"]
+        tipo = a["tipo"]
+        nome = a["nome"]
+        
+        print(f"[{i}/{total}] Analisando {ticker} ({tipo} - {nome})...", end="", flush=True)
+
+        prompt = f"""Voce e o Analista-Chefe da WF Investimentos.
+Analise o ativo '{ticker}' ({nome}), classe: {tipo}.
+Dados Quantitativos:
+- Preco Atual: R$ {a['preco']}
+- SMA 200: R$ {a['sma200']}
+- IFR(2) Larry Connors: {a['rsi2']}
+- Score de Saude: {a['score']}/100
+
+Diretrizes para {tipo}:
+- Se ACAO ou BDR: analise valuation, solidez financeira e risco macro/politico.
+- Se FII ou FIAGRO: analise dividend yield, vacancia/credito e sensibilidade a taxa Selic.
+- Se ETF: analise a tese do indice replicado, risco sistemico e momento de reversao a media.
+
+Retorne EXCLUSIVAMENTE um JSON valido no seguinte formato:
+{{
+    "veredito_sinal": "compra" | "alerta" | "venda" | "neutro",
+    "parecer": "1. VISAO FUNDAMENTALISTA / MACRO:\\n...\\n\\n2. TIMING QUANTITATIVO (IFR2 & MEDIAS):\\n...\\n\\n3. DIRETRIZ INSTITUCIONAL WF:\\n..."
+}}
+"""
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.2
+                )
+            )
+            res_json = json.loads(response.text)
+            teses[ticker] = {
+                "veredito_sinal": res_json.get("veredito_sinal", "neutro"),
+                "parecer": res_json.get("parecer", "Parecer em analise.")
+            }
+            
+            with open(ARQUIVO_TESES, "w", encoding="utf-8") as f:
+                json.dump(teses, f, indent=4, ensure_ascii=False)
+            
+            print(f" OK ({res_json.get('veredito_sinal')})")
+            time.sleep(4.2)
+            
+        except Exception as e:
+            print(f" Erro: {e}")
+            time.sleep(2)
+
+    print("\nVarredura qualitativa concluida com sucesso!")
 
 if __name__ == "__main__":
-    executar_varredura()
+    executar_analise_ia()
