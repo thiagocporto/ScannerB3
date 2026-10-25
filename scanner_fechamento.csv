@@ -1,94 +1,211 @@
-Ticker,Preço (R$),SMA 200,RSI(2),Score Fundamentalista
-ABEV3,16.68,15.51,35.3,100
-ALOS3,35.14,27.97,68.8,90
-ALPA4,16.94,13.12,29.5,100
-ASAI3,13.8,9.04,66.6,65
-AURE3,15.24,12.19,68.8,20
-B3SA3,23.65,16.68,75.1,85
-BBAS3,24.72,22.04,86.9,80
-BBDC3,18.06,15.84,51.3,90
-BBDC4,20.37,18.23,46.6,90
-BBSE3,43.68,35.8,94.6,90
-BPAC11,79.82,57.86,50.1,75
-BRAP4,19.01,22.4,30.1,65
-CMIG4,11.67,11.14,36.6,100
-CSAN3,5.2,4.63,71.7,10
-CSNA3,6.07,6.58,73.9,20
-CVCB3,1.57,1.81,56.9,10
-CYRE3,35.57,25.63,95.5,100
-ENEV3,31.48,25.21,16.8,65
-EGIE3,30.79,31.46,16.5,75
-EQTL3,48.88,40.4,63.8,50
-GGBR4,25.22,22.54,15.8,75
-HAPV3,8.83,10.38,54.6,45
-ITSA4,15.31,13.54,19.0,100
-ITUB4,48.3,42.53,47.4,90
-KLBN11,18.22,18.35,55.1,50
-LREN3,14.58,13.46,57.9,90
-MGLU3,12.69,7.31,44.1,75
-MRVE3,8.23,6.64,72.5,20
-MULT3,37.53,30.4,66.0,100
-PETR3,65.24,46.62,79.0,100
-PETR4,58.68,42.06,81.2,100
-PRIO3,73.8,59.77,100.0,100
-RADL3,20.28,20.78,13.0,75
-RAIZ4,0.43,0.46,83.6,25
-RDOR3,43.73,37.55,41.4,65
-RENT3,52.42,42.33,66.5,65
-SANB11,27.53,28.92,21.7,80
-SBSP3,31.98,28.95,48.0,100
-SUZB3,43.06,46.42,80.9,75
-TAEE11,44.75,40.31,26.1,95
-TIMS3,19.09,22.36,31.8,100
-TOTS3,44.35,34.43,98.4,85
-UGPA3,38.55,29.42,14.3,90
-USIM5,6.63,7.62,61.1,45
-VALE3,61.9,77.12,19.3,75
-VIVT3,32.43,34.1,37.6,90
-WEGE3,42.73,47.63,4.7,85
-MXRF11,9.44,9.15,41.6,80
-HGLG11,159.66,147.93,92.7,90
-XPML11,104.61,98.1,14.8,40
-KNIP11,93.2,87.67,38.8,40
-KNCR11,105.55,101.32,16.8,90
-BTLG11,104.8,98.28,79.8,75
-VISC11,114.2,103.5,92.3,25
-HGRU11,125.47,121.05,55.8,25
-XPLG11,101.0,93.17,49.2,40
-CPTS11,7.77,7.28,64.7,25
-TGAR11,51.95,57.57,91.3,25
-VGIR11,9.59,9.09,49.5,25
-RBRR11,76.0,76.02,99.4,25
-HGCR11,98.69,91.03,62.1,25
-TRXF11,71.9,82.61,50.5,40
-VGIA11,9.1,8.81,96.8,25
-RZTR11,79.9,85.86,58.1,40
-AAPL34,86.65,75.37,42.5,85
-NVDC34,21.94,21.72,16.3,85
-MSFT34,108.97,93.17,7.3,85
-AMZO34,62.03,62.44,7.5,100
-GOGL34,133.71,145.89,1.0,100
-TSLA34,58.02,62.04,28.0,65
-DISB34,37.44,35.34,37.5,75
-NFLX34,6.55,8.45,28.9,100
-MELI34,75.4,78.11,8.0,50
-BOVA11,201.69,178.03,39.4,80
-BRAX11,171.9,151.74,48.5,80
-SMAL11,137.16,114.91,66.7,80
-NDIV11,133.28,126.5,58.7,80
-DIVO11,146.12,129.7,62.8,80
-FIND11,225.5,185.31,65.2,80
-MATB11,61.1,63.04,36.3,80
-IVVB11,430.0,421.75,9.5,80
-SPXI11,52.2,70.84,8.1,80
-NASD11,20.15,19.9,12.2,80
-ACWI11,16.5,16.49,9.3,80
-XINA11,6.34,7.46,1.7,80
-GOLD11,20.74,24.08,4.1,80
-HASH11,52.0,49.61,20.0,80
-QBTC11,24.3,22.91,20.1,80
-QETH11,8.35,8.07,19.5,80
-B5P211,116.15,107.59,98.3,80
-IMAB11,126.24,113.59,97.3,80
-IB5M11,139.32,123.7,97.9,80
-LFTS11,161.86,153.92,99.8,80
+﻿Ticker,Tipo,Nome,Preço (R$),SMA 200,SMA 5,RSI(2),ConnorsRSI,Percent_B,Swing Trade,Score Fundamentalista
+ABEV3,AÇÃO,Ambev,16.68,15.51,16.74,48.8,48.8,0.72,Tendência de Alta Forte,85 (Excelente)
+ALOS3,AÇÃO,Allos,35.14,27.97,34.93,58.9,58.9,0.71,Tendência de Alta Forte,65 (Bom)
+ALPA4,AÇÃO,Alpargatas,16.94,13.12,17.47,21.3,21.3,0.62,Tendência de Alta Forte,85 (Excelente)
+ASAI3,AÇÃO,Assaí,13.8,9.04,13.7,47.0,47.0,0.8,Tendência de Alta Forte,70 (Bom)
+AURE3,AÇÃO,Auren Energia,15.24,12.19,15.08,50.6,50.6,0.64,Tendência de Alta Forte,50 (Regular)
+B3SA3,AÇÃO,B3,23.65,16.68,23.32,60.6,60.6,0.74,Tendência de Alta Forte,85 (Excelente)
+BBAS3,AÇÃO,Banco do Brasil,24.72,22.04,24.18,81.6,81.6,0.71,Tendência de Alta Forte,75 (Bom)
+BBDC3,AÇÃO,Bradesco ON,18.06,15.84,18.06,29.4,29.4,0.58,Tendência de Alta Forte,75 (Bom)
+BBDC4,AÇÃO,Bradesco PN,20.37,18.23,20.4,25.9,25.9,0.56,Tendência de Alta Forte,75 (Bom)
+BBSE3,AÇÃO,BB Seguridade,43.68,35.8,42.6,100.0,100.0,0.97,Sobrecomprado (Risco),85 (Excelente)
+BEEF3,AÇÃO,Minerva,4.27,4.24,4.29,37.5,37.5,0.57,Tendência de Alta Forte,70 (Bom)
+BPAC11,AÇÃO,BTG Pactual,79.82,57.86,79.97,24.7,24.7,0.68,Tendência de Alta Forte,85 (Excelente)
+BRAP4,AÇÃO,Bradespar,19.01,22.4,19.51,22.4,22.4,0.0,Tendência de Baixa,50 (Regular)
+BRKM5,AÇÃO,Braskem,4.16,7.81,4.11,76.2,76.2,0.5,Tendência de Baixa,50 (Regular)
+CMIG4,AÇÃO,Cemig,11.67,11.14,11.69,20.0,20.0,0.53,Tendência de Alta Forte,85 (Excelente)
+CMIN3,AÇÃO,CSN Mineração,4.99,5.16,4.97,71.4,71.4,0.6,Tendência de Baixa,85 (Excelente)
+COGN3,AÇÃO,Cogna,3.1,2.81,3.1,90.0,90.0,0.73,Sobrecomprado (Risco),55 (Regular)
+CPFE3,AÇÃO,CPFL Energia,49.79,46.19,49.65,93.8,93.8,0.61,Sobrecomprado (Risco),85 (Excelente)
+CSAN3,AÇÃO,Cosan,5.2,4.63,5.14,72.0,72.0,0.69,Tendência de Alta Forte,50 (Regular)
+CSNA3,AÇÃO,CSN,6.07,6.58,5.83,68.4,68.4,0.52,Tendência de Baixa,50 (Regular)
+CVCB3,AÇÃO,CVC Brasil,1.57,1.81,1.57,40.0,40.0,0.56,Tendência de Baixa,50 (Regular)
+CYRE3,AÇÃO,Cyrela,35.57,25.63,34.26,93.4,93.4,0.8,Sobrecomprado (Risco),85 (Excelente)
+DXCO3,AÇÃO,Dexco,8.17,5.37,8.11,34.0,34.0,0.8,Tendência de Alta Forte,50 (Regular)
+EGIE3,AÇÃO,Engie Brasil,30.79,31.46,30.97,0.0,0.0,0.51,Sobrevendido em Tendência Baixa,85 (Excelente)
+ENEV3,AÇÃO,Eneva,31.48,25.21,31.81,0.0,0.0,0.67,Sobrevendido (Oportunidade),55 (Regular)
+ENGI11,AÇÃO,Energisa,66.47,51.0,66.39,88.5,88.5,0.68,Sobrecomprado (Risco),60 (Regular)
+EQTL3,AÇÃO,Equatorial,48.88,40.4,48.76,60.7,60.7,0.66,Tendência de Alta Forte,50 (Regular)
+EZTC3,AÇÃO,EZTec,19.45,13.7,18.92,63.3,63.3,0.76,Tendência de Alta Forte,75 (Bom)
+FLRY3,AÇÃO,Fleury,27.87,17.44,27.91,14.3,14.3,0.74,Sobrevendido (Oportunidade),65 (Bom)
+GGBR4,AÇÃO,Gerdau,25.22,22.54,25.86,0.0,0.0,0.41,Sobrevendido (Oportunidade),50 (Regular)
+GOAU4,AÇÃO,Metalúrgica Gerdau,11.4,9.97,11.69,0.0,0.0,0.43,Sobrevendido (Oportunidade),50 (Regular)
+HAPV3,AÇÃO,Hapvida,8.83,10.38,8.93,64.5,64.5,0.66,Tendência de Baixa,50 (Regular)
+HYPE3,AÇÃO,Hypera,27.25,22.33,26.8,70.0,70.0,0.79,Tendência de Alta Forte,75 (Bom)
+IGTI11,AÇÃO,Iguatemi,32.2,26.59,31.95,58.0,58.0,0.69,Tendência de Alta Forte,75 (Bom)
+IRBR3,AÇÃO,IRB Brasil,67.67,55.69,68.09,98.6,98.6,0.57,Sobrecomprado (Risco),50 (Regular)
+ITSA4,AÇÃO,Itaúsa,15.31,13.54,15.51,2.4,2.4,0.48,Sobrevendido (Oportunidade),85 (Excelente)
+ITUB4,AÇÃO,Itaú Unibanco,48.3,42.53,48.38,25.0,25.0,0.59,Tendência de Alta Forte,85 (Excelente)
+KLBN11,AÇÃO,Klabin,18.22,18.35,18.23,60.0,60.0,0.43,Tendência de Baixa,50 (Regular)
+LREN3,AÇÃO,Lojas Renner,14.58,13.46,14.56,33.3,33.3,0.75,Tendência de Alta Forte,65 (Bom)
+LWSA3,AÇÃO,Locaweb,5.34,3.98,5.4,0.0,0.0,0.68,Sobrevendido (Oportunidade),50 (Regular)
+MGLU3,AÇÃO,Magazine Luiza,12.69,7.31,12.78,0.0,0.0,0.78,Sobrevendido (Oportunidade),50 (Regular)
+MRVE3,AÇÃO,MRV Engenharia,8.23,6.64,8.21,50.0,50.0,0.81,Tendência de Alta Forte,50 (Regular)
+MULT3,AÇÃO,Multiplan,37.53,30.4,37.35,60.6,60.6,0.66,Tendência de Alta Forte,85 (Excelente)
+PCAR3,AÇÃO,Pão de Açúcar,3.03,2.74,3.04,42.9,42.9,0.34,Tendência de Alta Forte,50 (Regular)
+PETR3,AÇÃO,Petrobras ON,65.24,46.62,64.82,96.2,96.2,0.74,Sobrecomprado (Risco),85 (Excelente)
+PETR4,AÇÃO,Petrobras PN,58.68,42.06,58.09,100.0,100.0,0.76,Sobrecomprado (Risco),85 (Excelente)
+PRIO3,AÇÃO,PRIO,73.8,59.77,72.0,100.0,100.0,0.93,Sobrecomprado (Risco),75 (Bom)
+RADL3,AÇÃO,RaiaDrogasil,20.28,20.78,20.93,0.0,0.0,0.52,Sobrevendido em Tendência Baixa,70 (Bom)
+RAIZ4,AÇÃO,Raízen,0.43,0.46,0.41,66.7,66.7,0.92,Tendência de Baixa,50 (Regular)
+RDOR3,AÇÃO,Rede D'Or,43.73,37.55,43.78,51.6,51.6,0.62,Tendência de Alta Forte,75 (Bom)
+RECV3,AÇÃO,PetroRecôncavo,12.8,11.07,12.56,77.8,77.8,0.82,Tendência de Alta Forte,75 (Bom)
+RENT3,AÇÃO,Localiza,52.42,42.33,52.02,46.6,46.6,0.7,Tendência de Alta Forte,65 (Bom)
+SANB11,AÇÃO,Santander Brasil,27.53,28.92,27.74,0.0,0.0,0.2,Sobrevendido em Tendência Baixa,75 (Bom)
+SBSP3,AÇÃO,Sabesp,31.98,28.95,32.11,43.9,43.9,0.62,Tendência de Alta Forte,85 (Excelente)
+SLCE3,AÇÃO,SLC Agrícola,17.49,15.97,17.09,100.0,100.0,0.69,Sobrecomprado (Risco),50 (Regular)
+SMTO3,AÇÃO,São Martinho,21.05,17.13,20.93,61.6,61.6,0.71,Tendência de Alta Forte,75 (Bom)
+SUZB3,AÇÃO,Suzano,43.06,46.42,42.78,100.0,100.0,0.48,Tendência de Baixa,85 (Excelente)
+TAEE11,AÇÃO,Taesa,44.75,40.31,45.05,0.0,0.0,0.61,Sobrevendido (Oportunidade),85 (Excelente)
+TIMS3,AÇÃO,TIM Brasil,19.09,22.36,19.15,24.1,24.1,0.71,Tendência de Baixa,85 (Excelente)
+TOTS3,AÇÃO,Totvs,44.35,34.43,42.84,100.0,100.0,0.87,Sobrecomprado (Risco),85 (Excelente)
+UGPA3,AÇÃO,Ultrapar,38.55,29.42,39.31,0.0,0.0,0.45,Sobrevendido (Oportunidade),70 (Bom)
+USIM5,AÇÃO,Usiminas,6.63,7.62,6.61,48.4,48.4,0.22,Tendência de Baixa,50 (Regular)
+VALE3,AÇÃO,Vale,61.9,77.12,63.84,13.9,13.9,0.02,Sobrevendido em Tendência Baixa,50 (Regular)
+VAMO3,AÇÃO,Vamos,6.41,3.72,6.37,52.0,52.0,0.71,Tendência de Alta Forte,65 (Bom)
+VBBR3,AÇÃO,Vibra Energia,35.82,31.91,36.52,12.6,12.6,0.01,Sobrevendido (Oportunidade),70 (Bom)
+VIVA3,AÇÃO,Vivara,27.03,25.0,27.28,0.0,0.0,0.56,Sobrevendido (Oportunidade),85 (Excelente)
+VIVT3,AÇÃO,Telefônica Brasil,32.43,34.1,32.46,41.9,41.9,0.78,Tendência de Baixa,75 (Bom)
+WEGE3,AÇÃO,WEG,42.73,47.63,45.68,0.0,0.0,-0.13,Sobrevendido em Tendência Baixa,85 (Excelente)
+YDUQ3,AÇÃO,Yduqs,14.04,10.63,14.07,54.0,54.0,0.72,Tendência de Alta Forte,50 (Regular)
+ALUP11,AÇÃO,Alupar,38.68,33.6,38.58,48.0,48.0,0.67,Tendência de Alta Forte,85 (Excelente)
+AMER3,AÇÃO,Americanas,6.63,5.09,6.37,60.0,60.0,0.86,Tendência de Alta Forte,50 (Regular)
+ANIM3,AÇÃO,Ânima Educação,5.04,3.57,5.18,70.0,70.0,0.68,Tendência de Alta Forte,60 (Regular)
+BRKM3,AÇÃO,Braskem ON,4.16,6.8,4.11,61.5,61.5,0.56,Tendência de Baixa,50 (Regular)
+CASH3,AÇÃO,Méliuz,5.01,4.36,5.03,30.6,30.6,0.3,Tendência de Alta Forte,50 (Regular)
+CSMG3,AÇÃO,Copasa,64.58,56.01,63.27,97.6,97.6,0.8,Sobrecomprado (Risco),75 (Bom)
+DIRR3,AÇÃO,Direcional,11.56,12.9,11.31,63.2,63.2,0.69,Tendência de Baixa,85 (Excelente)
+JHSF3,AÇÃO,JHSF,13.89,10.54,13.91,29.3,29.3,0.74,Tendência de Alta Forte,85 (Excelente)
+MOVI3,AÇÃO,Movida,18.67,10.81,18.73,36.3,36.3,0.75,Tendência de Alta Forte,60 (Regular)
+PSSA3,AÇÃO,Porto Seguro,51.58,49.42,51.81,0.0,0.0,0.56,Sobrevendido (Oportunidade),75 (Bom)
+QUAL3,AÇÃO,Qualicorp,2.23,1.87,2.15,81.2,81.2,0.75,Tendência de Alta Forte,50 (Regular)
+RAPT4,AÇÃO,Randoncorp,8.06,5.48,7.94,54.3,54.3,0.78,Tendência de Alta Forte,50 (Regular)
+SAPR11,AÇÃO,Sanepar Unit,41.92,39.61,41.01,95.5,95.5,0.71,Sobrecomprado (Risco),55 (Regular)
+SEER3,AÇÃO,Ser Educacional,18.26,11.99,17.87,76.8,76.8,0.8,Tendência de Alta Forte,85 (Excelente)
+TEND3,AÇÃO,Tenda,28.36,30.33,28.41,30.6,30.6,0.46,Tendência de Baixa,85 (Excelente)
+ABCB4,AÇÃO,Banco ABC Brasil,29.49,24.53,29.29,48.8,48.8,0.73,Tendência de Alta Forte,75 (Bom)
+AGRO3,AÇÃO,BrasilAgro,19.14,19.18,18.49,100.0,100.0,0.95,Tendência de Baixa,50 (Regular)
+ALPK3,AÇÃO,Estapar,5.71,4.51,5.65,61.3,61.3,0.71,Tendência de Alta Forte,50 (Regular)
+ARML3,AÇÃO,Armac,7.06,4.29,6.79,59.8,59.8,0.85,Tendência de Alta Forte,50 (Regular)
+AALR3,AÇÃO,Alliar,2.76,3.55,2.88,0.0,0.0,0.07,Sobrevendido em Tendência Baixa,50 (Regular)
+BLAU3,AÇÃO,Blau Farmacêutica,12.33,10.08,12.42,43.1,43.1,0.66,Tendência de Alta Forte,75 (Bom)
+BMOB3,AÇÃO,Bemobi,33.85,24.98,33.34,63.5,63.5,0.78,Tendência de Alta Forte,75 (Bom)
+CAML3,AÇÃO,Camil Alimentos,6.65,5.62,6.63,100.0,100.0,0.65,Sobrecomprado (Risco),50 (Regular)
+CBAV3,AÇÃO,CBA Alumínio,11.24,10.6,11.26,100.0,100.0,0.45,Sobrecomprado (Risco),65 (Bom)
+CEAB3,AÇÃO,C&A Modas,13.84,10.94,13.83,48.5,48.5,0.76,Tendência de Alta Forte,75 (Bom)
+CSED3,AÇÃO,Cruzeiro do Sul Educacional,6.74,5.21,6.9,0.0,0.0,0.64,Sobrevendido (Oportunidade),85 (Excelente)
+CURY3,AÇÃO,Cury Construtora,32.5,32.2,32.23,57.8,57.8,0.7,Tendência de Alta Forte,85 (Excelente)
+DEXP3,AÇÃO,Dexxos,8.14,7.35,8.11,69.6,69.6,0.71,Tendência de Alta Forte,65 (Bom)
+DMVF3,AÇÃO,D1000 Varejo Farma,6.97,6.62,6.66,100.0,100.0,0.99,Sobrecomprado (Risco),50 (Regular)
+ECOR3,AÇÃO,EcoRodovias,13.15,8.75,13.26,41.3,41.3,0.63,Tendência de Alta Forte,60 (Regular)
+ESPA3,AÇÃO,Espaçolaser,7.78,8.75,7.78,51.5,51.5,0.61,Tendência de Baixa,50 (Regular)
+EVEN3,AÇÃO,Even Construtora,6.1,5.94,5.85,82.4,82.4,0.8,Tendência de Alta Forte,75 (Bom)
+FESA4,AÇÃO,Ferbasa,6.45,6.67,6.42,55.6,55.6,0.72,Tendência de Baixa,55 (Regular)
+FHER3,AÇÃO,Fertilizantes Heringer,2.78,3.78,2.85,0.0,0.0,0.34,Sobrevendido em Tendência Baixa,50 (Regular)
+FIQE3,AÇÃO,Unifique,6.2,5.67,6.23,0.0,0.0,0.69,Sobrevendido (Oportunidade),85 (Excelente)
+FRAS3,AÇÃO,Fras-le,29.48,22.55,29.07,87.5,87.5,0.8,Sobrecomprado (Risco),65 (Bom)
+GFSA3,AÇÃO,Gafisa,0.39,1.42,0.38,100.0,100.0,0.65,Tendência de Baixa,50 (Regular)
+GMAT3,AÇÃO,Grupo Mateus,5.3,4.56,5.4,31.3,31.3,0.56,Tendência de Alta Forte,60 (Regular)
+GRND3,AÇÃO,Grendene,4.67,4.09,4.66,47.6,47.6,0.75,Tendência de Alta Forte,85 (Excelente)
+HBSA3,AÇÃO,Hidrovias do Brasil,4.13,3.62,4.03,69.7,69.7,0.76,Tendência de Alta Forte,50 (Regular)
+HBOR3,AÇÃO,Helbor,2.73,2.36,2.62,81.2,81.2,0.81,Tendência de Alta Forte,50 (Regular)
+INTB3,AÇÃO,Intelbras,19.72,13.85,19.42,74.5,74.5,0.78,Tendência de Alta Forte,85 (Excelente)
+JALL3,AÇÃO,Jalles Machado,3.03,2.73,3.02,72.7,72.7,0.69,Tendência de Alta Forte,50 (Regular)
+KEPL3,AÇÃO,Kepler Weber,7.86,7.58,7.69,76.3,76.3,0.85,Tendência de Alta Forte,75 (Bom)
+LAVV3,AÇÃO,Lavvi Construtora,15.9,13.11,15.45,71.4,71.4,0.77,Tendência de Alta Forte,85 (Excelente)
+LEVE3,AÇÃO,Mahle Metal Leve,37.74,33.21,38.08,14.7,14.7,0.71,Sobrevendido (Oportunidade),85 (Excelente)
+LJQQ3,AÇÃO,Lojas Quero-Quero,3.05,1.74,2.94,100.0,100.0,0.81,Sobrecomprado (Risco),50 (Regular)
+LOGG3,AÇÃO,LOG CP,30.7,25.04,30.17,59.1,59.1,0.77,Tendência de Alta Forte,75 (Bom)
+LOGN3,AÇÃO,Log-In Logística,31.14,29.95,31.01,100.0,100.0,0.73,Sobrecomprado (Risco),60 (Regular)
+LIGT3,AÇÃO,Light,3.67,3.96,3.7,42.9,42.9,0.34,Tendência de Baixa,85 (Excelente)
+LPSB3,AÇÃO,Lopes Brasil,1.62,1.56,1.56,90.0,90.0,0.81,Sobrecomprado (Risco),85 (Excelente)
+MATD3,AÇÃO,Mater Dei,6.31,5.35,6.33,100.0,100.0,0.66,Sobrecomprado (Risco),65 (Bom)
+MDIA3,AÇÃO,M. Dias Branco,19.11,20.25,19.53,30.2,30.2,0.59,Tendência de Baixa,55 (Regular)
+MDNE3,AÇÃO,Moura Dubeux,30.28,28.12,30.08,33.0,33.0,0.65,Tendência de Alta Forte,85 (Excelente)
+MEAL3,AÇÃO,IMC Alimentação,0.93,0.95,0.93,60.0,60.0,0.33,Tendência de Baixa,50 (Regular)
+MILS3,AÇÃO,Mills,16.26,14.44,16.22,66.7,66.7,0.87,Tendência de Alta Forte,85 (Excelente)
+MLAS3,AÇÃO,Multilaser,2.55,1.64,2.52,38.9,38.9,0.82,Tendência de Alta Forte,65 (Bom)
+MYPK3,AÇÃO,Iochpe-Maxion,11.8,9.65,11.71,64.5,64.5,0.84,Tendência de Alta Forte,50 (Regular)
+OFSA3,AÇÃO,Ourofino Saúde Animal,31.49,27.32,30.12,100.0,100.0,0.92,Sobrecomprado (Risco),85 (Excelente)
+ONCO3,AÇÃO,Oncoclínicas,1.06,1.5,1.04,54.5,54.5,0.7,Tendência de Baixa,50 (Regular)
+OPCT3,AÇÃO,OceanPact,10.16,9.92,9.87,97.6,97.6,0.68,Sobrecomprado (Risco),75 (Bom)
+ORVR3,AÇÃO,Orizon,20.84,18.38,20.42,62.9,62.9,0.67,Tendência de Alta Forte,50 (Regular)
+PGMN3,AÇÃO,Pague Menos,5.43,4.9,5.48,24.2,24.2,0.72,Tendência de Alta Forte,60 (Regular)
+PLPL3,AÇÃO,Plano & Plano,8.46,10.39,8.04,82.3,82.3,0.75,Tendência de Baixa,75 (Bom)
+PNVL3,AÇÃO,Dimed Panvel,15.64,12.82,15.72,29.4,29.4,0.7,Tendência de Alta Forte,60 (Regular)
+POMO4,AÇÃO,Marcopolo,4.77,5.48,4.76,100.0,100.0,0.67,Tendência de Baixa,85 (Excelente)
+POSI3,AÇÃO,Positivo Tecnologia,5.08,4.0,4.95,70.0,70.0,0.82,Tendência de Alta Forte,50 (Regular)
+PRNR3,AÇÃO,Priner,20.79,18.86,20.62,75.0,75.0,0.62,Tendência de Alta Forte,60 (Regular)
+PINE4,AÇÃO,Banco Pine,16.44,12.68,16.58,7.9,7.9,0.78,Sobrevendido (Oportunidade),85 (Excelente)
+RANI3,AÇÃO,Irani Papel,8.21,8.28,8.12,59.5,59.5,0.72,Tendência de Baixa,65 (Bom)
+ROMI3,AÇÃO,Indústrias Romi,7.63,6.54,7.57,22.9,22.9,0.72,Tendência de Alta Forte,55 (Regular)
+SAPR4,AÇÃO,Sanepar PN,8.09,7.65,7.93,100.0,100.0,0.72,Sobrecomprado (Risco),55 (Regular)
+SHUL4,AÇÃO,Schulz,5.09,4.78,5.12,38.9,38.9,0.65,Tendência de Alta Forte,85 (Excelente)
+SIMH3,AÇÃO,Simpar,16.65,9.96,16.3,65.8,65.8,0.75,Tendência de Alta Forte,50 (Regular)
+SOJA3,AÇÃO,Boa Safra Sementes,8.36,7.18,8.23,70.3,70.3,0.72,Tendência de Alta Forte,50 (Regular)
+SYNE3,AÇÃO,Syn Prop & Tech,3.93,4.13,3.86,80.0,80.0,0.7,Tendência de Baixa,65 (Bom)
+TASA4,AÇÃO,Taurus Armas,10.67,5.57,10.02,70.8,70.8,1.05,Tendência de Alta Forte,50 (Regular)
+TECN3,AÇÃO,Technos,10.11,8.99,10.09,50.3,50.3,0.32,Tendência de Alta Forte,85 (Excelente)
+TGMA3,AÇÃO,Tegma Gestão Logística,51.81,33.81,50.52,88.0,88.0,0.85,Sobrecomprado (Risco),85 (Excelente)
+TRIS3,AÇÃO,Trisul,7.0,5.32,6.77,75.0,75.0,0.81,Tendência de Alta Forte,75 (Bom)
+TTEN3,AÇÃO,3Tentos,14.14,14.43,13.72,92.5,92.5,0.83,Tendência de Baixa,60 (Regular)
+TUPY3,AÇÃO,Tupy,20.41,14.39,20.42,27.0,27.0,0.74,Tendência de Alta Forte,50 (Regular)
+UNIP6,AÇÃO,Unipar Carbocloro,59.09,61.33,60.04,23.3,23.3,0.51,Tendência de Baixa,65 (Bom)
+VITT3,AÇÃO,Vittia,3.54,3.42,3.6,0.0,0.0,0.59,Sobrevendido (Oportunidade),65 (Bom)
+VLID3,AÇÃO,Valid,20.0,18.78,19.83,66.3,66.3,0.78,Tendência de Alta Forte,75 (Bom)
+VULC3,AÇÃO,Vulcabras,15.96,15.64,15.98,33.3,33.3,0.73,Tendência de Alta Forte,85 (Excelente)
+WIZC3,AÇÃO,Wiz Co,7.07,8.39,7.48,90.9,90.9,0.12,Tendência de Baixa,85 (Excelente)
+BMGB4,AÇÃO,Banco BMG,7.21,5.27,7.16,42.9,42.9,0.76,Tendência de Alta Forte,75 (Bom)
+DESK3,AÇÃO,Desktop Sigmanet,19.24,17.62,19.32,0.0,0.0,0.22,Sobrevendido (Oportunidade),50 (Regular)
+ENJU3,AÇÃO,Enjoei,8.8,8.24,8.03,80.8,80.8,1.18,Tendência de Alta Forte,50 (Regular)
+WEST3,AÇÃO,Westwing Brasil,4.45,3.15,4.29,64.3,64.3,0.65,Tendência de Alta Forte,50 (Regular)
+DOTZ3,AÇÃO,Dotz,13.0,5.63,12.56,61.9,61.9,0.78,Tendência de Alta Forte,55 (Regular)
+AMBP3,AÇÃO,Ambipar,0.15,0.2,0.15,50.0,50.0,0.4,Tendência de Baixa,50 (Regular)
+MTRE3,AÇÃO,Mitre,4.18,3.39,3.9,100.0,100.0,0.97,Sobrecomprado (Risco),65 (Bom)
+MELK3,AÇÃO,Melnick Desenvolvimento,3.39,3.29,3.28,100.0,100.0,0.7,Sobrecomprado (Risco),75 (Bom)
+MXRF11,FII,Maxi Renda FII,9.44,9.15,9.44,50.0,50.0,0.72,Tendência de Alta Forte,95 (Bom)
+HGLG11,FII,CSHG Logística FII,159.66,147.93,157.31,86.8,86.8,0.84,Sobrecomprado (Risco),95 (Bom)
+XPML11,FII,XP Malls FII,104.61,98.1,105.21,0.0,0.0,0.59,Sobrevendido (Oportunidade),95 (Bom)
+KNIP11,FII,Kinea Índice de Preços,93.2,87.67,93.4,58.2,58.2,0.65,Tendência de Alta Forte,95 (Bom)
+KNCR11,FII,Kinea Rendimentos Imob,105.55,101.32,105.92,0.0,0.0,0.59,Sobrevendido (Oportunidade),95 (Bom)
+BTLG11,FII,BTG Pactual Logística,104.8,98.28,104.2,100.0,100.0,0.78,Sobrecomprado (Risco),95 (Bom)
+VISC11,FII,Vinci Shopping Centers,114.2,103.5,113.74,100.0,100.0,0.71,Sobrecomprado (Risco),95 (Bom)
+HGRU11,FII,CSHG Renda Urbana,125.47,121.05,125.43,28.9,28.9,0.73,Tendência de Alta Forte,95 (Bom)
+XPLG11,FII,XP Log FII,101.0,93.17,101.02,20.4,20.4,0.67,Tendência de Alta Forte,95 (Bom)
+CPTS11,FII,Capitânia Securities,7.77,7.28,7.76,50.0,50.0,0.66,Tendência de Alta Forte,95 (Bom)
+TGAR11,FII,TG Ativo Real FII,51.95,57.57,51.56,96.4,96.4,0.76,Tendência de Baixa,95 (Bom)
+VGIR11,FII,Valora RE III,9.59,9.09,9.6,100.0,100.0,0.52,Sobrecomprado (Risco),95 (Bom)
+RBRR11,FII,RBR Rendimento High Grade,76.0,76.02,74.63,100.0,100.0,0.83,Tendência de Baixa,95 (Bom)
+HGCR11,FII,CSHG Recebíveis Imob,98.69,91.03,98.52,38.9,38.9,0.77,Tendência de Alta Forte,95 (Bom)
+TRXF11,FII,TRX Real Estate,71.9,82.61,71.88,8.3,8.3,0.65,Sobrevendido em Tendência Baixa,95 (Bom)
+VGIA11,FII,Valora FIAGRO,9.1,8.81,9.01,100.0,100.0,0.93,Sobrecomprado (Risco),80 (Bom)
+RZTR11,FII,Riza Terrax FIAGRO,79.9,85.86,79.75,48.7,48.7,0.24,Tendência de Baixa,95 (Bom)
+AAPL34,BDR,Apple Inc.,86.65,75.37,86.58,50.0,50.0,0.59,Tendência de Alta Forte,85 (Excelente)
+NVDC34,BDR,NVIDIA Corporation,21.94,21.72,22.61,0.0,0.0,0.04,Sobrevendido (Oportunidade),85 (Excelente)
+MSFT34,BDR,Microsoft Corp.,108.97,93.17,110.43,0.0,0.0,0.12,Sobrevendido (Oportunidade),85 (Excelente)
+AMZO34,BDR,Amazon.com Inc.,62.03,62.44,64.68,0.0,0.0,-0.14,Sobrevendido em Tendência Baixa,85 (Excelente)
+GOGL34,BDR,Alphabet (Google),133.71,145.89,139.5,0.0,0.0,-0.16,Sobrevendido em Tendência Baixa,85 (Excelente)
+TSLA34,BDR,Tesla Inc.,58.02,62.04,59.08,0.0,0.0,0.37,Sobrevendido em Tendência Baixa,50 (Regular)
+DISB34,BDR,The Walt Disney Co.,37.44,35.34,37.51,48.7,48.7,0.72,Tendência de Alta Forte,65 (Bom)
+NFLX34,BDR,Netflix Inc.,6.55,8.45,6.71,57.1,57.1,0.06,Tendência de Baixa,85 (Excelente)
+MELI34,BDR,MercadoLivre Inc.,75.4,78.11,77.05,0.0,0.0,0.33,Sobrevendido em Tendência Baixa,75 (Bom)
+BOVA11,ETF,iShares Ibovespa,201.69,178.03,202.72,22.3,22.3,0.62,Tendência de Alta Forte,75 (Bom)
+BRAX11,ETF,iShares IBrX 100,171.9,151.74,172.39,35.0,35.0,0.64,Tendência de Alta Forte,75 (Bom)
+SMAL11,ETF,iShares Small Cap,137.16,114.91,136.44,54.4,54.4,0.73,Tendência de Alta Forte,75 (Bom)
+NDIV11,ETF,Nu Ibov Smart Dividendos,133.28,126.5,133.12,50.8,50.8,0.62,Tendência de Alta Forte,75 (Bom)
+DIVO11,ETF,It Now IDIV Dividendos,146.12,129.7,145.66,41.4,41.4,0.67,Tendência de Alta Forte,75 (Bom)
+FIND11,ETF,iShares Setor Financeiro,225.5,185.31,224.25,47.4,47.4,0.67,Tendência de Alta Forte,75 (Bom)
+MATB11,ETF,iShares Materiais Basicos,61.1,63.04,61.72,21.7,21.7,0.14,Tendência de Baixa,75 (Bom)
+IVVB11,ETF,iShares S&P 500,430.0,421.75,436.55,0.0,0.0,0.03,Sobrevendido (Oportunidade),75 (Bom)
+SPXI11,ETF,It Now S&P 500,52.2,70.84,53.04,0.0,0.0,0.01,Sobrevendido em Tendência Baixa,75 (Bom)
+NASD11,ETF,Trend Nasdaq 100,20.15,19.9,20.54,0.0,0.0,0.03,Sobrevendido (Oportunidade),75 (Bom)
+ACWI11,ETF,Trend MSCI ACWI Global,16.5,16.49,16.75,0.0,0.0,0.06,Sobrevendido (Oportunidade),75 (Bom)
+XINA11,ETF,Trend MSCI China,6.34,7.46,6.51,0.0,0.0,-0.0,Sobrevendido em Tendência Baixa,75 (Bom)
+GOLD11,ETF,Trend Ouro Fixo,20.74,24.08,21.28,0.0,0.0,0.04,Sobrevendido em Tendência Baixa,75 (Bom)
+HASH11,ETF,Hashdex Nasdaq Crypto,52.0,49.61,53.05,0.0,0.0,0.14,Sobrevendido (Oportunidade),75 (Bom)
+QBTC11,ETF,QR CME CF Bitcoin,24.3,22.91,24.8,0.0,0.0,0.13,Sobrevendido (Oportunidade),75 (Bom)
+QETH11,ETF,QR CME CF Ether,8.35,8.07,8.52,0.0,0.0,0.17,Sobrevendido (Oportunidade),75 (Bom)
+B5P211,ETF,It Now IMA-B 5 P2,116.15,107.59,115.66,100.0,100.0,0.83,Sobrecomprado (Risco),75 (Bom)
+IMAB11,ETF,It Now IMA-B Geral,126.24,113.59,125.12,100.0,100.0,0.8,Sobrecomprado (Risco),75 (Bom)
+IB5M11,ETF,It Now IMA-B 5+,139.32,123.7,137.43,100.0,100.0,0.81,Sobrecomprado (Risco),75 (Bom)
+LFTS11,ETF,Investo Teva Tesouro Selic,161.86,153.92,161.68,100.0,100.0,0.91,Sobrecomprado (Risco),75 (Bom)
