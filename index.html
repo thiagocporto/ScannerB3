@@ -3,491 +3,1567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' data:; img-src 'self' data:; connect-src 'self';">
-    <title>WF Investimentos | Scanner Quantitativo</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+    <title>WF Investimentos | Scanner B3 Institucional</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { background-color: #0f172a; color: #cbd5e1; font-family: ui-sans-serif, system-ui, sans-serif; }
-        .bg-card { background-color: #1e293b; }
-        .border-card { border-color: #334155; }
-        .border-gold { border-color: #f59e0b; }
-        .text-gold { color: #fbbf24; }
-        th.cursor-pointer:hover { color: #f59e0b; }
-        
-        /* ESTILO DOS CAMPOS DE DIGITAÇÃO COM CURSOR TERMINAL BLINK */
-        .input-terminal {
-            background-color: #090e17 !important;
-            color: #ffffff !important;
-            border: 1px solid #475569 !important;
-            caret-color: #fbbf24 !important; /* Cursor Amarelo-Ouro piscante estilo PowerShell/Gemini */
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
-            letter-spacing: 0.05em;
-            transition: all 0.2s ease-in-out;
-        }
-        .input-terminal:focus {
-            border-color: #f59e0b !important;
-            background-color: #06090e !important;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.35) !important;
-            outline: none !important;
-        }
-        .input-terminal::placeholder {
-            color: #64748b !important;
-            font-family: ui-sans-serif, system-ui, sans-serif !important;
-            letter-spacing: normal;
-        }
-
-        dialog {
-            background: #1e293b;
-            color: #cbd5e1;
-            border: 1px solid #475569;
-            border-radius: 1rem;
-            max-width: 44rem;
-            width: 100%;
-            padding: 0;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
-        }
-        dialog::backdrop {
-            background-color: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(4px);
-        }
-        .badge-tipo {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        .badge-acao { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
-        .badge-fii { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .badge-bdr { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
-        .badge-etf { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0b1120; color: #f8fafc; padding: 24px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eab308; padding-bottom: 16px; margin-bottom: 24px; }
+        .logo-box { display: flex; align-items: center; gap: 14px; }
+        .logo-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }
+        .title h1 { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #ffffff; }
+        .title p { font-size: 11px; color: #eab308; font-weight: 600; letter-spacing: 0.5px; }
+        .meta { text-align: right; font-size: 13px; color: #94a3b8; }
+        .meta strong { color: #ffffff; }
+        .search-card { background: #111c35; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+        .search-title { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .search-bar { display: flex; gap: 10px; margin-top: 12px; }
+        .search-bar input { flex: 1; max-width: 450px; background: #070d1e; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; text-transform: uppercase; }
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; }
+        .chart-box { background: #111c35; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; }
+        .chart-box h2 { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .table-box { background: #111c35; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+        th { background: #0a1122; color: #94a3b8; padding: 14px 16px; font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; border-bottom: 1px solid #1e293b; }
+        td { padding: 14px 16px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
+        tr:hover { background-color: #17233f; }
+        .ticker { font-weight: 700; color: #ffffff; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; }
+        .badge-alta { background: #3b0764; color: #d8b4fe; border: 1px solid #a855f7; }
+        .badge-pullback { background: #451a03; color: #fde047; border: 1px solid #eab308; }
+        .badge-sobrecomprado { background: #064e3b; color: #6ee7b7; border: 1px solid #10b981; }
+        .badge-baixa { background: #3f1d24; color: #fca5a5; border: 1px solid #ef4444; }
+        .badge-neutro { background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+        .btn-ia { padding: 5px 12px; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer; border: 1px solid transparent; }
+        .btn-compra { background: #042f2e; color: #5eead4; border-color: #14b8a6; }
+        .btn-alerta { background: #422006; color: #fde047; border-color: #eab308; }
+        .btn-venda { background: #450a0a; color: #fca5a5; border-color: #ef4444; }
+        .btn-neutro { background: #1e293b; color: #cbd5e1; border-color: #475569; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; justify-content: center; align-items: center; }
+        .modal-box { background: #0f172a; border: 1px solid #eab308; border-radius: 12px; max-width: 650px; width: 90%; padding: 24px; position: relative; max-height: 85vh; overflow-y: auto; }
+        .modal-close { position: absolute; top: 16px; right: 18px; color: #94a3b8; font-size: 20px; font-weight: bold; cursor: pointer; }
+        .modal-close:hover { color: #fff; }
+        .modal-body { font-size: 13px; line-height: 1.6; color: #e2e8f0; white-space: pre-wrap; margin-top: 14px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
-    <!-- Cabeçalho Oficial WF -->
-    <header class="bg-card border-b-2 border-gold shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-full bg-slate-900 border border-gold flex items-center justify-center text-gold font-bold text-xl shadow">WF</div>
-                <div>
-                    <h1 class="text-2xl font-black tracking-wider text-white">WF INVESTIMENTOS</h1>
-                    <p class="text-xs text-gold font-semibold tracking-widest uppercase">Avaliação Institucional &amp; Scanner B3</p>
-                </div>
-            </div>
-            <div class="text-right">
-                <p class="text-sm font-medium text-slate-300">Atualizado em: <span id="data-hora" class="font-bold text-white"></span></p>
-                <p class="text-xs text-slate-400">Universo Monitorado: <span id="qtd-ativos" class="font-bold text-slate-200">0</span> Ativos</p>
+<body>
+    <div class="header">
+        <div class="logo-box">
+            <div class="logo-circle">WF</div>
+            <div class="title">
+                <h1>WF INVESTIMENTOS</h1>
+                <p>AVALIA??O INSTITUCIONAL & SCANNER B3</p>
             </div>
         </div>
-    </header>
+        <div class="meta">
+            <div>Atualizado em: <strong>24/10/2026 ?s 23:59</strong></div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Hor?rio de Bras?lia)</div>
+            <div style="margin-top: 4px;">Universo Monitorado: <strong>93 Ativos</strong></div>
+        </div>
+    </div>
 
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
-        
-        <!-- SPOTLIGHT: CONSULTA DIRETA DE ATIVO INDIVIDUAL -->
-        <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-6 border-2 border-amber-500/50 shadow-xl">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <span class="text-gold text-xl">🔍</span> CONSULTA DIRETA DE ATIVO B3
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">Consulte diagnósticos e teses de Ações, FIIs/FIAGROs, BDRs ou ETFs negociados na bolsa.</p>
-                </div>
-                <div class="flex items-center gap-2 w-full md:w-auto">
-                    <!-- Campo com Cursor Terminal Dourado e Fundo Escuro -->
-                    <input type="text" id="input-consulta-rapida" placeholder="Digite o Ticker (ex: HGLG11, AAPL34, WEGE3)..." class="input-terminal uppercase text-sm rounded-lg p-2.5 w-full md:w-80">
-                    <button type="button" id="btn-consultar-ativo" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold text-sm rounded-lg transition-colors whitespace-nowrap shadow cursor-pointer">
-                        Consultar
-                    </button>
-                </div>
-            </div>
-            <div id="alerta-consulta" class="hidden mt-3 p-3 bg-rose-900/40 border border-rose-500/40 rounded-lg text-rose-300 text-xs"></div>
+    <div class="search-card">
+        <div class="search-title">?? CONSULTA DIRETA DE ATIVO B3</div>
+        <div style="font-size: 12px; color: #94a3b8;">Consulte diagn?sticos e teses de A??es, FIIs, BDRs ou ETFs negociados na bolsa.</div>
+        <div class="search-bar">
+            <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()">
         </div>
+    </div>
 
-        <!-- Gráficos Analíticos -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-card rounded-xl p-6 border border-card shadow-lg">
-                <h3 class="text-sm font-bold text-white mb-4 flex items-center space-x-2">
-                    <span class="text-gold">📊</span>
-                    <span>DISTRIBUIÇÃO DE FASES TÉCNICAS</span>
-                </h3>
-                <div class="relative h-64 w-full flex justify-center items-center">
-                    <canvas id="graficoTendencias"></canvas>
-                </div>
-            </div>
-            <div class="bg-card rounded-xl p-6 border border-card shadow-lg">
-                <h3 class="text-sm font-bold text-white mb-4 flex items-center space-x-2">
-                    <span class="text-gold">📈</span>
-                    <span>TOP 8 PULLBACKS - MENORES IFR(2)</span>
-                </h3>
-                <div class="relative h-64 w-full">
-                    <canvas id="graficoIfr"></canvas>
-                </div>
-            </div>
+    <div class="charts-grid">
+        <div class="chart-box">
+            <h2>?? DISTRIBUI??O DE FASES T?CNICAS</h2>
+            <div style="height: 250px;"><canvas id="chartDonut"></canvas></div>
         </div>
+        <div class="chart-box">
+            <h2>? TOP 8 PULLBACKS - MENORES IFR(2)</h2>
+            <div style="height: 250px;"><canvas id="chartBar"></canvas></div>
+        </div>
+    </div>
 
-        <!-- Matriz de Ativos B3 -->
-        <div class="bg-card rounded-xl border border-card shadow-lg overflow-hidden">
-            <div class="p-6 border-b border-card flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-800/60">
-                <div>
-                    <h2 class="text-xl font-bold text-white">Matriz de Ativos B3</h2>
-                    <div class="flex items-center gap-1.5 mt-2 flex-wrap" id="filtros-tipo">
-                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-amber-500 text-slate-900 border border-amber-500 transition-colors" data-tipo="TODOS">Todos (<span id="cont-todos">0</span>)</button>
-                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="AÇÃO">Ações</button>
-                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="FII">FIIs</button>
-                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="BDR">BDRs</button>
-                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="ETF">ETFs</button>
-                    </div>
-                </div>
-                <!-- Campo de Busca na Tabela com Cursor Terminal -->
-                <input type="text" id="busca-ticker" placeholder="Filtrar tabela..." class="input-terminal text-sm rounded-lg p-2.5 w-full md:w-64">
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-slate-300">
-                    <thead class="text-xs uppercase bg-slate-900 text-slate-400 border-b border-card select-none">
-                        <tr>
-                            <th class="px-6 py-4 font-semibold cursor-pointer" data-campo="ticker">Ativo <span id="sort-ticker">↕</span></th>
-                            <th class="px-6 py-4 text-center font-semibold">Classe</th>
-                            <th class="px-6 py-4 text-right font-semibold cursor-pointer" data-campo="preco">Preço <span id="sort-preco">↕</span></th>
-                            <th class="px-6 py-4 text-right font-semibold cursor-pointer" data-campo="sma200">SMA 200 <span id="sort-sma200">↕</span></th>
-                            <th class="px-6 py-4 text-right font-semibold cursor-pointer" data-campo="rsi2">IFR(2) <span id="sort-rsi2">↕</span></th>
-                            <th class="px-6 py-4 text-center font-semibold">Fase Técnica</th>
-                            <th class="px-6 py-4 text-center font-semibold cursor-pointer" data-campo="score">Score Fund. <span id="sort-score">↕</span></th>
-                            <th class="px-6 py-4 text-center font-semibold">Parecer IA</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-corpo" class="divide-y divide-slate-800"></tbody>
-                </table>
-            </div>
-        </div>
-    </main>
+    <div class="table-box">
+        <table id="tabelaAtivos">
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Tipo</th>
+                    <th>Pre?o (R$)</th>
+                    <th>SMA 200</th>
+                    <th>IFR(2)</th>
+                    <th>Fase T?cnica</th>
+                    <th>Score Fundamentalista</th>
+                    <th>Parecer IA</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    <!-- Modal Institucional -->
-    <dialog id="modal-dialog" aria-labelledby="modal-titulo">
-        <div class="bg-slate-900 px-6 py-4 border-b border-card flex justify-between items-center">
-            <div>
-                <span id="modal-badge-tipo" class="badge-tipo badge-acao mr-2">AÇÃO</span>
-                <h3 id="modal-titulo" class="text-lg font-bold text-white inline-flex items-center gap-2">
-                    <span class="text-gold">📊</span>
-                    <span>Tese Institucional: <span id="modal-ticker" class="text-emerald-400 font-mono"></span></span>
-                </h3>
-            </div>
-            <button type="button" id="btn-dialog-close-x" class="text-slate-400 hover:text-white text-2xl font-bold leading-none cursor-pointer" aria-label="Fechar modal">&times;</button>
-        </div>
-        <div class="p-6 space-y-4">
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700 text-xs">
-                <div><span class="text-slate-500 block">Preço:</span> <b id="modal-resumo-preco" class="text-white">-</b></div>
-                <div><span class="text-slate-500 block">Média 200:</span> <b id="modal-resumo-sma" class="text-slate-300">-</b></div>
-                <div><span class="text-slate-500 block">IFR(2):</span> <b id="modal-resumo-ifr" class="text-amber-400 font-mono">-</b></div>
-                <div><span class="text-slate-500 block">Score:</span> <b id="modal-resumo-score" class="text-emerald-400">-</b></div>
-            </div>
-            <p id="modal-texto" class="text-slate-200 whitespace-pre-line leading-relaxed text-sm"></p>
-        </div>
-        <div class="bg-slate-900 px-6 py-4 border-t border-card flex justify-between items-center">
-            <span class="text-[11px] text-slate-500">Uso interno de apoio decisório • WF Investimentos</span>
-            <button type="button" id="btn-dialog-close" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer" aria-label="Fechar parecer">Fechar</button>
-        </div>
-    </dialog>
+                <tr>
+                    <td class="ticker">ABEV3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 15.51</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">35.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('ABEV3', `A empresa apresenta fundamentos excelentes, pontuados em 86, demonstrando solidez financeira e forte capacidade operacional no setor. O cenário macroeconômico e técnico aponta para uma tendência de alta firme, com o ativo cotado acima da média de duzentos períodos. O indicador de força relativa em trinta e cinco indica um momento tático favorável para entrada, justificando o sinal de compra com controle de risco adequado.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
 
-    <footer class="border-t border-card py-4 text-center text-xs text-slate-500">
-        WF Investimentos &copy; <span id="ano-footer"></span> • Todos os direitos reservados.
-    </footer>
+                <tr>
+                    <td class="ticker">ALOS3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 27.97</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">68.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('ALOS3', `A saúde financeira é sólida, respaldada por bons fundamentos avaliados em 70. O cenário técnico mostra forte tendência de alta, com o preço atual em 35.14 negociando bem acima da média móvel de 200 de 27.97. O IFR de 2 em 68.8 indica momento positivo, sugerindo continuidade do movimento de valorização sem exaustão imediata.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
 
-    <script id="dados-iniciais" type="application/json">{"atualizacao": "24/10/2026 às 23:41", "ano_corrente": 2026, "ativos": [{"ticker": "ABEV3", "tipo": "AÇÃO", "nome": "Ambev", "preco": 16.68, "preco_br": "R$ 16,68", "sma200": 15.51, "sma200_br": "R$ 15,51", "rsi2": 35.3, "fase_cod": "alta_forte", "score": 100.0, "tese_texto": "A empresa apresenta fundamentos excelentes, pontuados em 86, demonstrando solidez financeira e forte capacidade operacional no setor. O cenário macroeconômico e técnico aponta para uma tendência de alta firme, com o ativo cotado acima da média de duzentos períodos. O indicador de força relativa em trinta e cinco indica um momento tático favorável para entrada, justificando o sinal de compra com controle de risco adequado.", "sinal_ia": "compra"}, {"ticker": "ALOS3", "tipo": "AÇÃO", "nome": "Allos", "preco": 35.14, "preco_br": "R$ 35,14", "sma200": 27.97, "sma200_br": "R$ 27,97", "rsi2": 68.8, "fase_cod": "alta_forte", "score": 90.0, "tese_texto": "A saúde financeira é sólida, respaldada por bons fundamentos avaliados em 70. O cenário técnico mostra forte tendência de alta, com o preço atual em 35.14 negociando bem acima da média móvel de 200 de 27.97. O IFR de 2 em 68.8 indica momento positivo, sugerindo continuidade do movimento de valorização sem exaustão imediata.", "sinal_ia": "compra"}, {"ticker": "ALPA4", "tipo": "AÇÃO", "nome": "Alpargatas", "preco": 16.94, "preco_br": "R$ 16,94", "sma200": 13.12, "sma200_br": "R$ 13,12", "rsi2": 29.5, "fase_cod": "alta_forte", "score": 100.0, "tese_texto": "A Alpargatas apresenta fundamentos sólidos avaliados em 79, demonstrando boa saúde financeira e capacidade de geração de valor. No cenário macro, o ativo mantém uma tendência de alta forte, sustentada pela cotação de 16.94 bem acima da média de duzentos períodos em 13.12. O indicador IFR de 29.5 aponta uma condição de sobrevenda de curto prazo, configurando um ponto de entrada atrativo para o investidor.", "sinal_ia": "compra"}, {"ticker": "ASAI3", "tipo": "AÇÃO", "nome": "Assaí", "preco": 13.8, "preco_br": "R$ 13,80", "sma200": 9.04, "sma200_br": "R$ 9,04", "rsi2": 66.6, "fase_cod": "alta_forte", "score": 65.0, "tese_texto": "Os fundamentos de ASAI3 pontuam em 38, indicando fraqueza na saúde financeira. A assimetria fundamentalista exige cautela na alocação de longo prazo. No aspecto macro e técnico, o ativo opera em tendência de alta forte a R$ 13.80, bem acima da média de 200 em R$ 9.04. O IFR de 66.6 aponta momento positivo, mas o risco operacional e a debilidade do balanço recomendam atenção.", "sinal_ia": "alerta"}, {"ticker": "AURE3", "tipo": "AÇÃO", "nome": "Auren Energia", "preco": 15.24, "preco_br": "R$ 15,24", "sma200": 12.19, "sma200_br": "R$ 12,19", "rsi2": 68.8, "fase_cod": "alta_forte", "score": 20.0, "tese_texto": "Os fundamentos da empresa apresentam pontuação fraca em 30, o que indica maior risco na saúde financeira e limita projeções de longo prazo. No entanto, o ativo opera em tendência de alta forte com o preço muito acima da média de 200, mostrando ímpeto comprador. A pontuação atual do IFR sugere cautela devido a uma condição técnica que se aproxima de sobrecomprado, exigindo monitoramento rigoroso.", "sinal_ia": "alerta"}, {"ticker": "B3SA3", "tipo": "AÇÃO", "nome": "B3", "preco": 23.65, "preco_br": "R$ 23,65", "sma200": 16.68, "sma200_br": "R$ 16,68", "rsi2": 75.1, "fase_cod": "alta_forte", "score": 85.0, "tese_texto": "O balanço da empresa apresenta fundamentos sólidos avaliados em 78 pontos. No entanto, o cenário macroeconômico e técnico exige cautela imediata devido ao estiramento dos preços. Com a cotação a R$ 23.65 muito acima da média de 200 de R$ 16.68 e o IFR de 2 em 75.1, o risco de exaustão é elevado. O sinal é de alerta para novas entradas no curto prazo.", "sinal_ia": "alerta"}, {"ticker": "BBAS3", "tipo": "AÇÃO", "nome": "Banco do Brasil", "preco": 24.72, "preco_br": "R$ 24,72", "sma200": 22.04, "sma200_br": "R$ 22,04", "rsi2": 86.9, "fase_cod": "alta_sobrecomprado", "score": 80.0, "tese_texto": "Os fundamentos da empresa seguem sólidos, registrando nota setenta e cinco, o que demonstra excelente saúde financeira. No entanto, o cenário técnico aponta para o ativo sobrecomprado com IFR em oitenta e seis virgula nove. Por fim, o preço atual em vinte e quatro virgula setenta e dois está muito acima da média de duzentos, indicando alto risco de correção no curto prazo e recomendando cautela.", "sinal_ia": "alerta"}, {"ticker": "BBDC3", "tipo": "AÇÃO", "nome": "Bradesco ON", "preco": 18.06, "preco_br": "R$ 18,06", "sma200": 15.84, "sma200_br": "R$ 15,84", "rsi2": 51.3, "fase_cod": "alta_forte", "score": 90.0, "tese_texto": "O Bradesco apresenta fundamentos excelentes pontuados em 83, refletindo uma base sólida e resiliência operacional consistente no setor bancário atual. O cenário técnico confirma uma tendência de alta forte, com a cotação a R$ 18.06 operando confortavelmente acima da média móvel de 200 períodos, fixada em R$ 15.84. Diante da forte tendência de alta sustentada por fundamentos robustos e indicador IFR de 2 neutro em 51.3, o viés é de compra com foco na captura da continuação do movimento direcional.", "sinal_ia": "compra"}, {"ticker": "BBDC4", "tipo": "AÇÃO", "nome": "Bradesco PN", "preco": 20.37, "preco_br": "R$ 20,37", "sma200": 18.23, "sma200_br": "R$ 18,23", "rsi2": 46.6, "fase_cod": "alta_forte", "score": 90.0, "tese_texto": "BBDC4 apresenta excelentes fundamentos, avaliados em 83, o que demonstra forte solidez financeira e eficiência operacional na gestão do banco. O cenário técnico confirma uma tendência de alta robusta, com a cotação a 20.37 posicionada confortavelmente acima da média de 200 períodos, que está em 18.23. O IFR de 46.6 indica um momento neutro de curto prazo sem sobrecompra, reduzindo o risco de entrada. Diante da conjunção entre saúde financeira sólida e tendência de alta consolidada, o veredito é favorável à compra.", "sinal_ia": "compra"}, {"ticker": "BBSE3", "tipo": "AÇÃO", "nome": "BB Seguridade", "preco": 43.68, "preco_br": "R$ 43,68", "sma200": 35.8, "sma200_br": "R$ 35,80", "rsi2": 94.6, "fase_cod": "alta_sobrecomprado", "score": 90.0, "tese_texto": "Os fundamentos de BBSE3 continuam excelentes, pontuando 90 devido à sólida geração de caixa e saúde financeira resiliente. No entanto, o cenário técnico aponta para forte sobrecompra, com IFR de 94.6 e cotação em R$ 43.68, bem acima da média de 200 dias de R$ 35.80. Recomendamos cautela e prudência no momento atual, pois o risco de correção de curto prazo é elevado, sendo prudente aguardar um ponto de entrada mais favorável.", "sinal_ia": "alerta"}, {"ticker": "BPAC11", "tipo": "AÇÃO", "nome": "BTG Pactual", "preco": 79.82, "preco_br": "R$ 79,82", "sma200": 57.86, "sma200_br": "R$ 57,86", "rsi2": 50.1, "fase_cod": "alta_forte", "score": 75.0, "tese_texto": "O balanço da companhia apresenta fundamentos sólidos avaliados em 65, demonstrando boa saúde financeira e resiliência operacional no setor. O cenário macroeconômico e técnico aponta para uma tendência de alta forte, com a cotação em 79.82 posicionada bem acima da média de duzentos períodos em 57.86. O indicador IFR de dois períodos em 50.1 sinaliza neutralidade no curto prazo, mas o momento geral justifica a recomendação de compra.", "sinal_ia": "compra"}, {"ticker": "BRAP4", "tipo": "AÇÃO", "nome": "Bradespar", "preco": 19.01, "preco_br": "R$ 19,01", "sma200": 22.4, "sma200_br": "R$ 22,40", "rsi2": 30.1, "fase_cod": "baixa", "score": 65.0, "tese_texto": "Com fundamento regular em 53, a empresa apresenta balanço moderado e sem grandes destaques positivos recentes. O cenário macroeconômico e a tendência vigente permanecem de baixa, reforçados pelo preço atual abaixo da média de 200 períodos. O IFR em 30.1 indica sobrevenda, exigindo cautela e recomendando postura neutra ou de alerta para novos aportes.", "sinal_ia": "alerta"}, {"ticker": "CMIG4", "tipo": "AÇÃO", "nome": "Cemig", "preco": 11.67, "preco_br": "R$ 11,67", "sma200": 11.14, "sma200_br": "R$ 11,14", "rsi2": 36.6, "fase_cod": "lateral", "score": 100.0, "tese_texto": "A saúde financeira da companhia é excelente, atestada pelo sólido fundamento de 86 pontos, o que garante forte resiliência operacional e consistência de resultados no setor elétrico. O cenário macroeconômico e técnico corrobora uma tendência de alta firme, com a cotação atual em 11,67 posicionada confortavelmente acima da média móvel de duzentos períodos situada em 11,14. O índice de força relativa de curto prazo em 36,6 reflete um recuo recente e saudável, oferecendo um ponto de entrada atrativo para captura de tendência sem sobrecarga de preço.", "sinal_ia": "compra"}, {"ticker": "CSAN3", "tipo": "AÇÃO", "nome": "Cosan", "preco": 5.2, "preco_br": "R$ 5,20", "sma200": 4.63, "sma200_br": "R$ 4,63", "rsi2": 71.7, "fase_cod": "alta_forte", "score": 10.0, "tese_texto": "Os fundamentos da Cosan pontuam fracos em 10, demonstrando cautela quanto à saúde financeira da empresa neste momento. O cenário exibe uma tendência de alta forte, com a cotação a 5.20 superando a média de 200 de 4.63. O IFR de 71.7 aponta zona de sobrecompra, indicando risco elevado de correção de curto prazo.", "sinal_ia": "alerta"}, {"ticker": "CSNA3", "tipo": "AÇÃO", "nome": "CSN", "preco": 6.07, "preco_br": "R$ 6,07", "sma200": 6.58, "sma200_br": "R$ 6,58", "rsi2": 73.9, "fase_cod": "baixa", "score": 20.0, "tese_texto": "O balanço da empresa apresenta fundamentos fracos, pontuados em 20, o que limita expectativas de valorização sustentável no curto prazo. No cenário macro, o ativo encontra-se em lateralização e cotado abaixo da média de 200 períodos, refletindo uma tendência de baixa. O IFR de curto prazo já aponta para zona de sobrecompra, indicando cautela adicional aos investidores. Diante desse panorama técnico desfavorável e da fragilidade fundamentalista, a recomendação é estritamente neutra até que ocorra uma melhora real nos indicadores.", "sinal_ia": "neutro"}, {"ticker": "CVCB3", "tipo": "AÇÃO", "nome": "CVC Brasil", "preco": 1.57, "preco_br": "R$ 1,57", "sma200": 1.81, "sma200_br": "R$ 1,81", "rsi2": 56.9, "fase_cod": "baixa", "score": 10.0, "tese_texto": "A saúde financeira da CVCB3 permanece fraca, pontuada em 10, refletindo a pressão contínua sobre suas margens e o endividamento elevado que limita a flexibilidade operacional da companhia. No cenário macroeconômico, o papel transita por um momento de lateralização, sem uma tendência direcional clara e pressionado pela concorrência acirrada. Tecnicamente, a cotação em 1,57 permanece abaixo da média móvel de 200 de 1,81, enquanto o IFR de 56,9 indica neutralidade, sugerindo cautela e recomendando ficar de fora até que ocorram mudanças estruturais.", "sinal_ia": "neutro"}, {"ticker": "CYRE3", "tipo": "AÇÃO", "nome": "Cyrela", "preco": 35.57, "preco_br": "R$ 35,57", "sma200": 25.63, "sma200_br": "R$ 25,63", "rsi2": 95.5, "fase_cod": "alta_sobrecomprado", "score": 100.0, "tese_texto": "A fundamentação da empresa é excelente, pontuada em 100, demonstrando uma base sólida e ótima saúde financeira nos dados analisados. No entanto, o cenário técnico aponta para um patamar sobrecomprado extremo, com o IFR em 95.5 e o preço atual de R$ 35.57 bem acima da média de 200 períodos, fixada em R$ 25.63. Diante desse distanciamento expressivo das médias e do forte esgotamento comprador, há um risco iminente de correção técnica, recomendando cautela na entrada e preferência por momentos de respiro do ativo.", "sinal_ia": "alerta"}, {"ticker": "ENEV3", "tipo": "AÇÃO", "nome": "Eneva", "preco": 31.48, "preco_br": "R$ 31,48", "sma200": 25.21, "sma200_br": "R$ 25,21", "rsi2": 16.8, "fase_cod": "alta_forte", "score": 65.0, "tese_texto": "Balanço fundamentalista fraco com pontuação de 38 reflete riscos na saúde financeira da companhia. O cenário técnico aponta tendência de alta forte com preço em 31.48 acima da média de duzentos de 25.21. O IFR de 16.8 indica sobrevenda extrema gerando oportunidade tática de curto prazo, mas exigindo cautela rigorosa.", "sinal_ia": "alerta"}, {"ticker": "EGIE3", "tipo": "AÇÃO", "nome": "Engie Brasil", "preco": 30.79, "preco_br": "R$ 30,79", "sma200": 31.46, "sma200_br": "R$ 31,46", "rsi2": 16.5, "fase_cod": "lateral", "score": 75.0, "tese_texto": "A saude financeira de EGIE3 e solida, respaldada por fundamentos fortes pontuados em 75, garantindo resiliencia operacional e consistencia de resultados. No cenario macroeconomico, a acao apresenta movimento de lateralizacao e cotacao atual em 30.79, situando-se abaixo da media de 200 de 31.46. O indicador IFR de 2 em 16.5 aponta uma condicao tecnica de sobrevenda extrema, configurando uma excelente oportunidade de entrada taticamente.", "sinal_ia": "compra"}, {"ticker": "EQTL3", "tipo": "AÇÃO", "nome": "Equatorial", "preco": 48.88, "preco_br": "R$ 48,88", "sma200": 40.4, "sma200_br": "R$ 40,40", "rsi2": 63.8, "fase_cod": "alta_forte", "score": 50.0, "tese_texto": "Os fundamentos da Equatorial apresentam pontuação fraca de 20, exigindo cautela na análise de longo prazo da companhia. No entanto, o cenário técnico mostra forte tendência de alta, com o preço atual negociando bem acima da média de duzentos períodos. O índice de força relativa está em patamar moderado, indicando momento positivo, mas a assimetria pede atenção devido aos fundamentos frágeis.", "sinal_ia": "alerta"}, {"ticker": "GGBR4", "tipo": "AÇÃO", "nome": "Gerdau", "preco": 25.22, "preco_br": "R$ 25,22", "sma200": 22.54, "sma200_br": "R$ 22,54", "rsi2": 15.8, "fase_cod": "alta_forte", "score": 75.0, "tese_texto": "Fundamentos regulares pontuados em 55 indicam cautela na operação. O preço de 25.22 permanece acima da média de duzentos de 22.54, mostrando tendência primária de alta. O indicador IFR de 15.8 aponta sobrevenda extrema, configurando um pullback que aguarda gatilho para retomada.", "sinal_ia": "alerta"}, {"ticker": "HAPV3", "tipo": "AÇÃO", "nome": "Hapvida", "preco": 8.83, "preco_br": "R$ 8,83", "sma200": 10.38, "sma200_br": "R$ 10,38", "rsi2": 54.6, "fase_cod": "baixa", "score": 45.0, "tese_texto": "O balanço apresenta fundamentos regulares, pontuados em 45, o que exige cautela na alocação e reflete uma saúde financeira ainda em processo de consolidação e recuperação de margens operacionais. No cenário macroeconômico e técnico, o ativo opera lateralizado e abaixo da média móvel de duzentos períodos, que está em dez reais e trinta e oito centavos, evidenciando uma tendência de médio prazo desfavorável. Diante disso, o veredito para o papel é neutro, recomendando aguardar um rompimento claro de resistência ou melhora nos fundamentos antes de assumir novas posições direcionais.", "sinal_ia": "neutro"}, {"ticker": "ITSA4", "tipo": "AÇÃO", "nome": "Itaúsa", "preco": 15.31, "preco_br": "R$ 15,31", "sma200": 13.54, "sma200_br": "R$ 13,54", "rsi2": 19.0, "fase_cod": "alta_forte", "score": 100.0, "tese_texto": "A saúde financeira da empresa é excelente, atestada pela nota de fundamentos em 93. Os indicadores demonstram solidez e consistência na geração de valor para o acionista no longo prazo. O cenário macroeconômico e a tendência gráfica corroboram a continuação do movimento de alta forte, sustentando a robustez operacional. O ativo negocia bem acima da média móvel de 200 períodos, que está em 13.54, enquanto o IFR de 2 dias em 19.0 aponta uma região de sobrevenda no curto prazo, oferecendo um excelente ponto de entrada. O risco é considerado baixo devido aos fundamentos sólidos, justificando a recomendação de compra para o investidor focado em valor e tendência.", "sinal_ia": "compra"}, {"ticker": "ITUB4", "tipo": "AÇÃO", "nome": "Itaú Unibanco", "preco": 48.3, "preco_br": "R$ 48,30", "sma200": 42.53, "sma200_br": "R$ 42,53", "rsi2": 47.4, "fase_cod": "alta_forte", "score": 90.0, "tese_texto": "O balanço da instituição apresenta excelente saúde financeira com nota fundamentalista de 90, demonstrando solidez e eficiência operacional consistente no setor bancário. No cenário macroeconômico e técnico, o ativo desfruta de uma tendência de alta forte, operando confortavelmente acima da média móvel de 200 períodos situada em R$ 42.53, enquanto o IFR de 47.4 indica neutralidade de curto prazo sem sobrecompra. O veredito aponta para compra devido ao alinhamento positivo entre fundamentos robustos e a tendência principal de alta, oferecendo um risco controlado para o investidor.", "sinal_ia": "compra"}, {"ticker": "KLBN11", "tipo": "AÇÃO", "nome": "Klabin", "preco": 18.22, "preco_br": "R$ 18,22", "sma200": 18.35, "sma200_br": "R$ 18,35", "rsi2": 55.1, "fase_cod": "lateral", "score": 50.0, "tese_texto": "Com fundamentação fraca avaliada em 20, a empresa demonstra fragilidade operacional e riscos elevados na sua estrutura financeira atual. O cenário macroeconômico desfavorável reforça a pressão sobre os ativos e limita margens de manobra. A cotação abaixo da média móvel de 200 períodos e a tendência de baixa consolidada indicam momento desfavorável para novas posições.", "sinal_ia": "venda"}, {"ticker": "LREN3", "tipo": "AÇÃO", "nome": "Lojas Renner", "preco": 14.58, "preco_br": "R$ 14,58", "sma200": 13.46, "sma200_br": "R$ 13,46", "rsi2": 57.9, "fase_cod": "alta_forte", "score": 90.0, "tese_texto": "A saúde financeira de LREN3 é excelente, atestada pelo sólido fundamento de 86 pontos, indicando forte resiliência operacional. O cenário técnico corrobora o otimismo com uma tendência de alta firme, mantendo a cotação em 14.58 acima da média de 200 de 13.46, enquanto o IFR de 57.9 reflete um fluxo saudável e sem sobrecompra. Diante desses indicadores, o veredito é favorável a novas posições no ativo.", "sinal_ia": "compra"}, {"ticker": "MGLU3", "tipo": "AÇÃO", "nome": "Magazine Luiza", "preco": 12.69, "preco_br": "R$ 12,69", "sma200": 7.31, "sma200_br": "R$ 7,31", "rsi2": 44.1, "fase_cod": "alta_forte", "score": 75.0, "tese_texto": "O balanço da empresa apresenta fundamentos avaliados em 45, indicando uma saúde financeira regular e que exige cautela por parte dos investidores no médio prazo. No cenário macroeconômico e técnico, o ativo registra forte tendência de alta e negocia a 12.69, mantendo-se confortavelmente acima da média de 200 de 7.31 com IFR de 44.1. O nosso veredito aponta para um sinal de alerta, pois a distância expressiva da média móvel sugere riscos de volatilidade elevada para novas entradas.", "sinal_ia": "alerta"}, {"ticker": "MRVE3", "tipo": "AÇÃO", "nome": "MRV Engenharia", "preco": 8.23, "preco_br": "R$ 8,23", "sma200": 6.64, "sma200_br": "R$ 6,64", "rsi2": 72.5, "fase_cod": "alta_forte", "score": 20.0, "tese_texto": "Fundamentos da MRVE3 avaliados em 30 indicam fragilidade na saúde financeira da companhia. O cenário macroeconômico e técnico aponta tendência de alta forte com o preço a R$ 8.23 acima da média de duzentos de R$ 6.64. O IFR de 72.5 sinaliza zona de sobrecompra e alerta para correções iminentes no curto prazo.", "sinal_ia": "alerta"}, {"ticker": "MULT3", "tipo": "AÇÃO", "nome": "Multiplan", "preco": 37.53, "preco_br": "R$ 37,53", "sma200": 30.4, "sma200_br": "R$ 30,40", "rsi2": 66.0, "fase_cod": "alta_forte", "score": 100.0, "tese_texto": "A saúde financeira da MULT3 é atestada pelo excelente fundamento de 93, refletindo solidez operacional. O cenário macroeconômico corrobora uma tendência de alta forte, impulsionada pela robustez da empresa no setor. Negociando a R$ 37,53, o ativo supera confortavelmente a média de 200 de R$ 30,40, indicando momento positivo. O IFR de 66 sinaliza proximidade com a zona de sobrecompra, exigindo atenção tática. O veredito é de compra fundamentada na força da tendência e na excelente qualidade dos fundamentos.", "sinal_ia": "compra"}, {"ticker": "PETR3", "tipo": "AÇÃO", "nome": "Petrobras ON", "preco": 65.24, "preco_br": "R$ 65,24", "sma200": 46.62, "sma200_br": "R$ 46,62", "rsi2": 79.0, "fase_cod": "alta_forte", "score": 100.0, "tese_texto": "A saúde financeira de PETR3 é excelente, pontuada em 100 com base nos fundamentos. O cenário macroeconômico e a média de 200 em 46,62 demonstram uma tendência de alta muito forte e consolidada no longo prazo. Contudo, o IFR de 79 indica sobrecompra no curto prazo, exigindo cautela na entrada pelo preço atual de 65,24.", "sinal_ia": "alerta"}, {"ticker": "PETR4", "tipo": "AÇÃO", "nome": "Petrobras PN", "preco": 58.68, "preco_br": "R$ 58,68", "sma200": 42.06, "sma200_br": "R$ 42,06", "rsi2": 81.2, "fase_cod": "alta_forte", "score": 100.0, "tese_texto": "A saúde financeira de PETR4 é excelente, pontuada em 100, demonstrando bases sólidas para a operação. No entanto, o cenário macroeconômico e técnico revela estresse de curto prazo, evidenciado pelo IFR de 81.2. Diante da forte tendência de alta e do preço cotado a R$ 58.68 bem acima da média de 200 de R$ 42.06, o risco de exaustão é elevado, exigindo cautela imediata por parte do investidor.", "sinal_ia": "alerta"}, {"ticker": "PRIO3", "tipo": "AÇÃO", "nome": "PRIO", "preco": 73.8, "preco_br": "R$ 73,80", "sma200": 59.77, "sma200_br": "R$ 59,77", "rsi2": 100.0, "fase_cod": "alta_sobrecomprado", "score": 100.0, "tese_texto": "Fundamentos sólidos atestam boa saúde financeira com nota setenta e nove. A cotação em setenta e três reais e oitenta centavos supera a média de duzentos de cinquenta e nove reais. O indicador IFR em cem sinaliza topo absoluto, evidenciando cenário de sobrecomprado e risco iminente de correção.", "sinal_ia": "alerta"}, {"ticker": "RADL3", "tipo": "AÇÃO", "nome": "RaiaDrogasil", "preco": 20.28, "preco_br": "R$ 20,28", "sma200": 20.78, "sma200_br": "R$ 20,78", "rsi2": 13.0, "fase_cod": "lateral", "score": 75.0, "tese_texto": "Os fundamentos da empresa encontram-se em patamar regular, pontuados em 46, refletindo um momento de cautela operacional e margens pressionadas. O cenário macroeconômico atual mostra o ativo em processo de lateralização, sem uma tendência direcional clara no curto prazo. Com o preço negociando abaixo da média de duzentos períodos e o indicador de força relativa extremamente sobrevendido, recomendamos cautela e postura neutra para novas posições.", "sinal_ia": "alerta"}, {"ticker": "RAIZ4", "tipo": "AÇÃO", "nome": "Raízen", "preco": 0.43, "preco_br": "R$ 0,43", "sma200": 0.46, "sma200_br": "R$ 0,46", "rsi2": 83.6, "fase_cod": "baixa", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "RDOR3", "tipo": "AÇÃO", "nome": "Rede D'Or", "preco": 43.73, "preco_br": "R$ 43,73", "sma200": 37.55, "sma200_br": "R$ 37,55", "rsi2": 41.4, "fase_cod": "alta_forte", "score": 65.0, "tese_texto": "Com fundamentos regulares pontuados em 46, a companhia apresenta uma estrutura financeira que requer monitoramento constante, mas ainda sustentável no atual patamar de mercado.\nNo cenário macroeconômico e técnico, o ativo desfruta de uma forte tendência de alta, negociando bem acima da sua média móvel de duzentos dias situada em 37.55 reais.\nO indicador IFR de curto prazo em 41.4 sinaliza um momento de respiro saudável, justificando uma recomendação de compra alinhada ao momentum positivo da ação.", "sinal_ia": "compra"}, {"ticker": "RENT3", "tipo": "AÇÃO", "nome": "Localiza", "preco": 52.42, "preco_br": "R$ 52,42", "sma200": 42.33, "sma200_br": "R$ 42,33", "rsi2": 66.5, "fase_cod": "alta_forte", "score": 65.0, "tese_texto": "Os fundamentos de RENT3 pontuam em 56, indicando um cenário regular para a companhia, sem grandes surpresas operacionais recentes mas mantendo estabilidade. Do ponto de vista técnico, o papel opera com forte tendência de alta e cotação em R$ 52.42, bem acima da média de 200 de R$ 42.33, refletindo momento favorável. O IFR de 66.5 aponta proximidade de sobrecompra, exigindo cautela no curto prazo com o risco de correções técnicas. O veredito é favorável a novas posições devido ao momentum altista, mas com gestão rigorosa de risco.", "sinal_ia": "compra"}, {"ticker": "SANB11", "tipo": "AÇÃO", "nome": "Santander Brasil", "preco": 27.53, "preco_br": "R$ 27,53", "sma200": 28.92, "sma200_br": "R$ 28,92", "rsi2": 21.7, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Os fundamentos de SANB11 pontuam em 68, indicando boa saúde financeira e solidez operacional na gestão do banco. O cenário técnico apresenta tendência de baixa, com o preço atual em 27.53 negociando abaixo da média de duzentos de 28.92. O IFR de dois períodos em 21.7 aponta sobreventa extrema, sugerindo cautela e risco elevado para novas entradas no curto prazo.", "sinal_ia": "alerta"}, {"ticker": "SBSP3", "tipo": "AÇÃO", "nome": "Sabesp", "preco": 31.98, "preco_br": "R$ 31,98", "sma200": 28.95, "sma200_br": "R$ 28,95", "rsi2": 48.0, "fase_cod": "alta_forte", "score": 100.0, "tese_texto": "A companhia apresenta fundamentos sólidos avaliados em 79, indicando boa saúde financeira e eficiência operacional consistente no setor de saneamento. O cenário técnico aponta tendência de alta forte, com a cotação em 31.98 posicionada acima da média móvel de 200 períodos situada em 28.95, enquanto o IFR de 48.0 reflete um momento de equilibrio neutro sem sobrecompra. Diante da conjunção entre a robustez fundamentalista e a dinâmica favorável de preço, o veredito é favorável a novas posições no ativo.", "sinal_ia": "compra"}, {"ticker": "SUZB3", "tipo": "AÇÃO", "nome": "Suzano", "preco": 43.06, "preco_br": "R$ 43,06", "sma200": 46.42, "sma200_br": "R$ 46,42", "rsi2": 80.9, "fase_cod": "baixa", "score": 75.0, "tese_texto": "A companhia apresenta excelente saúde financeira com sólidos fundamentos avaliados em setenta e oito. O cenário macroeconômico e técnico indica tendência de baixa, pois a cotação atual está abaixo da média móvel de duzentos períodos. O índice de força relativa em oitenta ponto nove aponta sobrecompra de curto prazo, exigindo cautela e recomendando aguardar um melhor ponto de entrada.", "sinal_ia": "alerta"}, {"ticker": "TAEE11", "tipo": "AÇÃO", "nome": "Taesa", "preco": 44.75, "preco_br": "R$ 44,75", "sma200": 40.31, "sma200_br": "R$ 40,31", "rsi2": 26.1, "fase_cod": "alta_forte", "score": 95.0, "tese_texto": "A Taesa apresenta fundamentos sólidos com nota 68, demonstrando boa saúde financeira e resiliência operacional no setor elétrico. O cenário macroeconômico e técnico aponta para uma tendência de alta firme, sustentada pela cotação atual acima da média móvel de duzentos períodos. O indicador de força relativa curto prazo em 26 ponto um sugere sobrevenda pontual, configurando uma excelente oportunidade de entrada compradora.", "sinal_ia": "compra"}, {"ticker": "TIMS3", "tipo": "AÇÃO", "nome": "TIM Brasil", "preco": 19.09, "preco_br": "R$ 19,09", "sma200": 22.36, "sma200_br": "R$ 22,36", "rsi2": 31.8, "fase_cod": "baixa", "score": 100.0, "tese_texto": "A empresa apresenta fundamentos excelentes com pontuacao de 93, indicando solidez financeira e boa geracao de valor. No entanto, o cenario e de tendencia de baixa, com o ativo cotado a 19.09 abaixo da media de 200 periodos em 22.36. O indicador IFR(2) em 31.8 aponta regiao proxima a sobrevenda, exigindo cautela. O veredito e de alerta devido ao momento tecnico desfavoravel que anula temporariamente a excelente qualidade fundamentalista.", "sinal_ia": "alerta"}, {"ticker": "TOTS3", "tipo": "AÇÃO", "nome": "Totvs", "preco": 44.35, "preco_br": "R$ 44,35", "sma200": 34.43, "sma200_br": "R$ 34,43", "rsi2": 98.4, "fase_cod": "alta_sobrecomprado", "score": 85.0, "tese_texto": "Os fundamentos da Totvs pontuam em 61, indicando boa saúde financeira e solidez operacional sustentada pela entrega consistente de resultados. No cenário macro e técnico, o ativo negocia a R$ 44.35, muito acima da média de duzentos períodos em R$ 34.43. O IFR de 98.4 aponta um estado extremo de sobrecomprado, elevando consideravelmente o risco iminente de correção de preço. Diante do forte distanciamento da média móvel e da exaustão compradora de curto prazo, o momento exige cautela extrema e desaconselha novas posições direcionais.", "sinal_ia": "alerta"}, {"ticker": "UGPA3", "tipo": "AÇÃO", "nome": "Ultrapar", "preco": 38.55, "preco_br": "R$ 38,55", "sma200": 29.42, "sma200_br": "R$ 29,42", "rsi2": 14.3, "fase_cod": "alta_pullback", "score": 90.0, "tese_texto": "A companhia apresenta excelente saúde financeira com sólidos fundamentos avaliados em 71. O cenário macroeconômico e técnico aponta para uma oportunidade de entrada altamente favorável no ativo. O preço atual de 38.55 está significativamente acima da média de 200 de 29.42, enquanto o IFR de 2 indica sobrevenda extrema de curto prazo. Recomendamos a compra aproveitando o repique técnico para capturar valor.", "sinal_ia": "compra"}, {"ticker": "USIM5", "tipo": "AÇÃO", "nome": "Usiminas", "preco": 6.63, "preco_br": "R$ 6,63", "sma200": 7.62, "sma200_br": "R$ 7,62", "rsi2": 61.1, "fase_cod": "baixa", "score": 45.0, "tese_texto": "A saúde financeira avaliada em 45 aponta para um perfil regular, refletindo desafios operacionais que pressionam a rentabilidade e limitam o crescimento sustentável no curto prazo. O cenário macroeconômico e a tendência atual permanecem de baixa, confirmados pela cotação de 6.63 que se mantém abaixo da média de 200 de 7.62. Diante da persistência na tendência de baixa e dos fundamentos limitados, o viés é cauteloso, com o IFR de 61.1 indicando zona intermediária sem força compradora relevante.", "sinal_ia": "venda"}, {"ticker": "VALE3", "tipo": "AÇÃO", "nome": "Vale", "preco": 61.9, "preco_br": "R$ 61,90", "sma200": 77.12, "sma200_br": "R$ 77,12", "rsi2": 19.3, "fase_cod": "baixa", "score": 75.0, "tese_texto": "Fundamentos regulares em 55 pontos indicam cautela sobre a saúde financeira atual da companhia frente aos desafios setoriais. O preço de mercado em 61.90 caminha muito abaixo da média de duzentos períodos em 77.12, confirmando forte tendência de baixa. O índice de força relativa em 19.3 sinaliza sobrevenda severa, mas o contexto macro desfavorável exige postura defensiva e recomenda venda.", "sinal_ia": "venda"}, {"ticker": "VIVT3", "tipo": "AÇÃO", "nome": "Telefônica Brasil", "preco": 32.43, "preco_br": "R$ 32,43", "sma200": 34.1, "sma200_br": "R$ 34,10", "rsi2": 37.6, "fase_cod": "lateral", "score": 90.0, "tese_texto": "A saúde financeira é sólida com fundamentos avaliados em 71, demonstrando resiliência e boa gestão operacional no setor. O cenário econômico e o comportamento do ativo mostram tendência de lateralização, sem grandes impulsos direcionais no momento. Operando abaixo da média de 200 períodos de R$ 34,10 e com IFR de 37,6, o risco exige cautela e o veredito permanece neutro.", "sinal_ia": "neutro"}, {"ticker": "WEGE3", "tipo": "AÇÃO", "nome": "WEG", "preco": 42.73, "preco_br": "R$ 42,73", "sma200": 47.63, "sma200_br": "R$ 47,63", "rsi2": 4.7, "fase_cod": "baixa_sobrevendido", "score": 85.0, "tese_texto": "Os fundamentos da empresa continuam sólidos, com pontuação de 75 demonstrando boa saúde financeira. No entanto, o ativo negocia abaixo da média de 200 períodos de 47.63 reais. O IFR de 2 aponta nível extremamente sobrevendido em 4.7, indicando forte pressão vendedora recente. O cenário exige cautela e paciência, pois a tendência principal permanece de baixa. Recomendamos aguardar a reversão do fluxo antes de novas posições.", "sinal_ia": "alerta"}, {"ticker": "MXRF11", "tipo": "FII", "nome": "Maxi Renda FII", "preco": 9.44, "preco_br": "R$ 9,44", "sma200": 9.15, "sma200_br": "R$ 9,15", "rsi2": 41.6, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "HGLG11", "tipo": "FII", "nome": "CSHG Logística FII", "preco": 159.66, "preco_br": "R$ 159,66", "sma200": 147.93, "sma200_br": "R$ 147,93", "rsi2": 92.7, "fase_cod": "alta_sobrecomprado", "score": 90.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "XPML11", "tipo": "FII", "nome": "XP Malls FII", "preco": 104.61, "preco_br": "R$ 104,61", "sma200": 98.1, "sma200_br": "R$ 98,10", "rsi2": 14.8, "fase_cod": "alta_pullback", "score": 40.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "KNIP11", "tipo": "FII", "nome": "Kinea Índice de Preços", "preco": 93.2, "preco_br": "R$ 93,20", "sma200": 87.67, "sma200_br": "R$ 87,67", "rsi2": 38.8, "fase_cod": "alta_forte", "score": 40.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "KNCR11", "tipo": "FII", "nome": "Kinea Rendimentos Imob", "preco": 105.55, "preco_br": "R$ 105,55", "sma200": 101.32, "sma200_br": "R$ 101,32", "rsi2": 16.8, "fase_cod": "lateral", "score": 90.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "BTLG11", "tipo": "FII", "nome": "BTG Pactual Logística", "preco": 104.8, "preco_br": "R$ 104,80", "sma200": 98.28, "sma200_br": "R$ 98,28", "rsi2": 79.8, "fase_cod": "alta_forte", "score": 75.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "VISC11", "tipo": "FII", "nome": "Vinci Shopping Centers", "preco": 114.2, "preco_br": "R$ 114,20", "sma200": 103.5, "sma200_br": "R$ 103,50", "rsi2": 92.3, "fase_cod": "alta_sobrecomprado", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "HGRU11", "tipo": "FII", "nome": "CSHG Renda Urbana", "preco": 125.47, "preco_br": "R$ 125,47", "sma200": 121.05, "sma200_br": "R$ 121,05", "rsi2": 55.8, "fase_cod": "lateral", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "XPLG11", "tipo": "FII", "nome": "XP Log FII", "preco": 101.0, "preco_br": "R$ 101,00", "sma200": 93.17, "sma200_br": "R$ 93,17", "rsi2": 49.2, "fase_cod": "alta_forte", "score": 40.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "CPTS11", "tipo": "FII", "nome": "Capitânia Securities", "preco": 7.77, "preco_br": "R$ 7,77", "sma200": 7.28, "sma200_br": "R$ 7,28", "rsi2": 64.7, "fase_cod": "alta_forte", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "TGAR11", "tipo": "FII", "nome": "TG Ativo Real FII", "preco": 51.95, "preco_br": "R$ 51,95", "sma200": 57.57, "sma200_br": "R$ 57,57", "rsi2": 91.3, "fase_cod": "baixa", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "VGIR11", "tipo": "FII", "nome": "Valora RE III", "preco": 9.59, "preco_br": "R$ 9,59", "sma200": 9.09, "sma200_br": "R$ 9,09", "rsi2": 49.5, "fase_cod": "alta_forte", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "RBRR11", "tipo": "FII", "nome": "RBR Rendimento High Grade", "preco": 76.0, "preco_br": "R$ 76,00", "sma200": 76.02, "sma200_br": "R$ 76,02", "rsi2": 99.4, "fase_cod": "lateral", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "HGCR11", "tipo": "FII", "nome": "CSHG Recebíveis Imob", "preco": 98.69, "preco_br": "R$ 98,69", "sma200": 91.03, "sma200_br": "R$ 91,03", "rsi2": 62.1, "fase_cod": "alta_forte", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "TRXF11", "tipo": "FII", "nome": "TRX Real Estate", "preco": 71.9, "preco_br": "R$ 71,90", "sma200": 82.61, "sma200_br": "R$ 82,61", "rsi2": 50.5, "fase_cod": "baixa", "score": 40.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "VGIA11", "tipo": "FII", "nome": "Valora FIAGRO", "preco": 9.1, "preco_br": "R$ 9,10", "sma200": 8.81, "sma200_br": "R$ 8,81", "rsi2": 96.8, "fase_cod": "lateral", "score": 25.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "RZTR11", "tipo": "FII", "nome": "Riza Terrax FIAGRO", "preco": 79.9, "preco_br": "R$ 79,90", "sma200": 85.86, "sma200_br": "R$ 85,86", "rsi2": 58.1, "fase_cod": "baixa", "score": 40.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "AAPL34", "tipo": "BDR", "nome": "Apple Inc.", "preco": 86.65, "preco_br": "R$ 86,65", "sma200": 75.37, "sma200_br": "R$ 75,37", "rsi2": 42.5, "fase_cod": "alta_forte", "score": 85.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "NVDC34", "tipo": "BDR", "nome": "NVIDIA Corporation", "preco": 21.94, "preco_br": "R$ 21,94", "sma200": 21.72, "sma200_br": "R$ 21,72", "rsi2": 16.3, "fase_cod": "lateral", "score": 85.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "MSFT34", "tipo": "BDR", "nome": "Microsoft Corp.", "preco": 108.97, "preco_br": "R$ 108,97", "sma200": 93.17, "sma200_br": "R$ 93,17", "rsi2": 7.3, "fase_cod": "alta_pullback", "score": 85.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "AMZO34", "tipo": "BDR", "nome": "Amazon.com Inc.", "preco": 62.03, "preco_br": "R$ 62,03", "sma200": 62.44, "sma200_br": "R$ 62,44", "rsi2": 7.5, "fase_cod": "lateral", "score": 100.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "GOGL34", "tipo": "BDR", "nome": "Alphabet (Google)", "preco": 133.71, "preco_br": "R$ 133,71", "sma200": 145.89, "sma200_br": "R$ 145,89", "rsi2": 1.0, "fase_cod": "baixa_sobrevendido", "score": 100.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "TSLA34", "tipo": "BDR", "nome": "Tesla Inc.", "preco": 58.02, "preco_br": "R$ 58,02", "sma200": 62.04, "sma200_br": "R$ 62,04", "rsi2": 28.0, "fase_cod": "baixa", "score": 65.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "DISB34", "tipo": "BDR", "nome": "The Walt Disney Co.", "preco": 37.44, "preco_br": "R$ 37,44", "sma200": 35.34, "sma200_br": "R$ 35,34", "rsi2": 37.5, "fase_cod": "alta_forte", "score": 75.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "NFLX34", "tipo": "BDR", "nome": "Netflix Inc.", "preco": 6.55, "preco_br": "R$ 6,55", "sma200": 8.45, "sma200_br": "R$ 8,45", "rsi2": 28.9, "fase_cod": "baixa", "score": 100.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "MELI34", "tipo": "BDR", "nome": "MercadoLivre Inc.", "preco": 75.4, "preco_br": "R$ 75,40", "sma200": 78.11, "sma200_br": "R$ 78,11", "rsi2": 8.0, "fase_cod": "lateral", "score": 50.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "BOVA11", "tipo": "ETF", "nome": "iShares Ibovespa", "preco": 201.69, "preco_br": "R$ 201,69", "sma200": 178.03, "sma200_br": "R$ 178,03", "rsi2": 39.4, "fase_cod": "alta_forte", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "BRAX11", "tipo": "ETF", "nome": "iShares IBrX 100", "preco": 171.9, "preco_br": "R$ 171,90", "sma200": 151.74, "sma200_br": "R$ 151,74", "rsi2": 48.5, "fase_cod": "alta_forte", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "SMAL11", "tipo": "ETF", "nome": "iShares Small Cap", "preco": 137.16, "preco_br": "R$ 137,16", "sma200": 114.91, "sma200_br": "R$ 114,91", "rsi2": 66.7, "fase_cod": "alta_forte", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "NDIV11", "tipo": "ETF", "nome": "Nu Ibov Smart Dividendos", "preco": 133.28, "preco_br": "R$ 133,28", "sma200": 126.5, "sma200_br": "R$ 126,50", "rsi2": 58.7, "fase_cod": "alta_forte", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "DIVO11", "tipo": "ETF", "nome": "It Now IDIV Dividendos", "preco": 146.12, "preco_br": "R$ 146,12", "sma200": 129.7, "sma200_br": "R$ 129,70", "rsi2": 62.8, "fase_cod": "alta_forte", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "FIND11", "tipo": "ETF", "nome": "iShares Setor Financeiro", "preco": 225.5, "preco_br": "R$ 225,50", "sma200": 185.31, "sma200_br": "R$ 185,31", "rsi2": 65.2, "fase_cod": "alta_forte", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "MATB11", "tipo": "ETF", "nome": "iShares Materiais Basicos", "preco": 61.1, "preco_br": "R$ 61,10", "sma200": 63.04, "sma200_br": "R$ 63,04", "rsi2": 36.3, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "IVVB11", "tipo": "ETF", "nome": "iShares S&P 500", "preco": 430.0, "preco_br": "R$ 430,00", "sma200": 421.75, "sma200_br": "R$ 421,75", "rsi2": 9.5, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "SPXI11", "tipo": "ETF", "nome": "It Now S&P 500", "preco": 52.2, "preco_br": "R$ 52,20", "sma200": 70.84, "sma200_br": "R$ 70,84", "rsi2": 8.1, "fase_cod": "baixa_sobrevendido", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "NASD11", "tipo": "ETF", "nome": "Trend Nasdaq 100", "preco": 20.15, "preco_br": "R$ 20,15", "sma200": 19.9, "sma200_br": "R$ 19,90", "rsi2": 12.2, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "ACWI11", "tipo": "ETF", "nome": "Trend MSCI ACWI Global", "preco": 16.5, "preco_br": "R$ 16,50", "sma200": 16.49, "sma200_br": "R$ 16,49", "rsi2": 9.3, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "XINA11", "tipo": "ETF", "nome": "Trend MSCI China", "preco": 6.34, "preco_br": "R$ 6,34", "sma200": 7.46, "sma200_br": "R$ 7,46", "rsi2": 1.7, "fase_cod": "baixa_sobrevendido", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "GOLD11", "tipo": "ETF", "nome": "Trend Ouro Fixo", "preco": 20.74, "preco_br": "R$ 20,74", "sma200": 24.08, "sma200_br": "R$ 24,08", "rsi2": 4.1, "fase_cod": "baixa_sobrevendido", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "HASH11", "tipo": "ETF", "nome": "Hashdex Nasdaq Crypto", "preco": 52.0, "preco_br": "R$ 52,00", "sma200": 49.61, "sma200_br": "R$ 49,61", "rsi2": 20.0, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "QBTC11", "tipo": "ETF", "nome": "QR CME CF Bitcoin", "preco": 24.3, "preco_br": "R$ 24,30", "sma200": 22.91, "sma200_br": "R$ 22,91", "rsi2": 20.1, "fase_cod": "alta_forte", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "QETH11", "tipo": "ETF", "nome": "QR CME CF Ether", "preco": 8.35, "preco_br": "R$ 8,35", "sma200": 8.07, "sma200_br": "R$ 8,07", "rsi2": 19.5, "fase_cod": "lateral", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "B5P211", "tipo": "ETF", "nome": "It Now IMA-B 5 P2", "preco": 116.15, "preco_br": "R$ 116,15", "sma200": 107.59, "sma200_br": "R$ 107,59", "rsi2": 98.3, "fase_cod": "alta_sobrecomprado", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "IMAB11", "tipo": "ETF", "nome": "It Now IMA-B Geral", "preco": 126.24, "preco_br": "R$ 126,24", "sma200": 113.59, "sma200_br": "R$ 113,59", "rsi2": 97.3, "fase_cod": "alta_sobrecomprado", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "IB5M11", "tipo": "ETF", "nome": "It Now IMA-B 5+", "preco": 139.32, "preco_br": "R$ 139,32", "sma200": 123.7, "sma200_br": "R$ 123,70", "rsi2": 97.9, "fase_cod": "alta_sobrecomprado", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}, {"ticker": "LFTS11", "tipo": "ETF", "nome": "Investo Teva Tesouro Selic", "preco": 161.86, "preco_br": "R$ 161,86", "sma200": 153.92, "sma200_br": "R$ 153,92", "rsi2": 99.8, "fase_cod": "alta_sobrecomprado", "score": 80.0, "tese_texto": "Análise em processamento para este ativo...", "sinal_ia": "neutro"}]}</script>
+                <tr>
+                    <td class="ticker">ALPA4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 13.12</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">29.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('ALPA4', `A Alpargatas apresenta fundamentos sólidos avaliados em 79, demonstrando boa saúde financeira e capacidade de geração de valor. No cenário macro, o ativo mantém uma tendência de alta forte, sustentada pela cotação de 16.94 bem acima da média de duzentos períodos em 13.12. O indicador IFR de 29.5 aponta uma condição de sobrevenda de curto prazo, configurando um ponto de entrada atrativo para o investidor.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">ASAI3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 9.04</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">66.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>65</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('ASAI3', `Os fundamentos de ASAI3 pontuam em 38, indicando fraqueza na saúde financeira. A assimetria fundamentalista exige cautela na alocação de longo prazo. No aspecto macro e técnico, o ativo opera em tendência de alta forte a R$ 13.80, bem acima da média de 200 em R$ 9.04. O IFR de 66.6 aponta momento positivo, mas o risco operacional e a debilidade do balanço recomendam atenção.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">AURE3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 12.19</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">68.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>20</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('AURE3', `Os fundamentos da empresa apresentam pontuação fraca em 30, o que indica maior risco na saúde financeira e limita projeções de longo prazo. No entanto, o ativo opera em tendência de alta forte com o preço muito acima da média de 200, mostrando ímpeto comprador. A pontuação atual do IFR sugere cautela devido a uma condição técnica que se aproxima de sobrecomprado, exigindo monitoramento rigoroso.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">B3SA3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 16.68</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">75.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>85</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('B3SA3', `O balanço da empresa apresenta fundamentos sólidos avaliados em 78 pontos. No entanto, o cenário macroeconômico e técnico exige cautela imediata devido ao estiramento dos preços. Com a cotação a R$ 23.65 muito acima da média de 200 de R$ 16.68 e o IFR de 2 em 75.1, o risco de exaustão é elevado. O sinal é de alerta para novas entradas no curto prazo.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BBAS3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 22.04</td>
+                    <td style="font-weight: 700; color: #f87171;">86.9</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('BBAS3', `Os fundamentos da empresa seguem sólidos, registrando nota setenta e cinco, o que demonstra excelente saúde financeira. No entanto, o cenário técnico aponta para o ativo sobrecomprado com IFR em oitenta e seis virgula nove. Por fim, o preço atual em vinte e quatro virgula setenta e dois está muito acima da média de duzentos, indicando alto risco de correção no curto prazo e recomendando cautela.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BBDC3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 15.84</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">51.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('BBDC3', `O Bradesco apresenta fundamentos excelentes pontuados em 83, refletindo uma base sólida e resiliência operacional consistente no setor bancário atual. O cenário técnico confirma uma tendência de alta forte, com a cotação a R$ 18.06 operando confortavelmente acima da média móvel de 200 períodos, fixada em R$ 15.84. Diante da forte tendência de alta sustentada por fundamentos robustos e indicador IFR de 2 neutro em 51.3, o viés é de compra com foco na captura da continuação do movimento direcional.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BBDC4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 18.23</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">46.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('BBDC4', `BBDC4 apresenta excelentes fundamentos, avaliados em 83, o que demonstra forte solidez financeira e eficiência operacional na gestão do banco. O cenário técnico confirma uma tendência de alta robusta, com a cotação a 20.37 posicionada confortavelmente acima da média de 200 períodos, que está em 18.23. O IFR de 46.6 indica um momento neutro de curto prazo sem sobrecompra, reduzindo o risco de entrada. Diante da conjunção entre saúde financeira sólida e tendência de alta consolidada, o veredito é favorável à compra.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BBSE3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 35.80</td>
+                    <td style="font-weight: 700; color: #f87171;">94.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('BBSE3', `Os fundamentos de BBSE3 continuam excelentes, pontuando 90 devido à sólida geração de caixa e saúde financeira resiliente. No entanto, o cenário técnico aponta para forte sobrecompra, com IFR de 94.6 e cotação em R$ 43.68, bem acima da média de 200 dias de R$ 35.80. Recomendamos cautela e prudência no momento atual, pois o risco de correção de curto prazo é elevado, sendo prudente aguardar um ponto de entrada mais favorável.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BPAC11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 57.86</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">50.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('BPAC11', `O balanço da companhia apresenta fundamentos sólidos avaliados em 65, demonstrando boa saúde financeira e resiliência operacional no setor. O cenário macroeconômico e técnico aponta para uma tendência de alta forte, com a cotação em 79.82 posicionada bem acima da média de duzentos períodos em 57.86. O indicador IFR de dois períodos em 50.1 sinaliza neutralidade no curto prazo, mas o momento geral justifica a recomendação de compra.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BRAP4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 22.40</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">30.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>65</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('BRAP4', `Com fundamento regular em 53, a empresa apresenta balanço moderado e sem grandes destaques positivos recentes. O cenário macroeconômico e a tendência vigente permanecem de baixa, reforçados pelo preço atual abaixo da média de 200 períodos. O IFR em 30.1 indica sobrevenda, exigindo cautela e recomendando postura neutra ou de alerta para novos aportes.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">CMIG4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 11.14</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">36.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('CMIG4', `A saúde financeira da companhia é excelente, atestada pelo sólido fundamento de 86 pontos, o que garante forte resiliência operacional e consistência de resultados no setor elétrico. O cenário macroeconômico e técnico corrobora uma tendência de alta firme, com a cotação atual em 11,67 posicionada confortavelmente acima da média móvel de duzentos períodos situada em 11,14. O índice de força relativa de curto prazo em 36,6 reflete um recuo recente e saudável, oferecendo um ponto de entrada atrativo para captura de tendência sem sobrecarga de preço.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">CSAN3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 4.63</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">71.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>10</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('CSAN3', `Os fundamentos da Cosan pontuam fracos em 10, demonstrando cautela quanto à saúde financeira da empresa neste momento. O cenário exibe uma tendência de alta forte, com a cotação a 5.20 superando a média de 200 de 4.63. O IFR de 71.7 aponta zona de sobrecompra, indicando risco elevado de correção de curto prazo.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">CSNA3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 6.58</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">73.9</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>20</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('CSNA3', `O balanço da empresa apresenta fundamentos fracos, pontuados em 20, o que limita expectativas de valorização sustentável no curto prazo. No cenário macro, o ativo encontra-se em lateralização e cotado abaixo da média de 200 períodos, refletindo uma tendência de baixa. O IFR de curto prazo já aponta para zona de sobrecompra, indicando cautela adicional aos investidores. Diante desse panorama técnico desfavorável e da fragilidade fundamentalista, a recomendação é estritamente neutra até que ocorra uma melhora real nos indicadores.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">CVCB3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 1.81</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">56.9</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>10</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('CVCB3', `A saúde financeira da CVCB3 permanece fraca, pontuada em 10, refletindo a pressão contínua sobre suas margens e o endividamento elevado que limita a flexibilidade operacional da companhia. No cenário macroeconômico, o papel transita por um momento de lateralização, sem uma tendência direcional clara e pressionado pela concorrência acirrada. Tecnicamente, a cotação em 1,57 permanece abaixo da média móvel de 200 de 1,81, enquanto o IFR de 56,9 indica neutralidade, sugerindo cautela e recomendando ficar de fora até que ocorram mudanças estruturais.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">CYRE3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 25.63</td>
+                    <td style="font-weight: 700; color: #f87171;">95.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('CYRE3', `A fundamentação da empresa é excelente, pontuada em 100, demonstrando uma base sólida e ótima saúde financeira nos dados analisados. No entanto, o cenário técnico aponta para um patamar sobrecomprado extremo, com o IFR em 95.5 e o preço atual de R$ 35.57 bem acima da média de 200 períodos, fixada em R$ 25.63. Diante desse distanciamento expressivo das médias e do forte esgotamento comprador, há um risco iminente de correção técnica, recomendando cautela na entrada e preferência por momentos de respiro do ativo.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">ENEV3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 25.21</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">16.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>65</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('ENEV3', `Balanço fundamentalista fraco com pontuação de 38 reflete riscos na saúde financeira da companhia. O cenário técnico aponta tendência de alta forte com preço em 31.48 acima da média de duzentos de 25.21. O IFR de 16.8 indica sobrevenda extrema gerando oportunidade tática de curto prazo, mas exigindo cautela rigorosa.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">EGIE3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 31.46</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">16.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('EGIE3', `A saude financeira de EGIE3 e solida, respaldada por fundamentos fortes pontuados em 75, garantindo resiliencia operacional e consistencia de resultados. No cenario macroeconomico, a acao apresenta movimento de lateralizacao e cotacao atual em 30.79, situando-se abaixo da media de 200 de 31.46. O indicador IFR de 2 em 16.5 aponta uma condicao tecnica de sobrevenda extrema, configurando uma excelente oportunidade de entrada taticamente.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">EQTL3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 40.40</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">63.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>50</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('EQTL3', `Os fundamentos da Equatorial apresentam pontuação fraca de 20, exigindo cautela na análise de longo prazo da companhia. No entanto, o cenário técnico mostra forte tendência de alta, com o preço atual negociando bem acima da média de duzentos períodos. O índice de força relativa está em patamar moderado, indicando momento positivo, mas a assimetria pede atenção devido aos fundamentos frágeis.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">GGBR4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 22.54</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">15.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('GGBR4', `Fundamentos regulares pontuados em 55 indicam cautela na operação. O preço de 25.22 permanece acima da média de duzentos de 22.54, mostrando tendência primária de alta. O indicador IFR de 15.8 aponta sobrevenda extrema, configurando um pullback que aguarda gatilho para retomada.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">HAPV3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 10.38</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">54.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>45</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('HAPV3', `O balanço apresenta fundamentos regulares, pontuados em 45, o que exige cautela na alocação e reflete uma saúde financeira ainda em processo de consolidação e recuperação de margens operacionais. No cenário macroeconômico e técnico, o ativo opera lateralizado e abaixo da média móvel de duzentos períodos, que está em dez reais e trinta e oito centavos, evidenciando uma tendência de médio prazo desfavorável. Diante disso, o veredito para o papel é neutro, recomendando aguardar um rompimento claro de resistência ou melhora nos fundamentos antes de assumir novas posições direcionais.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">ITSA4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 13.54</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">19.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('ITSA4', `A saúde financeira da empresa é excelente, atestada pela nota de fundamentos em 93. Os indicadores demonstram solidez e consistência na geração de valor para o acionista no longo prazo. O cenário macroeconômico e a tendência gráfica corroboram a continuação do movimento de alta forte, sustentando a robustez operacional. O ativo negocia bem acima da média móvel de 200 períodos, que está em 13.54, enquanto o IFR de 2 dias em 19.0 aponta uma região de sobrevenda no curto prazo, oferecendo um excelente ponto de entrada. O risco é considerado baixo devido aos fundamentos sólidos, justificando a recomendação de compra para o investidor focado em valor e tendência.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">ITUB4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 42.53</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">47.4</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('ITUB4', `O balanço da instituição apresenta excelente saúde financeira com nota fundamentalista de 90, demonstrando solidez e eficiência operacional consistente no setor bancário. No cenário macroeconômico e técnico, o ativo desfruta de uma tendência de alta forte, operando confortavelmente acima da média móvel de 200 períodos situada em R$ 42.53, enquanto o IFR de 47.4 indica neutralidade de curto prazo sem sobrecompra. O veredito aponta para compra devido ao alinhamento positivo entre fundamentos robustos e a tendência principal de alta, oferecendo um risco controlado para o investidor.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">KLBN11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 18.35</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">55.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>50</td>
+                    <td>
+                        <button class="btn-ia btn-venda" onclick="abrirModal('KLBN11', `Com fundamentação fraca avaliada em 20, a empresa demonstra fragilidade operacional e riscos elevados na sua estrutura financeira atual. O cenário macroeconômico desfavorável reforça a pressão sobre os ativos e limita margens de manobra. A cotação abaixo da média móvel de 200 períodos e a tendência de baixa consolidada indicam momento desfavorável para novas posições.`)">
+                            Tese IA (VENDA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">LREN3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 13.46</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">57.9</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('LREN3', `A saúde financeira de LREN3 é excelente, atestada pelo sólido fundamento de 86 pontos, indicando forte resiliência operacional. O cenário técnico corrobora o otimismo com uma tendência de alta firme, mantendo a cotação em 14.58 acima da média de 200 de 13.46, enquanto o IFR de 57.9 reflete um fluxo saudável e sem sobrecompra. Diante desses indicadores, o veredito é favorável a novas posições no ativo.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">MGLU3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 7.31</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">44.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('MGLU3', `O balanço da empresa apresenta fundamentos avaliados em 45, indicando uma saúde financeira regular e que exige cautela por parte dos investidores no médio prazo. No cenário macroeconômico e técnico, o ativo registra forte tendência de alta e negocia a 12.69, mantendo-se confortavelmente acima da média de 200 de 7.31 com IFR de 44.1. O nosso veredito aponta para um sinal de alerta, pois a distância expressiva da média móvel sugere riscos de volatilidade elevada para novas entradas.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">MRVE3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 6.64</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">72.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>20</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('MRVE3', `Fundamentos da MRVE3 avaliados em 30 indicam fragilidade na saúde financeira da companhia. O cenário macroeconômico e técnico aponta tendência de alta forte com o preço a R$ 8.23 acima da média de duzentos de R$ 6.64. O IFR de 72.5 sinaliza zona de sobrecompra e alerta para correções iminentes no curto prazo.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">MULT3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 30.40</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">66.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('MULT3', `A saúde financeira da MULT3 é atestada pelo excelente fundamento de 93, refletindo solidez operacional. O cenário macroeconômico corrobora uma tendência de alta forte, impulsionada pela robustez da empresa no setor. Negociando a R$ 37,53, o ativo supera confortavelmente a média de 200 de R$ 30,40, indicando momento positivo. O IFR de 66 sinaliza proximidade com a zona de sobrecompra, exigindo atenção tática. O veredito é de compra fundamentada na força da tendência e na excelente qualidade dos fundamentos.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">PETR3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 46.62</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">79.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('PETR3', `A saúde financeira de PETR3 é excelente, pontuada em 100 com base nos fundamentos. O cenário macroeconômico e a média de 200 em 46,62 demonstram uma tendência de alta muito forte e consolidada no longo prazo. Contudo, o IFR de 79 indica sobrecompra no curto prazo, exigindo cautela na entrada pelo preço atual de 65,24.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">PETR4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 42.06</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">81.2</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('PETR4', `A saúde financeira de PETR4 é excelente, pontuada em 100, demonstrando bases sólidas para a operação. No entanto, o cenário macroeconômico e técnico revela estresse de curto prazo, evidenciado pelo IFR de 81.2. Diante da forte tendência de alta e do preço cotado a R$ 58.68 bem acima da média de 200 de R$ 42.06, o risco de exaustão é elevado, exigindo cautela imediata por parte do investidor.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">PRIO3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 59.77</td>
+                    <td style="font-weight: 700; color: #f87171;">100.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('PRIO3', `Fundamentos sólidos atestam boa saúde financeira com nota setenta e nove. A cotação em setenta e três reais e oitenta centavos supera a média de duzentos de cinquenta e nove reais. O indicador IFR em cem sinaliza topo absoluto, evidenciando cenário de sobrecomprado e risco iminente de correção.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">RADL3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 20.78</td>
+                    <td style="font-weight: 700; color: #4ade80;">13.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('RADL3', `Os fundamentos da empresa encontram-se em patamar regular, pontuados em 46, refletindo um momento de cautela operacional e margens pressionadas. O cenário macroeconômico atual mostra o ativo em processo de lateralização, sem uma tendência direcional clara no curto prazo. Com o preço negociando abaixo da média de duzentos períodos e o indicador de força relativa extremamente sobrevendido, recomendamos cautela e postura neutra para novas posições.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">RAIZ4</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 0.46</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">83.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('RAIZ4', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">RDOR3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 37.55</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">41.4</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>65</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('RDOR3', `Com fundamentos regulares pontuados em 46, a companhia apresenta uma estrutura financeira que requer monitoramento constante, mas ainda sustentável no atual patamar de mercado.
+No cenário macroeconômico e técnico, o ativo desfruta de uma forte tendência de alta, negociando bem acima da sua média móvel de duzentos dias situada em 37.55 reais.
+O indicador IFR de curto prazo em 41.4 sinaliza um momento de respiro saudável, justificando uma recomendação de compra alinhada ao momentum positivo da ação.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">RENT3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 42.33</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">66.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>65</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('RENT3', `Os fundamentos de RENT3 pontuam em 56, indicando um cenário regular para a companhia, sem grandes surpresas operacionais recentes mas mantendo estabilidade. Do ponto de vista técnico, o papel opera com forte tendência de alta e cotação em R$ 52.42, bem acima da média de 200 de R$ 42.33, refletindo momento favorável. O IFR de 66.5 aponta proximidade de sobrecompra, exigindo cautela no curto prazo com o risco de correções técnicas. O veredito é favorável a novas posições devido ao momentum altista, mas com gestão rigorosa de risco.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">SANB11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 28.92</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">21.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('SANB11', `Os fundamentos de SANB11 pontuam em 68, indicando boa saúde financeira e solidez operacional na gestão do banco. O cenário técnico apresenta tendência de baixa, com o preço atual em 27.53 negociando abaixo da média de duzentos de 28.92. O IFR de dois períodos em 21.7 aponta sobreventa extrema, sugerindo cautela e risco elevado para novas entradas no curto prazo.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">SBSP3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 28.95</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">48.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('SBSP3', `A companhia apresenta fundamentos sólidos avaliados em 79, indicando boa saúde financeira e eficiência operacional consistente no setor de saneamento. O cenário técnico aponta tendência de alta forte, com a cotação em 31.98 posicionada acima da média móvel de 200 períodos situada em 28.95, enquanto o IFR de 48.0 reflete um momento de equilibrio neutro sem sobrecompra. Diante da conjunção entre a robustez fundamentalista e a dinâmica favorável de preço, o veredito é favorável a novas posições no ativo.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">SUZB3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 46.42</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">80.9</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('SUZB3', `A companhia apresenta excelente saúde financeira com sólidos fundamentos avaliados em setenta e oito. O cenário macroeconômico e técnico indica tendência de baixa, pois a cotação atual está abaixo da média móvel de duzentos períodos. O índice de força relativa em oitenta ponto nove aponta sobrecompra de curto prazo, exigindo cautela e recomendando aguardar um melhor ponto de entrada.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">TAEE11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 40.31</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">26.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>95</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('TAEE11', `A Taesa apresenta fundamentos sólidos com nota 68, demonstrando boa saúde financeira e resiliência operacional no setor elétrico. O cenário macroeconômico e técnico aponta para uma tendência de alta firme, sustentada pela cotação atual acima da média móvel de duzentos períodos. O indicador de força relativa curto prazo em 26 ponto um sugere sobrevenda pontual, configurando uma excelente oportunidade de entrada compradora.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">TIMS3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 22.36</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">31.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('TIMS3', `A empresa apresenta fundamentos excelentes com pontuacao de 93, indicando solidez financeira e boa geracao de valor. No entanto, o cenario e de tendencia de baixa, com o ativo cotado a 19.09 abaixo da media de 200 periodos em 22.36. O indicador IFR(2) em 31.8 aponta regiao proxima a sobrevenda, exigindo cautela. O veredito e de alerta devido ao momento tecnico desfavoravel que anula temporariamente a excelente qualidade fundamentalista.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">TOTS3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 34.43</td>
+                    <td style="font-weight: 700; color: #f87171;">98.4</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>85</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('TOTS3', `Os fundamentos da Totvs pontuam em 61, indicando boa saúde financeira e solidez operacional sustentada pela entrega consistente de resultados. No cenário macro e técnico, o ativo negocia a R$ 44.35, muito acima da média de duzentos períodos em R$ 34.43. O IFR de 98.4 aponta um estado extremo de sobrecomprado, elevando consideravelmente o risco iminente de correção de preço. Diante do forte distanciamento da média móvel e da exaustão compradora de curto prazo, o momento exige cautela extrema e desaconselha novas posições direcionais.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">UGPA3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 29.42</td>
+                    <td style="font-weight: 700; color: #4ade80;">14.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-compra" onclick="abrirModal('UGPA3', `A companhia apresenta excelente saúde financeira com sólidos fundamentos avaliados em 71. O cenário macroeconômico e técnico aponta para uma oportunidade de entrada altamente favorável no ativo. O preço atual de 38.55 está significativamente acima da média de 200 de 29.42, enquanto o IFR de 2 indica sobrevenda extrema de curto prazo. Recomendamos a compra aproveitando o repique técnico para capturar valor.`)">
+                            Tese IA (COMPRA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">USIM5</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 7.62</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">61.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>45</td>
+                    <td>
+                        <button class="btn-ia btn-venda" onclick="abrirModal('USIM5', `A saúde financeira avaliada em 45 aponta para um perfil regular, refletindo desafios operacionais que pressionam a rentabilidade e limitam o crescimento sustentável no curto prazo. O cenário macroeconômico e a tendência atual permanecem de baixa, confirmados pela cotação de 6.63 que se mantém abaixo da média de 200 de 7.62. Diante da persistência na tendência de baixa e dos fundamentos limitados, o viés é cauteloso, com o IFR de 61.1 indicando zona intermediária sem força compradora relevante.`)">
+                            Tese IA (VENDA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">VALE3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 77.12</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">19.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-venda" onclick="abrirModal('VALE3', `Fundamentos regulares em 55 pontos indicam cautela sobre a saúde financeira atual da companhia frente aos desafios setoriais. O preço de mercado em 61.90 caminha muito abaixo da média de duzentos períodos em 77.12, confirmando forte tendência de baixa. O índice de força relativa em 19.3 sinaliza sobrevenda severa, mas o contexto macro desfavorável exige postura defensiva e recomenda venda.`)">
+                            Tese IA (VENDA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">VIVT3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 34.10</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">37.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('VIVT3', `A saúde financeira é sólida com fundamentos avaliados em 71, demonstrando resiliência e boa gestão operacional no setor. O cenário econômico e o comportamento do ativo mostram tendência de lateralização, sem grandes impulsos direcionais no momento. Operando abaixo da média de 200 períodos de R$ 34,10 e com IFR de 37,6, o risco exige cautela e o veredito permanece neutro.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">WEGE3</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 47.63</td>
+                    <td style="font-weight: 700; color: #4ade80;">4.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>85</td>
+                    <td>
+                        <button class="btn-ia btn-alerta" onclick="abrirModal('WEGE3', `Os fundamentos da empresa continuam sólidos, com pontuação de 75 demonstrando boa saúde financeira. No entanto, o ativo negocia abaixo da média de 200 períodos de 47.63 reais. O IFR de 2 aponta nível extremamente sobrevendido em 4.7, indicando forte pressão vendedora recente. O cenário exige cautela e paciência, pois a tendência principal permanece de baixa. Recomendamos aguardar a reversão do fluxo antes de novas posições.`)">
+                            Tese IA (ALERTA)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">MXRF11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 9.15</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">41.6</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('MXRF11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">HGLG11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 147.93</td>
+                    <td style="font-weight: 700; color: #f87171;">92.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('HGLG11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">XPML11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 98.10</td>
+                    <td style="font-weight: 700; color: #4ade80;">14.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>40</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('XPML11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">KNIP11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 87.67</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">38.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>40</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('KNIP11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">KNCR11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 101.32</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">16.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>90</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('KNCR11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BTLG11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 98.28</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">79.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('BTLG11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">VISC11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 103.50</td>
+                    <td style="font-weight: 700; color: #f87171;">92.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('VISC11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">HGRU11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 121.05</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">55.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('HGRU11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">XPLG11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 93.17</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">49.2</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>40</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('XPLG11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">CPTS11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 7.28</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">64.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('CPTS11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">TGAR11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 57.57</td>
+                    <td style="font-weight: 700; color: #f87171;">91.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('TGAR11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">VGIR11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 9.09</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">49.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('VGIR11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">RBRR11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 76.02</td>
+                    <td style="font-weight: 700; color: #f87171;">99.4</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('RBRR11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">HGCR11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 91.03</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">62.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('HGCR11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">TRXF11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 82.61</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">50.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>40</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('TRXF11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">VGIA11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 8.81</td>
+                    <td style="font-weight: 700; color: #f87171;">96.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('VGIA11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">RZTR11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 85.86</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">58.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>40</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('RZTR11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">AAPL34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 75.37</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">42.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>85</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('AAPL34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">NVDC34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 21.72</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">16.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>85</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('NVDC34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">MSFT34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 93.17</td>
+                    <td style="font-weight: 700; color: #4ade80;">7.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>85</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('MSFT34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">AMZO34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 62.44</td>
+                    <td style="font-weight: 700; color: #4ade80;">7.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('AMZO34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">GOGL34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 145.89</td>
+                    <td style="font-weight: 700; color: #4ade80;">1.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('GOGL34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">TSLA34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 62.04</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">28.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>65</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('TSLA34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">DISB34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 35.34</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">37.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>75</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('DISB34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">NFLX34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 8.45</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">28.9</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>100</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('NFLX34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">MELI34</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 78.11</td>
+                    <td style="font-weight: 700; color: #4ade80;">8.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>50</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('MELI34', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BOVA11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 178.03</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">39.4</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('BOVA11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">BRAX11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 151.74</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">48.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('BRAX11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">SMAL11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 114.91</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">66.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('SMAL11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">NDIV11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 126.50</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">58.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('NDIV11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">DIVO11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 129.70</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">62.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('DIVO11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">FIND11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 185.31</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">65.2</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('FIND11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">MATB11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 63.04</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">36.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('MATB11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">IVVB11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 421.75</td>
+                    <td style="font-weight: 700; color: #4ade80;">9.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('IVVB11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">SPXI11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 70.84</td>
+                    <td style="font-weight: 700; color: #4ade80;">8.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('SPXI11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">NASD11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 19.90</td>
+                    <td style="font-weight: 700; color: #4ade80;">12.2</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('NASD11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">ACWI11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 16.49</td>
+                    <td style="font-weight: 700; color: #4ade80;">9.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('ACWI11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">XINA11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 7.46</td>
+                    <td style="font-weight: 700; color: #4ade80;">1.7</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('XINA11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">GOLD11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 24.08</td>
+                    <td style="font-weight: 700; color: #4ade80;">4.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('GOLD11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">HASH11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 49.61</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">20.0</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('HASH11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">QBTC11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 22.91</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">20.1</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('QBTC11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">QETH11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 8.07</td>
+                    <td style="font-weight: 700; color: #cbd5e1;">19.5</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('QETH11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">B5P211</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 107.59</td>
+                    <td style="font-weight: 700; color: #f87171;">98.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('B5P211', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">IMAB11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 113.59</td>
+                    <td style="font-weight: 700; color: #f87171;">97.3</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('IMAB11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">IB5M11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 123.70</td>
+                    <td style="font-weight: 700; color: #f87171;">97.9</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('IB5M11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ticker">LFTS11</td>
+                    <td>ACAO</td>
+                    <td>R$ 0.00</td>
+                    <td>R$ 153.92</td>
+                    <td style="font-weight: 700; color: #f87171;">99.8</td>
+                    <td><span class="badge badge-neutro">Lateraliza??o / Neutro</span></td>
+                    <td>80</td>
+                    <td>
+                        <button class="btn-ia btn-neutro" onclick="abrirModal('LFTS11', `An?lise pendente de processamento.`)">
+                            Tese IA (NEUTRO)
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modalTese" class="modal" onclick="fecharModalFora(event)">
+        <div class="modal-box">
+            <span class="modal-close" onclick="fecharModal()">&times;</span>
+            <h3 id="modalTitulo" style="color: #eab308; font-size: 16px; margin-bottom: 8px;"></h3>
+            <div id="modalCorpo" class="modal-body"></div>
+        </div>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const db = JSON.parse(document.getElementById('dados-iniciais').textContent);
-            
-            document.getElementById('data-hora').textContent = db.atualizacao;
-            document.getElementById('qtd-ativos').textContent = db.ativos.length;
-            document.getElementById('cont-todos').textContent = db.ativos.length;
-            document.getElementById('ano-footer').textContent = db.ano_corrente;
-            
-            const MAPA_FASES = {
-                "alta_sobrecomprado": { rotulo: "Sobrecomprado", badge: "border-purple-500/40 text-purple-400 bg-purple-900/30" },
-                "alta_pullback": { rotulo: "Pullback em Alta", badge: "border-emerald-500/40 text-emerald-300 bg-emerald-900/40 font-bold" },
-                "alta_forte": { rotulo: "Tendência de Alta", badge: "border-emerald-500/30 text-emerald-400 bg-emerald-900/20" },
-                "lateral": { rotulo: "Consolidação / Neutro", badge: "border-slate-600 text-slate-300 bg-slate-800" },
-                "baixa_sobrevendido": { rotulo: "Tendência de Baixa (Sobrevendido)", badge: "border-amber-500/40 text-amber-300 bg-amber-900/40 font-bold" },
-                "baixa": { rotulo: "Tendência de Baixa", badge: "border-rose-500/30 text-rose-400 bg-rose-900/20" },
-                "indefinido": { rotulo: "Sem Dados", badge: "border-slate-700 text-slate-500 bg-slate-900" }
-            };
-
-            const TEMA_IA = {
-                "compra": { icone: "●", label: "Favorável", classe: "border-emerald-500/40 text-emerald-400 bg-emerald-900/40 hover:bg-emerald-800/60" },
-                "alerta": { icone: "▲", label: "Cautela", classe: "border-amber-500/40 text-amber-400 bg-amber-900/40 hover:bg-amber-800/60" },
-                "venda": { icone: "■", label: "Desfavorável", classe: "border-rose-500/40 text-rose-400 bg-rose-900/40 hover:bg-rose-800/60" },
-                "neutro": { icone: "○", label: "Neutro", classe: "border-slate-600 text-slate-400 bg-slate-800 hover:bg-slate-700" }
-            };
-
-            function formatarScore(num) {
-                if (num === null || num === undefined) return "N/D";
-                const v = parseFloat(num);
-                let label = "Fraco";
-                if (v >= 80) label = "Excelente";
-                else if (v >= 60) label = "Bom";
-                else if (v >= 40) label = "Regular";
-                return `${Math.round(v)} (${label})`;
-            }
-
-            const tbody = document.getElementById('tabela-corpo');
-            let tipoSelecionado = 'TODOS';
-            let termoBusca = '';
-            let ordenacaoAtual = { campo: null, ascendente: true };
-
-            function filtrarLista() {
-                return db.ativos.filter(a => {
-                    const matchTipo = (tipoSelecionado === 'TODOS' || a.tipo === tipoSelecionado);
-                    const matchBusca = (a.ticker.includes(termoBusca) || (a.nome && a.nome.toUpperCase().includes(termoBusca)));
-                    return matchTipo && matchBusca;
-                });
-            }
-
-            function renderizarTabela() {
-                const lista = filtrarLista();
-                tbody.textContent = '';
-                lista.forEach((ativo) => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-800/70 transition-colors';
-
-                    // Ticker e Nome
-                    const tdTicker = document.createElement('td');
-                    tdTicker.className = 'px-6 py-4';
-                    const divT = document.createElement('div');
-                    divT.className = 'font-bold text-white font-mono';
-                    divT.textContent = ativo.ticker;
-                    const divN = document.createElement('div');
-                    divN.className = 'text-[11px] text-slate-400 truncate max-w-[150px]';
-                    divN.textContent = ativo.nome || '';
-                    tdTicker.append(divT, divN);
-
-                    // Badge de Tipo
-                    const tdTipo = document.createElement('td');
-                    tdTipo.className = 'px-6 py-4 text-center';
-                    const spanT = document.createElement('span');
-                    spanT.className = `badge-tipo badge-${ativo.tipo.toLowerCase()}`;
-                    spanT.textContent = ativo.tipo;
-                    tdTipo.appendChild(spanT);
-
-                    // Preço
-                    const tdPreco = document.createElement('td');
-                    tdPreco.className = 'px-6 py-4 text-right font-medium text-slate-200';
-                    tdPreco.textContent = ativo.preco_br;
-
-                    // SMA 200
-                    const tdSma = document.createElement('td');
-                    tdSma.className = 'px-6 py-4 text-right text-slate-400';
-                    tdSma.textContent = ativo.sma200_br;
-
-                    // IFR(2)
-                    const tdIfr = document.createElement('td');
-                    tdIfr.className = 'px-6 py-4 text-right font-mono font-semibold';
-                    tdIfr.textContent = ativo.rsi2.toFixed(1);
-                    if (ativo.rsi2 <= 15) tdIfr.className += ' text-emerald-400';
-                    else if (ativo.rsi2 >= 85) tdIfr.className += ' text-rose-400';
-                    else tdIfr.className += ' text-slate-300';
-
-                    // Fase Técnica
-                    const tdFase = document.createElement('td');
-                    tdFase.className = 'px-6 py-4 text-center';
-                    const faseInfo = MAPA_FASES[ativo.fase_cod] || MAPA_FASES["indefinido"];
-                    const spanFase = document.createElement('span');
-                    spanFase.className = 'px-2.5 py-1 text-xs border rounded ' + faseInfo.badge;
-                    spanFase.textContent = faseInfo.rotulo;
-                    tdFase.appendChild(spanFase);
-
-                    // Score
-                    const tdScore = document.createElement('td');
-                    tdScore.className = 'px-6 py-4 text-center text-slate-300 font-medium';
-                    tdScore.textContent = formatarScore(ativo.score);
-
-                    // Botão Veredito IA
-                    const tdBtn = document.createElement('td');
-                    tdBtn.className = 'px-6 py-4 text-center';
-                    const iaInfo = TEMA_IA[ativo.sinal_ia] || TEMA_IA["neutro"];
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'btn-tese px-3 py-1 rounded-lg border text-xs font-bold uppercase tracking-wider inline-flex items-center space-x-1.5 transition-colors cursor-pointer ' + iaInfo.classe;
-                    btn.dataset.ticker = ativo.ticker;
-                    btn.setAttribute('aria-label', `Abrir tese de ${ativo.ticker}`);
-                    
-                    const spanIcone = document.createElement('span');
-                    spanIcone.textContent = iaInfo.icone;
-                    const spanTxt = document.createElement('span');
-                    spanTxt.textContent = iaInfo.label;
-                    btn.append(spanIcone, spanTxt);
-                    tdBtn.appendChild(btn);
-
-                    tr.append(tdTicker, tdTipo, tdPreco, tdSma, tdIfr, tdFase, tdScore, tdBtn);
-                    tbody.appendChild(tr);
-                });
-            }
-
-            // Controle do Modal
-            const dialog = document.getElementById('modal-dialog');
-            function exibirModalAtivo(ativo) {
-                document.getElementById('modal-ticker').textContent = `${ativo.ticker} (${ativo.nome || ''})`;
-                document.getElementById('modal-texto').textContent = ativo.tese_texto;
-                document.getElementById('modal-resumo-preco').textContent = ativo.preco_br;
-                document.getElementById('modal-resumo-sma').textContent = ativo.sma200_br;
-                document.getElementById('modal-resumo-ifr').textContent = ativo.rsi2.toFixed(1);
-                document.getElementById('modal-resumo-score').textContent = formatarScore(ativo.score);
-                
-                const badgeT = document.getElementById('modal-badge-tipo');
-                badgeT.textContent = ativo.tipo;
-                badgeT.className = `badge-tipo badge-${ativo.tipo.toLowerCase()} mr-2`;
-                
-                dialog.showModal();
-            }
-
-            tbody.addEventListener('click', (e) => {
-                const btn = e.target.closest('.btn-tese');
-                if (!btn) return;
-                const ativo = db.ativos.find(a => a.ticker === btn.dataset.ticker);
-                if (ativo) exibirModalAtivo(ativo);
-            });
-
-            // Consulta Rápida Individual
-            const inputConsulta = document.getElementById('input-consulta-rapida');
-            const btnConsulta = document.getElementById('btn-consultar-ativo');
-            const alertaConsulta = document.getElementById('alerta-consulta');
-
-            function executarConsultaIndividual() {
-                const t = inputConsulta.value.trim().toUpperCase();
-                alertaConsulta.classList.add('hidden');
-                if (!t) return;
-                
-                const ativo = db.ativos.find(a => a.ticker === t);
-                if (ativo) {
-                    exibirModalAtivo(ativo);
-                } else {
-                    alertaConsulta.textContent = `O ativo '${t}' não foi localizado no scanner diário. Verifique se o código está correto ou adicione-o à base ampliada.`;
-                    alertaConsulta.classList.remove('hidden');
-                }
-            }
-
-            btnConsulta.addEventListener('click', executarConsultaIndividual);
-            inputConsulta.addEventListener('keydown', (e) => { if (e.key === 'Enter') executarConsultaIndividual(); });
-
-            // Fechamento Modal
-            const fecharDialog = () => dialog.close();
-            document.getElementById('btn-dialog-close').addEventListener('click', fecharDialog);
-            document.getElementById('btn-dialog-close-x').addEventListener('click', fecharDialog);
-            dialog.addEventListener('click', (e) => { if (e.target === dialog) fecharDialog(); });
-
-            // Abas de Categorias
-            document.querySelectorAll('.btn-filtro-tipo').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.btn-filtro-tipo').forEach(b => {
-                        b.classList.remove('bg-amber-500', 'text-slate-900', 'border-amber-500');
-                        b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-700');
-                    });
-                    this.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-700');
-                    this.classList.add('bg-amber-500', 'text-slate-900', 'border-amber-500');
-                    tipoSelecionado = this.dataset.tipo;
-                    renderizarTabela();
-                });
-            });
-
-            // Busca na Tabela
-            document.getElementById('busca-ticker').addEventListener('input', (e) => {
-                termoBusca = e.target.value.trim().toUpperCase();
-                renderizarTabela();
-            });
-
-            // Ordenação
-            function ordenarPor(campo) {
-                if (ordenacaoAtual.campo === campo) {
-                    ordenacaoAtual.ascendente = !ordenacaoAtual.ascendente;
-                } else {
-                    ordenacaoAtual.campo = campo;
-                    ordenacaoAtual.ascendente = true;
-                }
-
-                db.ativos.sort((a, b) => {
-                    let valA = a[campo];
-                    let valB = b[campo];
-                    if (valA === null || valA === undefined) return 1;
-                    if (valB === null || valB === undefined) return -1;
-                    if (typeof valA === 'string') {
-                        return ordenacaoAtual.ascendente ? valA.localeCompare(valB) : valB.localeCompare(valA);
-                    }
-                    return ordenacaoAtual.ascendente ? valA - valB : valB - valA;
-                });
-
-                document.querySelectorAll('th[data-campo]').forEach(th => {
-                    const c = th.dataset.campo;
-                    const indicador = document.getElementById(`sort-${c}`);
-                    if (c === campo) indicador.textContent = ordenacaoAtual.ascendente ? '▲' : '▼';
-                    else indicador.textContent = '↕';
-                });
-
-                renderizarTabela();
-            }
-
-            document.querySelectorAll('th[data-campo]').forEach(th => {
-                th.addEventListener('click', () => ordenarPor(th.dataset.campo));
-            });
-
-            renderizarTabela();
-
-            // Gráfico 1: Rosca
-            const contagemFases = {};
-            db.ativos.forEach(a => {
-                const rotulo = MAPA_FASES[a.fase_cod]?.rotulo || "Outros";
-                contagemFases[rotulo] = (contagemFases[rotulo] || 0) + 1;
-            });
-
-            new Chart(document.getElementById('graficoTendencias').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(contagemFases),
-                    datasets: [{
-                        data: Object.values(contagemFases),
-                        backgroundColor: ['#a855f7', '#34d399', '#059669', '#64748b', '#fbbf24', '#f43f5e', '#475569'],
-                        borderColor: '#1e293b',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'right', labels: { color: '#cbd5e1', font: { size: 11 } } } }
-                }
-            });
-
-            // Gráfico 2: Top Pullbacks
-            const topPullbacks = [...db.ativos]
-                .filter(a => !isNaN(a.rsi2))
-                .sort((a, b) => a.rsi2 - b.rsi2)
-                .slice(0, 8);
-
-            const maxIfrTop8 = Math.max(...topPullbacks.map(a => a.rsi2), 0);
-            const tetoSugerido = maxIfrTop8 < 20 ? Math.ceil(maxIfrTop8 + 5) : 100;
-
-            new Chart(document.getElementById('graficoIfr').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: topPullbacks.map(a => a.ticker),
-                    datasets: [{
-                        label: 'IFR(2)',
-                        data: topPullbacks.map(a => a.rsi2),
-                        backgroundColor: '#fbbf24',
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, max: tetoSugerido, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-                        x: { grid: { display: false }, ticks: { color: '#cbd5e1', font: { weight: 'bold' } } }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
+        new Chart(document.getElementById('chartDonut'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Tend?ncia de Alta', 'Sobrecomprado', 'Consolida??o / Neutro', 'Tend?ncia de Baixa', 'Pullback em Alta', 'Tend?ncia de Baixa (Sobrevendido)'],
+                datasets: [{
+                    data: [0, 0, 93, 0, 0, 0],
+                    backgroundColor: ['#a855f7', '#10b981', '#475569', '#64748b', '#eab308', '#ef4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 10 } } } } }
         });
+
+        new Chart(document.getElementById('chartBar'), {
+            type: 'bar',
+            data: {
+                labels: ['GOGL34', 'XINA11', 'GOLD11', 'WEGE3', 'MSFT34', 'AMZO34', 'MELI34', 'SPXI11'],
+                datasets: [{
+                    label: 'IFR(2)',
+                    data: [1.0, 1.7, 4.1, 4.7, 7.3, 7.5, 8.0, 8.1],
+                    backgroundColor: '#38bdf8',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 50, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { display: false }, ticks: { color: '#cbd5e1' } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        function filtrarTabela() {
+            const val = document.getElementById('filtro').value.toUpperCase();
+            const trs = document.querySelectorAll('#tabelaAtivos tbody tr');
+            trs.forEach(tr => {
+                const ticker = tr.querySelector('.ticker').innerText.toUpperCase();
+                tr.style.display = ticker.includes(val) ? '' : 'none';
+            });
+        }
+
+        function abrirModal(ticker, parecer) {
+            document.getElementById('modalTitulo').innerText = "Tese Qualitativa IA - #" + ticker;
+            document.getElementById('modalCorpo').innerText = parecer ? parecer : "Parecer em analise.";
+            document.getElementById('modalTese').style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalTese').style.display = 'none';
+        }
+
+        function fecharModalFora(e) {
+            if (e.target.id === 'modalTese') fecharModal();
+        }
     </script>
 </body>
 </html>
