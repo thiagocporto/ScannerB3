@@ -10,16 +10,13 @@ def formatar_moeda(valor):
     return f"R$ {texto}"
 
 def extrair_score_numerico(score_raw):
-    """Extrai estritamente o valor numérico do Score."""
     if pd.isna(score_raw): return None
     match = re.search(r"(\d+(\.\d+)?)", str(score_raw))
     return float(match.group(1)) if match else None
 
 def resolver_codigo_fase(preco, sma200, rsi2):
-    """Resolve a fase para um código canônico rigoroso."""
     if pd.isna(preco) or pd.isna(sma200) or sma200 <= 0:
         return "indefinido"
-    
     distancia = (preco - sma200) / sma200
     rsi2 = float(rsi2) if not pd.isna(rsi2) else 50.0
 
@@ -37,13 +34,29 @@ def escapar_json_script(objeto: dict) -> str:
     bruto = json.dumps(objeto, ensure_ascii=False)
     return bruto.replace("<", "\\u003c").replace(">", "\\u003e")
 
+def carregar_mapa_tipos():
+    mapa = {}
+    if os.path.exists('universo_b3.json'):
+        try:
+            with open('universo_b3.json', 'r', encoding='utf-8') as f:
+                dados = json.load(f)
+                for item in dados:
+                    mapa[item['ticker']] = {
+                        "tipo": item.get('tipo', 'AÇÃO'),
+                        "nome": item.get('nome', item['ticker'])
+                    }
+        except Exception:
+            pass
+    return mapa
+
 def construir_painel():
     if not os.path.exists('scanner_fechamento.csv'):
         print("Erro: CSV scanner_fechamento.csv não encontrado.")
         return
 
     df = pd.read_csv('scanner_fechamento.csv')
-    
+    mapa_tipos = carregar_mapa_tipos()
+
     teses = {}
     if os.path.exists('teses_qualitativas.json'):
         with open('teses_qualitativas.json', 'r', encoding='utf-8') as f:
@@ -53,10 +66,9 @@ def construir_painel():
     for _, row in df.iterrows():
         ticker = str(row.get('Ticker', '')).strip().upper()
         if not ticker or ticker == "NAN": continue
-        
+
         preco = float(row.get('Preço (R$)', 0.0))
         sma200 = float(row.get('SMA 200', 0.0))
-        
         rsi2_bruto = row.get('RSI(2)', 50.0)
         rsi2 = float(rsi2_bruto) if not pd.isna(rsi2_bruto) and 0 <= float(rsi2_bruto) <= 100 else 50.0
         
@@ -65,9 +77,16 @@ def construir_painel():
         
         tese_obj = teses.get(ticker, {})
         sinal_ia = tese_obj.get("veredito_sinal", "neutro")
-        
+
+        info_tipo = mapa_tipos.get(ticker, {
+            "tipo": "FII" if ticker.endswith("11") and not ticker.startswith(("BOVA", "SMAL", "IVVB", "HASH")) else ("BDR" if ticker.endswith(("34", "35")) else "AÇÃO"),
+            "nome": ticker
+        })
+
         ativos_front.append({
             "ticker": ticker,
+            "tipo": info_tipo["tipo"],
+            "nome": info_tipo["nome"],
             "preco": round(preco, 2),
             "preco_br": formatar_moeda(preco),
             "sma200": round(sma200, 2),
@@ -75,7 +94,7 @@ def construir_painel():
             "rsi2": round(rsi2, 1),
             "fase_cod": fase_codigo,
             "score": score_num,
-            "tese_texto": str(tese_obj.get("parecer", "Análise qualitativa em processamento...")),
+            "tese_texto": str(tese_obj.get("parecer", "Análise em processamento para este ativo...")),
             "sinal_ia": sinal_ia 
         })
 
@@ -94,9 +113,7 @@ def construir_painel():
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' data:; img-src 'self' data:; connect-src 'self';">
     <title>WF Investimentos | Scanner Quantitativo</title>
-    <!-- Tailwind Estático Pré-Compilado -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
-    <!-- Chart.js 4.4.1 Oficial com Versão Fixa -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
     <style>
         body {{ background-color: #0f172a; color: #cbd5e1; font-family: ui-sans-serif, system-ui, sans-serif; }}
@@ -111,7 +128,7 @@ def construir_painel():
             color: #cbd5e1;
             border: 1px solid #475569;
             border-radius: 1rem;
-            max-width: 42rem;
+            max-width: 44rem;
             width: 100%;
             padding: 0;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
@@ -120,6 +137,17 @@ def construir_painel():
             background-color: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(4px);
         }}
+        .badge-tipo {{
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }}
+        .badge-acao {{ background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }}
+        .badge-fii {{ background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }}
+        .badge-bdr {{ background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }}
+        .badge-etf {{ background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }}
     </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
@@ -135,12 +163,33 @@ def construir_painel():
             </div>
             <div class="text-right">
                 <p class="text-sm font-medium text-slate-300">Atualizado em: <span id="data-hora" class="font-bold text-white"></span></p>
-                <p class="text-xs text-slate-400">Universo: B3 IBrX 100 • <span id="qtd-ativos" class="font-bold text-slate-200">0</span> Ações</p>
+                <p class="text-xs text-slate-400">Universo Monitorado: <span id="qtd-ativos" class="font-bold text-slate-200">0</span> Ativos</p>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+        
+        <!-- SPOTLIGHT: CONSULTA DIRETA DE ATIVO INDIVIDUAL -->
+        <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-6 border-2 border-amber-500/50 shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="text-gold text-xl">🔍</span> CONSULTA DIRETA DE ATIVO B3
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Consulte diagnósticos e teses de Ações, FIIs/FIAGROs, BDRs ou ETFs negociados na bolsa.</p>
+                </div>
+                <div class="flex items-center gap-2 w-full md:w-auto">
+                    <input type="text" id="input-consulta-rapida" placeholder="Digite o Ticker (ex: HGLG11, AAPL34, WEGE3)..." class="bg-slate-900 border border-slate-600 text-white font-mono uppercase text-sm rounded-lg p-2.5 w-full md:w-80 focus:outline-none focus:border-amber-500">
+                    <button type="button" id="btn-consultar-ativo" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold text-sm rounded-lg transition-colors whitespace-nowrap shadow">
+                        Consultar
+                    </button>
+                </div>
+            </div>
+            <!-- Feedback de Ativo Não Encontrado -->
+            <div id="alerta-consulta" class="hidden mt-3 p-3 bg-rose-900/40 border border-rose-500/40 rounded-lg text-rose-300 text-xs"></div>
+        </div>
+
         <!-- Gráficos Analíticos -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="bg-card rounded-xl p-6 border border-card shadow-lg">
@@ -163,20 +212,28 @@ def construir_painel():
             </div>
         </div>
 
-        <!-- Matriz de Ativos B3 -->
+        <!-- Matriz de Ativos B3 com Abas de Categorias -->
         <div class="bg-card rounded-xl border border-card shadow-lg overflow-hidden">
-            <div class="p-6 border-b border-card flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-800/60">
+            <div class="p-6 border-b border-card flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-800/60">
                 <div>
                     <h2 class="text-xl font-bold text-white">Matriz de Ativos B3</h2>
-                    <p class="text-xs text-slate-400 mt-1">Dica: Clique nas colunas para ordenar os dados</p>
+                    <!-- Filtro por Classe de Ativo -->
+                    <div class="flex items-center gap-1.5 mt-2 flex-wrap" id="filtros-tipo">
+                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-amber-500 text-slate-900 border border-amber-500 transition-colors" data-tipo="TODOS">Todos (<span id="cont-todos">0</span>)</button>
+                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="AÇÃO">Ações</button>
+                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="FII">FIIs</button>
+                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="BDR">BDRs</button>
+                        <button type="button" class="btn-filtro-tipo px-3 py-1 text-xs rounded-lg font-semibold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition-colors" data-tipo="ETF">ETFs</button>
+                    </div>
                 </div>
-                <input type="text" id="busca-ticker" placeholder="Pesquisar Ticker (ex: VALE3)..." class="bg-slate-900 border border-slate-600 text-white text-sm rounded-lg p-2.5 w-full sm:w-72 focus:outline-none focus:border-amber-500">
+                <input type="text" id="busca-ticker" placeholder="Filtrar tabela..." class="bg-slate-900 border border-slate-600 text-white text-sm rounded-lg p-2.5 w-full md:w-64 focus:outline-none focus:border-amber-500">
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-slate-300">
                     <thead class="text-xs uppercase bg-slate-900 text-slate-400 border-b border-card select-none">
                         <tr>
-                            <th class="px-6 py-4 font-semibold cursor-pointer" data-campo="ticker">Ticker <span id="sort-ticker">↕</span></th>
+                            <th class="px-6 py-4 font-semibold cursor-pointer" data-campo="ticker">Ativo <span id="sort-ticker">↕</span></th>
+                            <th class="px-6 py-4 text-center font-semibold">Classe</th>
                             <th class="px-6 py-4 text-right font-semibold cursor-pointer" data-campo="preco">Preço <span id="sort-preco">↕</span></th>
                             <th class="px-6 py-4 text-right font-semibold cursor-pointer" data-campo="sma200">SMA 200 <span id="sort-sma200">↕</span></th>
                             <th class="px-6 py-4 text-right font-semibold cursor-pointer" data-campo="rsi2">IFR(2) <span id="sort-rsi2">↕</span></th>
@@ -185,24 +242,33 @@ def construir_painel():
                             <th class="px-6 py-4 text-center font-semibold">Parecer IA</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-corpo" class="divide-y divide-slate-800">
-                        <!-- Gerado 100% dinamicamente via JS seguro -->
-                    </tbody>
+                    <tbody id="tabela-corpo" class="divide-y divide-slate-800"></tbody>
                 </table>
             </div>
         </div>
     </main>
 
-    <!-- Modal com elemento nativo <dialog> -->
+    <!-- Modal <dialog> com Diagnóstico Completo -->
     <dialog id="modal-dialog" aria-labelledby="modal-titulo">
         <div class="bg-slate-900 px-6 py-4 border-b border-card flex justify-between items-center">
-            <h3 id="modal-titulo" class="text-lg font-bold text-white flex items-center space-x-2">
-                <span class="text-gold">📊</span>
-                <span>Tese Institucional: <span id="modal-ticker" class="text-emerald-400 font-mono"></span></span>
-            </h3>
+            <div>
+                <span id="modal-badge-tipo" class="badge-tipo badge-acao mr-2">AÇÃO</span>
+                <h3 id="modal-titulo" class="text-lg font-bold text-white inline-flex items-center gap-2">
+                    <span class="text-gold">📊</span>
+                    <span>Tese Institucional: <span id="modal-ticker" class="text-emerald-400 font-mono"></span></span>
+                </h3>
+            </div>
             <button type="button" id="btn-dialog-close-x" class="text-slate-400 hover:text-white text-2xl font-bold leading-none" aria-label="Fechar modal">&times;</button>
         </div>
-        <div class="p-6">
+        <div class="p-6 space-y-4">
+            <!-- Resumo dos Indicadores Chave no Topo do Modal -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-slate-900/60 rounded-lg border border-slate-700 text-xs">
+                <div><span class="text-slate-500 block">Preço:</span> <b id="modal-resumo-preco" class="text-white">-</b></div>
+                <div><span class="text-slate-500 block">Média 200:</span> <b id="modal-resumo-sma" class="text-slate-300">-</b></div>
+                <div><span class="text-slate-500 block">IFR(2):</span> <b id="modal-resumo-ifr" class="text-amber-400 font-mono">-</b></div>
+                <div><span class="text-slate-500 block">Score:</span> <b id="modal-resumo-score" class="text-emerald-400">-</b></div>
+            </div>
+            <!-- Parecer dissertativo da IA -->
             <p id="modal-texto" class="text-slate-200 whitespace-pre-line leading-relaxed text-sm"></p>
         </div>
         <div class="bg-slate-900 px-6 py-4 border-t border-card flex justify-between items-center">
@@ -215,20 +281,17 @@ def construir_painel():
         WF Investimentos &copy; <span id="ano-footer"></span> • Todos os direitos reservados.
     </footer>
 
-    <!-- Dados Embutidos Escapados -->
     <script id="dados-iniciais" type="application/json">{json_seguro}</script>
 
-    <!-- Aplicação JavaScript Completa e Reativa -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {{
             const db = JSON.parse(document.getElementById('dados-iniciais').textContent);
             
-            // 1. Atualizações Reativas de Cabeçalho e Rodapé
             document.getElementById('data-hora').textContent = db.atualizacao;
             document.getElementById('qtd-ativos').textContent = db.ativos.length;
+            document.getElementById('cont-todos').textContent = db.ativos.length;
             document.getElementById('ano-footer').textContent = db.ano_corrente;
             
-            // 2. Mapa Único de Fases (Centralizado)
             const MAPA_FASES = {{
                 "alta_sobrecomprado": {{ rotulo: "Sobrecomprado", badge: "border-purple-500/40 text-purple-400 bg-purple-900/30" }},
                 "alta_pullback": {{ rotulo: "Pullback em Alta", badge: "border-emerald-500/40 text-emerald-300 bg-emerald-900/40 font-bold" }},
@@ -239,7 +302,6 @@ def construir_painel():
                 "indefinido": {{ rotulo: "Sem Dados", badge: "border-slate-700 text-slate-500 bg-slate-900" }}
             }};
 
-            // 3. Mapa de Veredito IA com Acessibilidade (Cor + Ícone + Texto)
             const TEMA_IA = {{
                 "compra": {{ icone: "●", label: "Favorável", classe: "border-emerald-500/40 text-emerald-400 bg-emerald-900/40 hover:bg-emerald-800/60" }},
                 "alerta": {{ icone: "▲", label: "Cautela", classe: "border-amber-500/40 text-amber-400 bg-amber-900/40 hover:bg-amber-800/60" }},
@@ -247,7 +309,6 @@ def construir_painel():
                 "neutro": {{ icone: "○", label: "Neutro", classe: "border-slate-600 text-slate-400 bg-slate-800 hover:bg-slate-700" }}
             }};
 
-            // 4. Formatação de Score
             function formatarScore(num) {{
                 if (num === null || num === undefined) return "N/D";
                 const v = parseFloat(num);
@@ -259,20 +320,43 @@ def construir_painel():
             }}
 
             const tbody = document.getElementById('tabela-corpo');
-            let ativosRenderizados = [...db.ativos];
+            let tipoSelecionado = 'TODOS';
+            let termoBusca = '';
             let ordenacaoAtual = {{ campo: null, ascendente: true }};
 
-            // 5. Renderização Segura do DOM
-            function renderizarTabela(lista) {{
+            function filtrarLista() {{
+                return db.ativos.filter(a => {{
+                    const matchTipo = (tipoSelecionado === 'TODOS' || a.tipo === tipoSelecionado);
+                    const matchBusca = (a.ticker.includes(termoBusca) || (a.nome && a.nome.toUpperCase().includes(termoBusca)));
+                    return matchTipo && matchBusca;
+                }});
+            }}
+
+            function renderizarTabela() {{
+                const lista = filtrarLista();
                 tbody.textContent = '';
                 lista.forEach((ativo) => {{
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-slate-800/70 transition-colors';
 
-                    // Ticker
+                    // Ticker e Nome
                     const tdTicker = document.createElement('td');
-                    tdTicker.className = 'px-6 py-4 font-bold text-white font-mono';
-                    tdTicker.textContent = ativo.ticker;
+                    tdTicker.className = 'px-6 py-4';
+                    const divT = document.createElement('div');
+                    divT.className = 'font-bold text-white font-mono';
+                    divT.textContent = ativo.ticker;
+                    const divN = document.createElement('div');
+                    divN.className = 'text-[11px] text-slate-400 truncate max-w-[150px]';
+                    divN.textContent = ativo.nome || '';
+                    tdTicker.append(divT, divN);
+
+                    // Badge de Tipo
+                    const tdTipo = document.createElement('td');
+                    tdTipo.className = 'px-6 py-4 text-center';
+                    const spanT = document.createElement('span');
+                    spanT.className = `badge-tipo badge-${{ativo.tipo.toLowerCase()}}`;
+                    spanT.textContent = ativo.tipo;
+                    tdTipo.appendChild(spanT);
 
                     // Preço
                     const tdPreco = document.createElement('td');
@@ -306,7 +390,7 @@ def construir_painel():
                     tdScore.className = 'px-6 py-4 text-center text-slate-300 font-medium';
                     tdScore.textContent = formatarScore(ativo.score);
 
-                    // Botão Veredito IA com Acessibilidade
+                    // Botão Veredito IA
                     const tdBtn = document.createElement('td');
                     tdBtn.className = 'px-6 py-4 text-center';
                     const iaInfo = TEMA_IA[ativo.sinal_ia] || TEMA_IA["neutro"];
@@ -314,24 +398,94 @@ def construir_painel():
                     btn.type = 'button';
                     btn.className = 'btn-tese px-3 py-1 rounded-lg border text-xs font-bold uppercase tracking-wider inline-flex items-center space-x-1.5 transition-colors ' + iaInfo.classe;
                     btn.dataset.ticker = ativo.ticker;
-                    btn.setAttribute('aria-label', `Abrir tese institucional de ${{ativo.ticker}} - Sinal: ${{iaInfo.label}}`);
+                    btn.setAttribute('aria-label', `Abrir tese institucional de ${{ativo.ticker}}`);
                     
                     const spanIcone = document.createElement('span');
                     spanIcone.textContent = iaInfo.icone;
-                    spanIcone.setAttribute('aria-hidden', 'true');
-                    
                     const spanTxt = document.createElement('span');
                     spanTxt.textContent = iaInfo.label;
-
                     btn.append(spanIcone, spanTxt);
                     tdBtn.appendChild(btn);
 
-                    tr.append(tdTicker, tdPreco, tdSma, tdIfr, tdFase, tdScore, tdBtn);
+                    tr.append(tdTicker, tdTipo, tdPreco, tdSma, tdIfr, tdFase, tdScore, tdBtn);
                     tbody.appendChild(tr);
                 }});
             }}
 
-            // 6. Ordenação Interativa por Coluna
+            // Controle do Modal
+            const dialog = document.getElementById('modal-dialog');
+            function exibirModalAtivo(ativo) {{
+                document.getElementById('modal-ticker').textContent = `${{ativo.ticker}} (${{ativo.nome || ''}})`;
+                document.getElementById('modal-texto').textContent = ativo.tese_texto;
+                document.getElementById('modal-resumo-preco').textContent = ativo.preco_br;
+                document.getElementById('modal-resumo-sma').textContent = ativo.sma200_br;
+                document.getElementById('modal-resumo-ifr').textContent = ativo.rsi2.toFixed(1);
+                document.getElementById('modal-resumo-score').textContent = formatarScore(ativo.score);
+                
+                const badgeT = document.getElementById('modal-badge-tipo');
+                badgeT.textContent = ativo.tipo;
+                badgeT.className = `badge-tipo badge-${{ativo.tipo.toLowerCase()}} mr-2`;
+                
+                dialog.showModal();
+            }}
+
+            // Evento da Tabela
+            tbody.addEventListener('click', (e) => {{
+                const btn = e.target.closest('.btn-tese');
+                if (!btn) return;
+                const ativo = db.ativos.find(a => a.ticker === btn.dataset.ticker);
+                if (ativo) exibirModalAtivo(ativo);
+            }});
+
+            // Consulta Rápida Individual
+            const inputConsulta = document.getElementById('input-consulta-rapida');
+            const btnConsulta = document.getElementById('btn-consultar-ativo');
+            const alertaConsulta = document.getElementById('alerta-consulta');
+
+            function executarConsultaIndividual() {{
+                const t = inputConsulta.value.trim().toUpperCase();
+                alertaConsulta.classList.add('hidden');
+                if (!t) return;
+                
+                const ativo = db.ativos.find(a => a.ticker === t);
+                if (ativo) {{
+                    exibirModalAtivo(ativo);
+                }} else {{
+                    alertaConsulta.textContent = `O ativo '${{t}}' não foi encontrado no scanner diário. Verifique se o código está correto ou adicione-o à base ampliada.`;
+                    alertaConsulta.classList.remove('hidden');
+                }}
+            }}
+
+            btnConsulta.addEventListener('click', executarConsultaIndividual);
+            inputConsulta.addEventListener('keydown', (e) => {{ if (e.key === 'Enter') executarConsultaIndividual(); }});
+
+            // Fechamento Modal
+            const fecharDialog = () => dialog.close();
+            document.getElementById('btn-dialog-close').addEventListener('click', fecharDialog);
+            document.getElementById('btn-dialog-close-x').addEventListener('click', fecharDialog);
+            dialog.addEventListener('click', (e) => {{ if (e.target === dialog) fecharDialog(); }});
+
+            // Filtros de Categoria (Abas)
+            document.querySelectorAll('.btn-filtro-tipo').forEach(btn => {{
+                btn.addEventListener('click', function() {{
+                    document.querySelectorAll('.btn-filtro-tipo').forEach(b => {{
+                        b.classList.remove('bg-amber-500', 'text-slate-900', 'border-amber-500');
+                        b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-700');
+                    }});
+                    this.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-700');
+                    this.classList.add('bg-amber-500', 'text-slate-900', 'border-amber-500');
+                    tipoSelecionado = this.dataset.tipo;
+                    renderizarTabela();
+                }});
+            }});
+
+            // Campo de Busca na Tabela
+            document.getElementById('busca-ticker').addEventListener('input', (e) => {{
+                termoBusca = e.target.value.trim().toUpperCase();
+                renderizarTabela();
+            }});
+
+            // Ordenação por Colunas
             function ordenarPor(campo) {{
                 if (ordenacaoAtual.campo === campo) {{
                     ordenacaoAtual.ascendente = !ordenacaoAtual.ascendente;
@@ -340,65 +494,34 @@ def construir_painel():
                     ordenacaoAtual.ascendente = true;
                 }}
 
-                ativosRenderizados.sort((a, b) => {{
+                db.ativos.sort((a, b) => {{
                     let valA = a[campo];
                     let valB = b[campo];
                     if (valA === null || valA === undefined) return 1;
                     if (valB === null || valB === undefined) return -1;
-                    
                     if (typeof valA === 'string') {{
                         return ordenacaoAtual.ascendente ? valA.localeCompare(valB) : valB.localeCompare(valA);
                     }}
                     return ordenacaoAtual.ascendente ? valA - valB : valB - valA;
                 }});
 
-                // Atualiza setas no cabeçalho
                 document.querySelectorAll('th[data-campo]').forEach(th => {{
                     const c = th.dataset.campo;
                     const indicador = document.getElementById(`sort-${{c}}`);
-                    if (c === campo) {{
-                        indicador.textContent = ordenacaoAtual.ascendente ? '▲' : '▼';
-                    }} else {{
-                        indicador.textContent = '↕';
-                    }}
+                    if (c === campo) indicador.textContent = ordenacaoAtual.ascendente ? '▲' : '▼';
+                    else indicador.textContent = '↕';
                 }});
 
-                renderizarTabela(ativosRenderizados);
+                renderizarTabela();
             }}
 
             document.querySelectorAll('th[data-campo]').forEach(th => {{
                 th.addEventListener('click', () => ordenarPor(th.dataset.campo));
             }});
 
-            // 7. Filtro em Tempo Real (usando evento 'input')
-            document.getElementById('busca-ticker').addEventListener('input', (e) => {{
-                const termo = e.target.value.trim().toUpperCase();
-                ativosRenderizados = db.ativos.filter(a => a.ticker.includes(termo));
-                renderizarTabela(ativosRenderizados);
-            }});
+            renderizarTabela();
 
-            renderizarTabela(ativosRenderizados);
-
-            // 8. Controle do <dialog> Nativo
-            const dialog = document.getElementById('modal-dialog');
-            tbody.addEventListener('click', (e) => {{
-                const btn = e.target.closest('.btn-tese');
-                if (!btn) return;
-                const ticker = btn.dataset.ticker;
-                const ativo = db.ativos.find(a => a.ticker === ticker);
-                if (ativo) {{
-                    document.getElementById('modal-ticker').textContent = ativo.ticker;
-                    document.getElementById('modal-texto').textContent = ativo.tese_texto;
-                    dialog.showModal();
-                }}
-            }});
-
-            const fecharDialog = () => dialog.close();
-            document.getElementById('btn-dialog-close').addEventListener('click', fecharDialog);
-            document.getElementById('btn-dialog-close-x').addEventListener('click', fecharDialog);
-            dialog.addEventListener('click', (e) => {{ if (e.target === dialog) fecharDialog(); }});
-
-            // 9. Gráfico 1: Rosca Dinâmica (Fases calculadas a partir dos dados)
+            // Gráfico 1: Rosca de Fases
             const contagemFases = {{}};
             db.ativos.forEach(a => {{
                 const rotulo = MAPA_FASES[a.fase_cod]?.rotulo || "Outros";
@@ -419,13 +542,11 @@ def construir_painel():
                 options: {{
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {{
-                        legend: {{ position: 'right', labels: {{ color: '#cbd5e1', font: {{ size: 11 }} }} }}
-                    }}
+                    plugins: {{ legend: {{ position: 'right', labels: {{ color: '#cbd5e1', font: {{ size: 11 }} }} }} }}
                 }}
             }});
 
-            // 10. Gráfico 2: Top 8 Menores IFR com Escala Dinâmica
+            // Gráfico 2: Top 8 Pullbacks
             const topPullbacks = [...db.ativos]
                 .filter(a => !isNaN(a.rsi2))
                 .sort((a, b) => a.rsi2 - b.rsi2)
@@ -449,16 +570,8 @@ def construir_painel():
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {{
-                        y: {{
-                            beginAtZero: true,
-                            max: tetoSugerido,
-                            grid: {{ color: '#334155' }},
-                            ticks: {{ color: '#94a3b8' }}
-                        }},
-                        x: {{
-                            grid: {{ display: false }},
-                            ticks: {{ color: '#cbd5e1', font: {{ weight: 'bold' }} }}
-                        }}
+                        y: {{ beginAtZero: true, max: tetoSugerido, grid: {{ color: '#334155' }}, ticks: {{ color: '#94a3b8' }} }},
+                        x: {{ grid: {{ display: false }}, ticks: {{ color: '#cbd5e1', font: {{ weight: 'bold' }} }} }}
                     }},
                     plugins: {{ legend: {{ display: false }} }}
                 }}
@@ -470,7 +583,7 @@ def construir_painel():
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Site moderno, reativo, com ordenacao por colunas e dialog nativo compilado com sucesso!")
+    print("Sucesso: index.html atualizado com Consulta Individual, Filtros de Classe e Seguranca Rigorosa!")
 
 if __name__ == "__main__":
     construir_painel()
