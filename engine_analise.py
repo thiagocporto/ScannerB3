@@ -7,7 +7,7 @@ import numpy as np
 import yfinance as yf
 
 ARQUIVO_UNIVERSO = "universo_b3.json"
-ARQUIVO_FALLBACK = "ibrx100_tickers.json"
+ARQUIVO_FALLBACK = "universo_b3.json"
 ARQUIVO_SAIDA_CSV = "scanner_fechamento.csv"
 
 def carregar_catalogo_ativos():
@@ -44,7 +44,7 @@ def calcular_indicadores_tecnicos(df_d, df_w):
     preco_atual = float(fechamento.iloc[-1])
 
     # SMA 200 (tendência primária)
-    sma200 = float(fechamento.rolling(window=200, min_periods=50).mean().iloc[-1])
+    sma200 = float(fechamento.rolling(window=200, min_periods=10).mean().iloc[-1])
     if np.isnan(sma200):
         sma200 = float(fechamento.mean())
 
@@ -152,7 +152,7 @@ def executar_scanner():
             ativo = yf.Ticker(simbolo_yf)
             df_d = ativo.history(period="1y", interval="1d")
 
-            if df_d.empty or len(df_d) < 10:
+            if df_d.empty or len(df_d) < 3:
                 print(" [SEM HISTÓRICO - PULADO]")
                 continue
 

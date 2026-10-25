@@ -13,11 +13,16 @@ def gerar_dashboard_html():
 
     df = pd.read_csv(csv_file)
 
-    # Identificacao tolerante das colunas de IFR e Preco
-    col_ifr = "IFR(2)" if "IFR(2)" in df.columns else ("RSI(2)" if "RSI(2)" in df.columns else None)
-    col_preco = "Pre?o (R$)" if "Pre?o (R$)" in df.columns else "Preco (R$)"
+    # Identificacao dinamica e imune a erros de codificacao
+    col_ticker = next((c for c in df.columns if "ticker" in c.lower()), df.columns[0])
+    col_tipo = next((c for c in df.columns if "tipo" in c.lower() or "classe" in c.lower()), None)
+    col_nome = next((c for c in df.columns if "nome" in c.lower() or "empresa" in c.lower()), None)
+    col_preco = next((c for c in df.columns if "pre" in c.lower() or "close" in c.lower() or "cota" in c.lower()), None)
+    col_sma200 = next((c for c in df.columns if "200" in c or "mm200" in c.lower()), None)
+    col_ifr = next((c for c in df.columns if "ifr" in c.lower() or "rsi" in c.lower()), None)
+    col_fase = next((c for c in df.columns if "fase" in c.lower() or "swing" in c.lower()), None)
+    col_score = next((c for c in df.columns if "score" in c.lower()), None)
 
-    # Carregamento de teses
     teses = {}
     if os.path.exists("teses_qualitativas.json"):
         try:
@@ -26,28 +31,26 @@ def gerar_dashboard_html():
         except Exception:
             teses = {}
 
-    # Data e hora oficiais com fuso de Brasilia (GMT-3)
     fuso_br = ZoneInfo("America/Sao_Paulo")
-    agora_br = datetime.now(fuso_br).strftime("%d/%m/%Y ?s %H:%M")
+    agora_br = datetime.now(fuso_br).strftime("%d/%m/%Y \u00e0s %H:%M")
 
-    # Contadores para o grafico Donut
     fases_count = {
-        "Tend?ncia de Alta": 0,
+        "Tend\u00eancia de Alta": 0,
         "Sobrecomprado": 0,
-        "Consolida??o / Neutro": 0,
-        "Tend?ncia de Baixa": 0,
+        "Consolida\u00e7\u00e3o / Neutro": 0,
+        "Tend\u00eancia de Baixa": 0,
         "Pullback em Alta": 0,
-        "Tend?ncia de Baixa (Sobrevendido)": 0
+        "Tend\u00eancia de Baixa (Sobrevendido)": 0
     }
 
     ativos_validos = []
     for _, row in df.iterrows():
-        t = str(row.get("Ticker", "")).strip().upper()
-        if not t or t == "NAN": 
+        t = str(row.get(col_ticker, "")).strip().upper()
+        if not t or t == "NAN":
             continue
 
-        preco = float(row.get(col_preco, 0.0) or 0.0)
-        sma200 = float(row.get("SMA 200", 0.0) or 0.0)
+        preco = float(row.get(col_preco, 0.0) or 0.0) if col_preco else 0.0
+        sma200 = float(row.get(col_sma200, 0.0) or 0.0) if col_sma200 else 0.0
         
         ifr_val = 50.0
         if col_ifr and pd.notna(row.get(col_ifr)):
@@ -56,38 +59,45 @@ def gerar_dashboard_html():
             except Exception:
                 ifr_val = 50.0
 
-        fase = str(row.get("Swing Trade", "Lateraliza??o / Neutro"))
-        if "Alta Forte" in fase: fases_count["Tend?ncia de Alta"] += 1
-        elif "Sobrecomprado" in fase: fases_count["Sobrecomprado"] += 1
-        elif "Sobrevendido (Oportunidade)" in fase: fases_count["Pullback em Alta"] += 1
-        elif "Sobrevendido em Tend?ncia Baixa" in fase: fases_count["Tend?ncia de Baixa (Sobrevendido)"] += 1
-        elif "Baixa" in fase: fases_count["Tend?ncia de Baixa"] += 1
-        else: fases_count["Consolida??o / Neutro"] += 1
+        raw_fase = str(row.get(col_fase, "")).upper() if col_fase else ""
+        if "SOBRECOMPRADO" in raw_fase:
+            fase_padrao = "Sobrecomprado"
+            fases_count["Sobrecomprado"] += 1
+        elif ("SOBREVENDIDO" in raw_fase and "BAIXA" in raw_fase) or "BAIXA (SOBREVENDIDO)" in raw_fase:
+            fase_padrao = "Tend\u00eancia de Baixa (Sobrevendido)"
+            fases_count["Tend\u00eancia de Baixa (Sobrevendido)"] += 1
+        elif "SOBREVENDIDO" in raw_fase or "PULLBACK" in raw_fase or "OPORTUNIDADE" in raw_fase:
+            fase_padrao = "Pullback em Alta"
+            fases_count["Pullback em Alta"] += 1
+        elif "ALTA" in raw_fase:
+            fase_padrao = "Tend\u00eancia de Alta"
+            fases_count["Tend\u00eancia de Alta"] += 1
+        elif "BAIXA" in raw_fase:
+            fase_padrao = "Tend\u00eancia de Baixa"
+            fases_count["Tend\u00eancia de Baixa"] += 1
+        else:
+            fase_padrao = "Consolida\u00e7\u00e3o / Neutro"
+            fases_count["Consolida\u00e7\u00e3o / Neutro"] += 1
 
-        score = str(row.get("Score Fundamentalista", "50 (Regular)"))
-        tipo = str(row.get("Tipo", "ACAO"))
-        nome = str(row.get("Nome", t))
-
-        tese_info = teses.get(t, {"veredito_sinal": "neutro", "parecer": "An?lise pendente de processamento."})
+        tipo = str(row.get(col_tipo, "ACAO")) if col_tipo else "ACAO"
+        score = str(row.get(col_score, "50 (Regular)")) if col_score else "50 (Regular)"
+        tese_info = teses.get(t, {"veredito_sinal": "neutro", "parecer": "An\u00e1lise pendente de processamento."})
 
         ativos_validos.append({
             "ticker": t,
             "tipo": tipo,
-            "nome": nome,
             "preco": preco,
             "sma200": sma200,
             "ifr2": ifr_val,
-            "fase": fase,
+            "fase": fase_padrao,
             "score": score,
             "veredito": tese_info.get("veredito_sinal", "neutro"),
             "parecer": tese_info.get("parecer", "")
         })
 
-    # Top 8 menores IFR(2)
     candidatos_pullback = [a for a in ativos_validos if a["ifr2"] > 0]
     candidatos_pullback.sort(key=lambda x: x["ifr2"])
     top8 = candidatos_pullback[:8]
-
     top8_tickers = [a["ticker"] for a in top8]
     top8_valores = [round(a["ifr2"], 1) for a in top8]
 
@@ -145,19 +155,19 @@ def gerar_dashboard_html():
             <div class="logo-circle">WF</div>
             <div class="title">
                 <h1>WF INVESTIMENTOS</h1>
-                <p>AVALIA??O INSTITUCIONAL & SCANNER B3</p>
+                <p>AVALIA&Ccedil;&Atilde;O INSTITUCIONAL &amp; SCANNER B3</p>
             </div>
         </div>
         <div class="meta">
             <div>Atualizado em: <strong>{agora_br}</strong></div>
-            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Hor?rio de Bras?lia)</div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Hor&aacute;rio de Bras&iacute;lia)</div>
             <div style="margin-top: 4px;">Universo Monitorado: <strong>{len(ativos_validos)} Ativos</strong></div>
         </div>
     </div>
 
     <div class="search-card">
-        <div class="search-title">?? CONSULTA DIRETA DE ATIVO B3</div>
-        <div style="font-size: 12px; color: #94a3b8;">Consulte diagn?sticos e teses de A??es, FIIs, BDRs ou ETFs negociados na bolsa.</div>
+        <div class="search-title">&#x1F50D; CONSULTA DIRETA DE ATIVO B3</div>
+        <div style="font-size: 12px; color: #94a3b8;">Consulte diagn&oacute;sticos e teses de A&ccedil;&otilde;es, FIIs, BDRs ou ETFs negociados na bolsa.</div>
         <div class="search-bar">
             <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()">
         </div>
@@ -165,11 +175,11 @@ def gerar_dashboard_html():
 
     <div class="charts-grid">
         <div class="chart-box">
-            <h2>?? DISTRIBUI??O DE FASES T?CNICAS</h2>
+            <h2>&#x1F4CA; DISTRIBUI&Ccedil;&Atilde;O DE FASES T&Eacute;CNICAS</h2>
             <div style="height: 250px;"><canvas id="chartDonut"></canvas></div>
         </div>
         <div class="chart-box">
-            <h2>? TOP 8 PULLBACKS - MENORES IFR(2)</h2>
+            <h2>&#x2611; TOP 8 PULLBACKS - MENORES IFR(2)</h2>
             <div style="height: 250px;"><canvas id="chartBar"></canvas></div>
         </div>
     </div>
@@ -180,10 +190,10 @@ def gerar_dashboard_html():
                 <tr>
                     <th>Ticker</th>
                     <th>Tipo</th>
-                    <th>Pre?o (R$)</th>
+                    <th>Pre&ccedil;o (R$)</th>
                     <th>SMA 200</th>
                     <th>IFR(2)</th>
-                    <th>Fase T?cnica</th>
+                    <th>Fase T&eacute;cnica</th>
                     <th>Score Fundamentalista</th>
                     <th>Parecer IA</th>
                 </tr>
@@ -192,11 +202,11 @@ def gerar_dashboard_html():
 """
 
     for a in ativos_validos:
-        fase_nome = a["fase"]
-        if "Alta Forte" in fase_nome: b_class = "badge-alta"
-        elif "Sobrecomprado" in fase_nome: b_class = "badge-sobrecomprado"
-        elif "Sobrevendido (Oportunidade)" in fase_nome: b_class = "badge-pullback"
-        elif "Baixa" in fase_nome: b_class = "badge-baixa"
+        f = a["fase"]
+        if "Sobrecomprado" in f: b_class = "badge-sobrecomprado"
+        elif "Pullback" in f: b_class = "badge-pullback"
+        elif "Baixa" in f: b_class = "badge-baixa"
+        elif "Alta" in f: b_class = "badge-alta"
         else: b_class = "badge-neutro"
 
         v = a["veredito"].lower()
@@ -212,7 +222,7 @@ def gerar_dashboard_html():
                     <td>R$ {a['preco']:.2f}</td>
                     <td>R$ {a['sma200']:.2f}</td>
                     <td style="font-weight: 700; color: {'#4ade80' if a['ifr2'] <= 15 else ('#f87171' if a['ifr2'] >= 85 else '#cbd5e1')};">{a['ifr2']:.1f}</td>
-                    <td><span class="badge {b_class}">{fase_nome}</span></td>
+                    <td><span class="badge {b_class}">{f}</span></td>
                     <td>{a['score']}</td>
                     <td>
                         <button class="btn-ia {btn_class}" onclick="abrirModal('{a['ticker']}', `{a['parecer']}`)">
@@ -300,7 +310,7 @@ def gerar_dashboard_html():
 
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_content)
-    print("Sucesso: index.html compilado com fuso de Brasilia e IFR corrigido.")
+    print("Sucesso: index.html compilado sem erros de codificacao!")
 
 if __name__ == "__main__":
     gerar_dashboard_html()
