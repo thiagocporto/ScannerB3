@@ -1,0 +1,48 @@
+﻿name: Atualizacao Diaria WF Investimentos
+
+on:
+  schedule:
+    # Seg a Sex nos 5 horários do pregão de Brasília (UTC-3)
+    - cron: '47 12 * * 1-5'  # 09:47 BRT (Pré-Market / Leilão)
+    - cron: '15 13 * * 1-5'  # 10:15 BRT (Abertura B3)
+    - cron: '0 16 * * 1-5'   # 13:00 BRT (Meio de Pregão)
+    - cron: '0 18 * * 1-5'   # 15:00 BRT (Reta Final)
+    - cron: '45 20 * * 1-5'  # 17:45 BRT (Fechamento Oficial B3)
+  workflow_dispatch:         # Permite rodar manualmente pelo botão a qualquer momento
+
+jobs:
+  executar-scanner:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar Codigo do Repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Ambiente Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar Dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas yfinance google-genai
+
+      - name: Executar Motor Quantitativo B3
+        run: python engine_analise.py
+
+      - name: Executar Analisador Qualitativo IA
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python analisador_qualitativo.py
+
+      - name: Compilar Painel Web Seguro
+        run: python gerar_site.py
+
+      - name: Publicar Atualizacoes no GitHub Pages
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add scanner_fechamento.csv teses_qualitativas.json index.html universo_b3.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(auto): ciclo diario executado na nuvem" && git push)
