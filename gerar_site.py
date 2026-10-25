@@ -62,6 +62,8 @@ def gerar_dashboard_html():
     }
 
     ativos_validos = []
+    mapa_teses_js = {}
+
     for _, row in df.iterrows():
         t = str(row.get(col_ticker, "")).strip().upper()
         if not t or t == "NAN":
@@ -101,6 +103,9 @@ def gerar_dashboard_html():
         score = str(row.get(col_score, "50 (Regular)")) if col_score else "50 (Regular)"
         tese_info = teses.get(t, {"veredito_sinal": "neutro", "parecer": "Análise pendente de processamento."})
 
+        parecer_texto = tese_info.get("parecer", "")
+        mapa_teses_js[t] = parecer_texto
+
         ativos_validos.append({
             "ticker": t,
             "tipo": tipo,
@@ -110,7 +115,7 @@ def gerar_dashboard_html():
             "fase": fase_padrao,
             "score": score,
             "veredito": tese_info.get("veredito_sinal", "neutro"),
-            "parecer": tese_info.get("parecer", "")
+            "parecer": parecer_texto
         })
 
     candidatos_pullback = [a for a in ativos_validos if a["ifr2"] > 0]
@@ -119,7 +124,6 @@ def gerar_dashboard_html():
     top8_tickers = [a["ticker"] for a in top8]
     top8_valores = [round(a["ifr2"], 1) for a in top8]
 
-    # Carrega a Logo em Base64
     logo_b64 = obter_logo_em_base64()
     if logo_b64:
         logo_html = f'<img src="{logo_b64}" alt="WF Investimentos" class="logo-img">'
@@ -127,6 +131,7 @@ def gerar_dashboard_html():
         logo_html = '<div class="logo-circle">WF</div>'
 
     cdn_chart = "https://" + "cdn" + chr(46) + "jsdelivr" + chr(46) + "net/npm/chart" + chr(46) + "js"
+    json_teses_seguro = json.dumps(mapa_teses_js, ensure_ascii=False).replace("</", "<\\/")
 
     html_content = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -148,8 +153,11 @@ def gerar_dashboard_html():
         .meta strong {{ color: #ffffff; }}
         .search-card {{ background: #111c35; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 24px; }}
         .search-title {{ font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }}
-        .search-bar {{ display: flex; gap: 10px; margin-top: 12px; }}
-        .search-bar input {{ flex: 1; max-width: 450px; background: #070d1e; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; text-transform: uppercase; }}
+        .search-bar {{ display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }}
+        .search-bar input {{ flex: 1; min-width: 280px; max-width: 450px; background: #070d1e; border: 1px solid #334155; border-radius: 8px; padding: 11px 16px; color: #fff; font-size: 14px; text-transform: uppercase; outline: none; }}
+        .search-bar input:focus {{ border-color: #eab308; box-shadow: 0 0 8px rgba(234, 179, 8, 0.3); }}
+        .btn-consultar {{ background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; font-weight: 800; font-size: 13px; border: none; border-radius: 8px; padding: 11px 22px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; display: inline-flex; align-items: center; gap: 6px; }}
+        .btn-consultar:hover {{ transform: translateY(-1px); box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4); }}
         .charts-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; }}
         .chart-box {{ background: #111c35; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; }}
         .chart-box h2 {{ font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }}
@@ -170,9 +178,9 @@ def gerar_dashboard_html():
         .btn-alerta {{ background: #422006; color: #fde047; border-color: #eab308; }}
         .btn-venda {{ background: #450a0a; color: #fca5a5; border-color: #ef4444; }}
         .btn-neutro {{ background: #1e293b; color: #cbd5e1; border-color: #475569; }}
-        .modal {{ display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; justify-content: center; align-items: center; }}
+        .modal {{ display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; }}
         .modal-box {{ background: #0f172a; border: 1px solid #eab308; border-radius: 12px; max-width: 650px; width: 90%; padding: 24px; position: relative; max-height: 85vh; overflow-y: auto; }}
-        .modal-close {{ position: absolute; top: 16px; right: 18px; color: #94a3b8; font-size: 20px; font-weight: bold; cursor: pointer; }}
+        .modal-close {{ position: absolute; top: 16px; right: 18px; color: #94a3b8; font-size: 22px; font-weight: bold; cursor: pointer; }}
         .modal-close:hover {{ color: #fff; }}
         .modal-body {{ font-size: 13px; line-height: 1.6; color: #e2e8f0; white-space: pre-wrap; margin-top: 14px; }}
     </style>
@@ -195,9 +203,12 @@ def gerar_dashboard_html():
 
     <div class="search-card">
         <div class="search-title">&#x1F50D; CONSULTA DIRETA DE ATIVO B3</div>
-        <div style="font-size: 12px; color: #94a3b8;">Consulte diagnósticos e teses de Ações, FIIs, BDRs ou ETFs negociados na bolsa.</div>
+        <div style="font-size: 12px; color: #94a3b8;">Digite o ticker para filtrar a tabela ou clique em <strong>CONSULTAR TESE</strong> para abrir o diagnóstico da IA instantaneamente.</div>
         <div class="search-bar">
-            <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()">
+            <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()" onkeydown="checarEnter(event)">
+            <button class="btn-consultar" onclick="consultarAtivoDireto()">
+                &#x1F50E; CONSULTAR TESE
+            </button>
         </div>
     </div>
 
@@ -274,6 +285,8 @@ def gerar_dashboard_html():
     </div>
 
     <script>
+        const BANCO_TESES = {json_teses_seguro};
+
         new Chart(document.getElementById('chartDonut'), {{
             type: 'doughnut',
             data: {{
@@ -310,12 +323,41 @@ def gerar_dashboard_html():
         }});
 
         function filtrarTabela() {{
-            const val = document.getElementById('filtro').value.toUpperCase();
+            const val = document.getElementById('filtro').value.toUpperCase().trim();
             const trs = document.querySelectorAll('#tabelaAtivos tbody tr');
             trs.forEach(tr => {{
                 const ticker = tr.querySelector('.ticker').innerText.toUpperCase();
                 tr.style.display = ticker.includes(val) ? '' : 'none';
             }});
+        }}
+
+        function checarEnter(event) {{
+            if (event.key === 'Enter') {{
+                consultarAtivoDireto();
+            }}
+        }}
+
+        function consultarAtivoDireto() {{
+            const inputVal = document.getElementById('filtro').value.toUpperCase().trim();
+            if (!inputVal) {{
+                alert('Digite um ticker (ex: PETR4, VALE3, HGLG11) para consultar.');
+                return;
+            }}
+
+            // 1. Procura correspondência exata
+            if (BANCO_TESES[inputVal]) {{
+                abrirModal(inputVal, BANCO_TESES[inputVal]);
+                return;
+            }}
+
+            // 2. Procura primeiro ticker que contenha o termo digitado
+            const achado = Object.keys(BANCO_TESES).find(t => t.includes(inputVal));
+            if (achado) {{
+                abrirModal(achado, BANCO_TESES[achado]);
+                return;
+            }}
+
+            alert(`Ativo '${inputVal}' não localizado no catálogo atual.`);
         }}
 
         function abrirModal(ticker, parecer) {{
@@ -331,6 +373,10 @@ def gerar_dashboard_html():
         function fecharModalFora(e) {{
             if (e.target.id === 'modalTese') fecharModal();
         }}
+
+        document.addEventListener('keydown', (e) => {{
+            if (e.key === 'Escape') fecharModal();
+        }});
     </script>
 </body>
 </html>
@@ -339,7 +385,7 @@ def gerar_dashboard_html():
     caminho_saida = BASE_DIR / "index.html"
     with open(caminho_saida, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"Sucesso: index.html compilado com a logo oficial Base64 em '{caminho_saida}'!")
+    print(f"Sucesso: index.html compilado com o Botão de Consulta e Logo Base64 em '{caminho_saida}'!")
 
 if __name__ == "__main__":
     gerar_dashboard_html()
