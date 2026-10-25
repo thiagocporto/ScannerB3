@@ -47,6 +47,27 @@
         .modal-close { position: absolute; top: 16px; right: 18px; color: #94a3b8; font-size: 20px; font-weight: bold; cursor: pointer; }
         .modal-close:hover { color: #fff; }
         .modal-body { font-size: 13px; line-height: 1.6; color: #e2e8f0; white-space: pre-wrap; margin-top: 14px; }
+    
+        .destaques-container { background: #111c35; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+        .destaques-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .destaques-header h2 { font-size: 14px; font-weight: 800; color: #eab308; letter-spacing: 0.5px; text-transform: uppercase; }
+        .badge-radar { background: #042f2e; color: #5eead4; border: 1px solid #14b8a6; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 800; }
+        .destaques-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+        .destaque-card { background: #070d1e; border: 1px solid #1e293b; border-radius: 10px; padding: 15px; border-top: 3px solid #eab308; transition: transform 0.2s, border-color 0.2s; }
+        .destaque-card:hover { transform: translateY(-3px); border-color: #eab308; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+        .destaque-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .destaque-ticker { font-size: 16px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px; }
+        .destaque-regime { font-size: 10px; font-weight: 700; color: #fde047; background: #422006; padding: 2px 8px; border-radius: 10px; border: 1px solid #eab308; text-transform: uppercase; }
+        .destaque-preco { font-size: 20px; font-weight: 900; color: #ffffff; margin-bottom: 10px; }
+        .destaque-info-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+        .destaque-label { color: #94a3b8; font-weight: 500; }
+        .destaque-valor { color: #e2e8f0; font-weight: 700; }
+        .destaque-ifr { color: #4ade80; font-weight: 900; background: #052e16; padding: 1px 6px; border-radius: 4px; border: 1px solid #16a34a; }
+        .destaque-card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid #1e293b; }
+        .destaque-hora { font-size: 11px; color: #64748b; font-weight: 600; }
+        .btn-destaque-ia { background: #1e293b; color: #cbd5e1; border: 1px solid #475569; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .btn-destaque-ia:hover { background: #334155; color: #fff; }
+
     </style>
 </head>
 <body>
@@ -59,7 +80,7 @@
             </div>
         </div>
         <div class="meta">
-            <div>Atualizado em: <strong>25/10/2026 às 11:06</strong></div>
+            <div>Atualizado em: <strong>25/10/2026 às 15:17</strong></div>
             <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Horário de Brasília)</div>
             <div style="margin-top: 4px;">Universo Monitorado: <strong>210 Ativos</strong></div>
         </div>
@@ -71,6 +92,407 @@
         <div class="search-bar">
             <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()" onkeydown="checarEnter(event)">
             <button type="button" class="btn-consultar" onclick="consultarAtivoDireto()">&#x1F50E; CONSULTAR TESE</button>
+        </div>
+    </div>
+
+    
+    <div class="destaques-container">
+        <div class="destaques-header">
+            <h2>🏆 OPORTUNIDADES EM ABERTO HOJE (RADAR INTRADAY)</h2>
+            <span class="badge-radar">GATILHOS EXECUTIVOS</span>
+        </div>
+        <div class="destaques-grid">
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#UGPA3</span>
+                    <span class="destaque-regime">JANELA OURO</span>
+                </div>
+                <div class="destaque-preco">R$ 38.43</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">13.0</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 29.42</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">71 (Bom)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 14:45:45</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('UGPA3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#ITSA4</span>
+                    <span class="destaque-regime">JANELA OURO</span>
+                </div>
+                <div class="destaque-preco">R$ 15.20</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">11.9</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 13.54</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">93 (Excelente)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 14:44:56</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('ITSA4')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#GMAT3</span>
+                    <span class="destaque-regime">JANELA OURO</span>
+                </div>
+                <div class="destaque-preco">R$ 5.08</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">13.1</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 4.56</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">78 (Bom)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 14:44:44</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('GMAT3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#GOAU4</span>
+                    <span class="destaque-regime">JANELA OURO</span>
+                </div>
+                <div class="destaque-preco">R$ 11.41</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">13.3</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 9.97</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">55 (Regular)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 14:44:41</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('GOAU4')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#ORVR3</span>
+                    <span class="destaque-regime">ZONA MORTA</span>
+                </div>
+                <div class="destaque-preco">R$ 19.75</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">9.6</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 18.37</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">45 (Regular)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 13:17:27</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('ORVR3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#EMBJ3</span>
+                    <span class="destaque-regime">ZONA MORTA</span>
+                </div>
+                <div class="destaque-preco">R$ 86.82</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">10.0</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 86.57</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">53 (Regular)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 13:16:47</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('EMBJ3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#VIVA3</span>
+                    <span class="destaque-regime">ZONA MORTA</span>
+                </div>
+                <div class="destaque-preco">R$ 26.58</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">9.7</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 25.00</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">93 (Excelente)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 12:56:02</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('VIVA3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#IRBR3</span>
+                    <span class="destaque-regime">ZONA MORTA</span>
+                </div>
+                <div class="destaque-preco">R$ 66.72</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">9.6</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 55.68</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">55 (Regular)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 12:11:03</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('IRBR3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#ALPA4</span>
+                    <span class="destaque-regime">ZONA MORTA</span>
+                </div>
+                <div class="destaque-preco">R$ 16.59</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">5.6</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 13.12</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">79 (Bom)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 12:10:08</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('ALPA4')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#ITUB4</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 47.69</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">15.0</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 42.53</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">90 (Excelente)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 11:54:09</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('ITUB4')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#ISAE4</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 28.15</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">13.5</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 27.74</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">93 (Excelente)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 11:37:18</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('ISAE4')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#SMFT3</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 24.35</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">14.8</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 19.45</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">38 (Fraco)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 11:21:06</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('SMFT3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#SBSP3</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 31.69</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">13.3</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 28.95</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">79 (Bom)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 11:20:58</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('SBSP3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#MOTV3</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 19.83</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">13.3</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 15.22</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">68 (Bom)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 11:20:38</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('MOTV3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#ENGI11</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 64.96</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">14.6</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 50.99</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">30 (Fraco)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 11:20:06</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('ENGI11')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#ECOR3</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 12.65</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">14.1</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 8.75</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">46 (Regular)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 11:03:08</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('ECOR3')">Tese IA</button>
+                </div>
+            </div>
+            <div class="destaque-card">
+                <div class="destaque-card-top">
+                    <span class="destaque-ticker">#BBDC3</span>
+                    <span class="destaque-regime">FLUXO NY</span>
+                </div>
+                <div class="destaque-preco">R$ 17.50</div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">IFR(2):</span>
+                    <span class="destaque-ifr">9.0</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Suporte MM200:</span>
+                    <span class="destaque-valor">R$ 15.84</span>
+                </div>
+                <div class="destaque-info-row">
+                    <span class="destaque-label">Score:</span>
+                    <span class="destaque-valor">83 (Excelente)</span>
+                </div>
+                <div class="destaque-card-bottom">
+                    <span class="destaque-hora">🕒 10:36:46</span>
+                    <button type="button" class="btn-destaque-ia" onclick="consultarTickerModal('BBDC3')">Tese IA</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -3343,6 +3765,21 @@ O indicador IFR de curto prazo em 41.4 sinaliza um momento de respiro saudável,
                 }
             }
             alert("Ativo '" + val + "' nao localizado na tabela.");
+        }
+
+        
+        function consultarTickerModal(ticker) {
+            const trs = document.querySelectorAll("#tabelaAtivos tbody tr");
+            for (let tr of trs) {
+                const tickerEl = tr.querySelector(".ticker");
+                if (tickerEl && tickerEl.innerText.trim().toUpperCase() === ticker) {
+                    const btn = tr.querySelector(".btn-ia");
+                    if (btn) {
+                        btn.click();
+                        return;
+                    }
+                }
+            }
         }
 
         function filtrarTabela() {
