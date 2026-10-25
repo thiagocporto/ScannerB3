@@ -18,8 +18,10 @@
         .meta strong { color: #ffffff; }
         .search-card { background: #111c35; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
         .search-title { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .search-bar { display: flex; gap: 10px; margin-top: 12px; }
-        .search-bar input { flex: 1; max-width: 450px; background: #070d1e; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; text-transform: uppercase; }
+        .search-bar { display: flex; gap: 10px; margin-top: 12px; align-items: center; flex-wrap: wrap; }
+        .search-bar input { flex: 1; min-width: 260px; max-width: 450px; background: #070d1e; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; text-transform: uppercase; }
+        .btn-consultar { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; font-weight: 800; font-size: 13px; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-consultar:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4); }
         .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; }
         .chart-box { background: #111c35; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; }
         .chart-box h2 { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -67,7 +69,8 @@
         <div class="search-title">&#x1F50D; CONSULTA DIRETA DE ATIVO B3</div>
         <div style="font-size: 12px; color: #94a3b8;">Consulte diagnósticos e teses de Ações, FIIs, BDRs ou ETFs negociados na bolsa.</div>
         <div class="search-bar">
-            <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()">
+            <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()" onkeydown="checarEnter(event)">
+            <button type="button" class="btn-consultar" onclick="consultarAtivoDireto()">&#x1F50E; CONSULTAR TESE</button>
         </div>
     </div>
 
@@ -3305,6 +3308,42 @@ O indicador IFR de curto prazo em 41.4 sinaliza um momento de respiro saudável,
                 plugins: { legend: { display: false } }
             }
         });
+
+        function checarEnter(event) {
+            if (event.key === "Enter") {
+                consultarAtivoDireto();
+            }
+        }
+
+        function consultarAtivoDireto() {
+            const val = document.getElementById("filtro").value.toUpperCase().trim();
+            if (!val) {
+                alert("Digite um ticker (ex: PETR4, VALE3, HGLG11) para consultar.");
+                return;
+            }
+            const trs = document.querySelectorAll("#tabelaAtivos tbody tr");
+            for (let tr of trs) {
+                const tickerEl = tr.querySelector(".ticker");
+                if (tickerEl && tickerEl.innerText.trim().toUpperCase() === val) {
+                    const btn = tr.querySelector(".btn-ia");
+                    if (btn) {
+                        btn.click();
+                        return;
+                    }
+                }
+            }
+            for (let tr of trs) {
+                const tickerEl = tr.querySelector(".ticker");
+                if (tickerEl && tickerEl.innerText.trim().toUpperCase().includes(val)) {
+                    const btn = tr.querySelector(".btn-ia");
+                    if (btn) {
+                        btn.click();
+                        return;
+                    }
+                }
+            }
+            alert("Ativo '" + val + "' nao localizado na tabela.");
+        }
 
         function filtrarTabela() {
             const val = document.getElementById('filtro').value.toUpperCase();
