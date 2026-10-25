@@ -1,13 +1,32 @@
 ﻿# -*- coding: utf-8 -*-
 import json
 import os
+import base64
+from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import pandas as pd
 
+BASE_DIR = Path(__file__).resolve().parent
+
+def obter_logo_em_base64():
+    """Converte a imagem da logo para Base64 para garantir carregamento infalível."""
+    extensoes = ["logo.jpg", "logo.png", "logo.jpeg", "Logo.jpg", "LOGO.JPG"]
+    for nome in extensoes:
+        caminho = BASE_DIR / nome
+        if caminho.exists():
+            try:
+                with open(caminho, "rb") as f:
+                    b64 = base64.b64encode(f.read()).decode("utf-8")
+                    mime = "image/png" if nome.lower().endswith(".png") else "image/jpeg"
+                    return f"data:{mime};base64,{b64}"
+            except Exception:
+                pass
+    return ""
+
 def gerar_dashboard_html():
-    csv_file = "scanner_fechamento.csv"
-    if not os.path.exists(csv_file):
+    csv_file = BASE_DIR / "scanner_fechamento.csv"
+    if not csv_file.exists():
         print("Erro: scanner_fechamento.csv nao encontrado.")
         return
 
@@ -22,9 +41,10 @@ def gerar_dashboard_html():
     col_score = next((c for c in df.columns if "score" in c.lower()), None)
 
     teses = {}
-    if os.path.exists("teses_qualitativas.json"):
+    arquivo_teses = BASE_DIR / "teses_qualitativas.json"
+    if arquivo_teses.exists():
         try:
-            with open("teses_qualitativas.json", "r", encoding="utf-8") as f:
+            with open(arquivo_teses, "r", encoding="utf-8") as f:
                 teses = json.load(f)
         except Exception:
             teses = {}
@@ -99,6 +119,13 @@ def gerar_dashboard_html():
     top8_tickers = [a["ticker"] for a in top8]
     top8_valores = [round(a["ifr2"], 1) for a in top8]
 
+    # Carrega a Logo em Base64
+    logo_b64 = obter_logo_em_base64()
+    if logo_b64:
+        logo_html = f'<img src="{logo_b64}" alt="WF Investimentos" class="logo-img">'
+    else:
+        logo_html = '<div class="logo-circle">WF</div>'
+
     cdn_chart = "https://" + "cdn" + chr(46) + "jsdelivr" + chr(46) + "net/npm/chart" + chr(46) + "js"
 
     html_content = f"""<!DOCTYPE html>
@@ -113,8 +140,8 @@ def gerar_dashboard_html():
         body {{ background-color: #0b1120; color: #f8fafc; padding: 24px; }}
         .header {{ display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eab308; padding-bottom: 16px; margin-bottom: 24px; }}
         .logo-box {{ display: flex; align-items: center; gap: 14px; }}
-        .logo-img {{ width: 50px; height: 50px; border-radius: 50%; border: 2px solid #eab308; object-fit: cover; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }}
-        .logo-circle {{ width: 50px; height: 50px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }}
+        .logo-img {{ width: 52px; height: 52px; border-radius: 50%; border: 2px solid #eab308; object-fit: cover; box-shadow: 0 0 12px rgba(234, 179, 8, 0.4); }}
+        .logo-circle {{ width: 52px; height: 52px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }}
         .title h1 {{ font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #ffffff; }}
         .title p {{ font-size: 11px; color: #eab308; font-weight: 600; letter-spacing: 0.5px; }}
         .meta {{ text-align: right; font-size: 13px; color: #94a3b8; }}
@@ -153,23 +180,22 @@ def gerar_dashboard_html():
 <body>
     <div class="header">
         <div class="logo-box">
-            <img src="logo.jpg" alt="WF Investimentos" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
-            <div id="logo-fallback" class="logo-circle" style="display:none;">WF</div>
+            {logo_html}
             <div class="title">
                 <h1>WF INVESTIMENTOS</h1>
-                <p>AVALIA&Ccedil;&Atilde;O INSTITUCIONAL &amp; SCANNER B3</p>
+                <p>AVALIAÇÃO INSTITUCIONAL &amp; SCANNER B3</p>
             </div>
         </div>
         <div class="meta">
             <div>Atualizado em: <strong>{agora_br}</strong></div>
-            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Hor&aacute;rio de Bras&iacute;lia)</div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Horário de Brasília)</div>
             <div style="margin-top: 4px;">Universo Monitorado: <strong>{len(ativos_validos)} Ativos</strong></div>
         </div>
     </div>
 
     <div class="search-card">
         <div class="search-title">&#x1F50D; CONSULTA DIRETA DE ATIVO B3</div>
-        <div style="font-size: 12px; color: #94a3b8;">Consulte diagn&oacute;sticos e teses de A&ccedil;&otilde;es, FIIs, BDRs ou ETFs negociados na bolsa.</div>
+        <div style="font-size: 12px; color: #94a3b8;">Consulte diagnósticos e teses de Ações, FIIs, BDRs ou ETFs negociados na bolsa.</div>
         <div class="search-bar">
             <input type="text" id="filtro" placeholder="DIGITE O TICKER (EX: PETR4, HGLG11, IVVB11)..." onkeyup="filtrarTabela()">
         </div>
@@ -177,7 +203,7 @@ def gerar_dashboard_html():
 
     <div class="charts-grid">
         <div class="chart-box">
-            <h2>&#x1F4CA; DISTRIBUI&Ccedil;&Atilde;O DE FASES T&Eacute;CNICAS</h2>
+            <h2>&#x1F4CA; DISTRIBUIÇÃO DE FASES TÉCNICAS</h2>
             <div style="height: 250px;"><canvas id="chartDonut"></canvas></div>
         </div>
         <div class="chart-box">
@@ -192,10 +218,10 @@ def gerar_dashboard_html():
                 <tr>
                     <th>Ticker</th>
                     <th>Tipo</th>
-                    <th>Pre&ccedil;o (R$)</th>
+                    <th>Preço (R$)</th>
                     <th>SMA 200</th>
                     <th>IFR(2)</th>
-                    <th>Fase T&eacute;cnica</th>
+                    <th>Fase Técnica</th>
                     <th>Score Fundamentalista</th>
                     <th>Parecer IA</th>
                 </tr>
@@ -310,9 +336,10 @@ def gerar_dashboard_html():
 </html>
 """
 
-    with open("index.html", "w", encoding="utf-8") as f:
+    caminho_saida = BASE_DIR / "index.html"
+    with open(caminho_saida, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print("Sucesso: index.html compilado com a logo oficial da WF Investimentos!")
+    print(f"Sucesso: index.html compilado com a logo oficial Base64 em '{caminho_saida}'!")
 
 if __name__ == "__main__":
     gerar_dashboard_html()
