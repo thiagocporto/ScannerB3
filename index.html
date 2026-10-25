@@ -10,7 +10,8 @@
         body { background-color: #0b1120; color: #f8fafc; padding: 24px; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eab308; padding-bottom: 16px; margin-bottom: 24px; }
         .logo-box { display: flex; align-items: center; gap: 14px; }
-        .logo-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }
+        .logo-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #eab308; object-fit: cover; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }
+        .logo-circle { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }
         .title h1 { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #ffffff; }
         .title p { font-size: 11px; color: #eab308; font-weight: 600; letter-spacing: 0.5px; }
         .meta { text-align: right; font-size: 13px; color: #94a3b8; }
@@ -49,14 +50,15 @@
 <body>
     <div class="header">
         <div class="logo-box">
-            <div class="logo-circle">WF</div>
+            <img src="logo.jpg" alt="WF Investimentos" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
+            <div id="logo-fallback" class="logo-circle" style="display:none;">WF</div>
             <div class="title">
                 <h1>WF INVESTIMENTOS</h1>
                 <p>AVALIA&Ccedil;&Atilde;O INSTITUCIONAL &amp; SCANNER B3</p>
             </div>
         </div>
         <div class="meta">
-            <div>Atualizado em: <strong>25/10/2026 às 10:05</strong></div>
+            <div>Atualizado em: <strong>25/10/2026 às 11:00</strong></div>
             <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Hor&aacute;rio de Bras&iacute;lia)</div>
             <div style="margin-top: 4px;">Universo Monitorado: <strong>210 Ativos</strong></div>
         </div>

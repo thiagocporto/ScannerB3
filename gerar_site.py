@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import json
 import os
 from datetime import datetime
@@ -13,10 +13,8 @@ def gerar_dashboard_html():
 
     df = pd.read_csv(csv_file)
 
-    # Identificacao dinamica e imune a erros de codificacao
     col_ticker = next((c for c in df.columns if "ticker" in c.lower()), df.columns[0])
     col_tipo = next((c for c in df.columns if "tipo" in c.lower() or "classe" in c.lower()), None)
-    col_nome = next((c for c in df.columns if "nome" in c.lower() or "empresa" in c.lower()), None)
     col_preco = next((c for c in df.columns if "pre" in c.lower() or "close" in c.lower() or "cota" in c.lower()), None)
     col_sma200 = next((c for c in df.columns if "200" in c or "mm200" in c.lower()), None)
     col_ifr = next((c for c in df.columns if "ifr" in c.lower() or "rsi" in c.lower()), None)
@@ -32,15 +30,15 @@ def gerar_dashboard_html():
             teses = {}
 
     fuso_br = ZoneInfo("America/Sao_Paulo")
-    agora_br = datetime.now(fuso_br).strftime("%d/%m/%Y \u00e0s %H:%M")
+    agora_br = datetime.now(fuso_br).strftime("%d/%m/%Y às %H:%M")
 
     fases_count = {
-        "Tend\u00eancia de Alta": 0,
+        "Tendência de Alta": 0,
         "Sobrecomprado": 0,
-        "Consolida\u00e7\u00e3o / Neutro": 0,
-        "Tend\u00eancia de Baixa": 0,
+        "Consolidação / Neutro": 0,
+        "Tendência de Baixa": 0,
         "Pullback em Alta": 0,
-        "Tend\u00eancia de Baixa (Sobrevendido)": 0
+        "Tendência de Baixa (Sobrevendido)": 0
     }
 
     ativos_validos = []
@@ -64,24 +62,24 @@ def gerar_dashboard_html():
             fase_padrao = "Sobrecomprado"
             fases_count["Sobrecomprado"] += 1
         elif ("SOBREVENDIDO" in raw_fase and "BAIXA" in raw_fase) or "BAIXA (SOBREVENDIDO)" in raw_fase:
-            fase_padrao = "Tend\u00eancia de Baixa (Sobrevendido)"
-            fases_count["Tend\u00eancia de Baixa (Sobrevendido)"] += 1
+            fase_padrao = "Tendência de Baixa (Sobrevendido)"
+            fases_count["Tendência de Baixa (Sobrevendido)"] += 1
         elif "SOBREVENDIDO" in raw_fase or "PULLBACK" in raw_fase or "OPORTUNIDADE" in raw_fase:
             fase_padrao = "Pullback em Alta"
             fases_count["Pullback em Alta"] += 1
         elif "ALTA" in raw_fase:
-            fase_padrao = "Tend\u00eancia de Alta"
-            fases_count["Tend\u00eancia de Alta"] += 1
+            fase_padrao = "Tendência de Alta"
+            fases_count["Tendência de Alta"] += 1
         elif "BAIXA" in raw_fase:
-            fase_padrao = "Tend\u00eancia de Baixa"
-            fases_count["Tend\u00eancia de Baixa"] += 1
+            fase_padrao = "Tendência de Baixa"
+            fases_count["Tendência de Baixa"] += 1
         else:
-            fase_padrao = "Consolida\u00e7\u00e3o / Neutro"
-            fases_count["Consolida\u00e7\u00e3o / Neutro"] += 1
+            fase_padrao = "Consolidação / Neutro"
+            fases_count["Consolidação / Neutro"] += 1
 
         tipo = str(row.get(col_tipo, "ACAO")) if col_tipo else "ACAO"
         score = str(row.get(col_score, "50 (Regular)")) if col_score else "50 (Regular)"
-        tese_info = teses.get(t, {"veredito_sinal": "neutro", "parecer": "An\u00e1lise pendente de processamento."})
+        tese_info = teses.get(t, {"veredito_sinal": "neutro", "parecer": "Análise pendente de processamento."})
 
         ativos_validos.append({
             "ticker": t,
@@ -101,19 +99,22 @@ def gerar_dashboard_html():
     top8_tickers = [a["ticker"] for a in top8]
     top8_valores = [round(a["ifr2"], 1) for a in top8]
 
+    cdn_chart = "https://" + "cdn" + chr(46) + "jsdelivr" + chr(46) + "net/npm/chart" + chr(46) + "js"
+
     html_content = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WF Investimentos | Scanner B3 Institucional</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{cdn_chart}"></script>
     <style>
         * {{ box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }}
         body {{ background-color: #0b1120; color: #f8fafc; padding: 24px; }}
         .header {{ display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eab308; padding-bottom: 16px; margin-bottom: 24px; }}
         .logo-box {{ display: flex; align-items: center; gap: 14px; }}
-        .logo-circle {{ width: 44px; height: 44px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }}
+        .logo-img {{ width: 50px; height: 50px; border-radius: 50%; border: 2px solid #eab308; object-fit: cover; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }}
+        .logo-circle {{ width: 50px; height: 50px; border-radius: 50%; border: 2px solid #eab308; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #eab308; font-size: 18px; }}
         .title h1 {{ font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #ffffff; }}
         .title p {{ font-size: 11px; color: #eab308; font-weight: 600; letter-spacing: 0.5px; }}
         .meta {{ text-align: right; font-size: 13px; color: #94a3b8; }}
@@ -152,7 +153,8 @@ def gerar_dashboard_html():
 <body>
     <div class="header">
         <div class="logo-box">
-            <div class="logo-circle">WF</div>
+            <img src="logo.jpg" alt="WF Investimentos" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
+            <div id="logo-fallback" class="logo-circle" style="display:none;">WF</div>
             <div class="title">
                 <h1>WF INVESTIMENTOS</h1>
                 <p>AVALIA&Ccedil;&Atilde;O INSTITUCIONAL &amp; SCANNER B3</p>
@@ -310,7 +312,7 @@ def gerar_dashboard_html():
 
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_content)
-    print("Sucesso: index.html compilado sem erros de codificacao!")
+    print("Sucesso: index.html compilado com a logo oficial da WF Investimentos!")
 
 if __name__ == "__main__":
     gerar_dashboard_html()
