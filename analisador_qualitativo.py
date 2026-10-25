@@ -2,6 +2,8 @@
 import json
 import os
 import time
+from zoneinfo import ZoneInfo
+from datetime import datetime
 import pandas as pd
 from google import genai
 from google.genai import types
@@ -9,11 +11,8 @@ from google.genai import types
 def carregar_dados():
     csv_file = "scanner_fechamento.csv"
     if not os.path.exists(csv_file):
-        print("Aviso: scanner_fechamento.csv nao encontrado.")
         return []
-    
     df = pd.read_csv(csv_file)
-    
     tipos_map = {}
     if os.path.exists("universo_b3.json"):
         with open("universo_b3.json", "r", encoding="utf-8") as f:
@@ -22,13 +21,10 @@ def carregar_dados():
                     "tipo": item.get("tipo", "ACAO"),
                     "nome": item.get("nome", item["ticker"])
                 }
-    
     ativos = []
     for _, row in df.iterrows():
         t = str(row.get("Ticker", "")).strip().upper()
-        if not t or t == "NAN": 
-            continue
-        
+        if not t or t == "NAN": continue
         info = tipos_map.get(t, {"tipo": "ACAO", "nome": t})
         ativos.append({
             "ticker": t,
@@ -41,10 +37,10 @@ def carregar_dados():
         })
     return ativos
 
-def executar_analise_ia():
+def executar_varredura_total():
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        print("Erro: Variavel GEMINI_API_KEY nao encontrada no ambiente.")
+        print("Erro: Chave GEMINI_API_KEY ausente.")
         return
 
     client = genai.Client(api_key=api_key)
@@ -62,27 +58,26 @@ def executar_analise_ia():
     pendentes = [a for a in ativos if a["ticker"] not in teses]
     total = len(pendentes)
     
-    print(f"\nIniciando Varredura Qualitativa da IA ({total} pendentes de {len(ativos)} ativos)...")
+    print(f"=== PROCESSANDO {total} ATIVOS PENDENTES ===")
 
     for i, a in enumerate(pendentes, 1):
         ticker = a["ticker"]
         tipo = a["tipo"]
         nome = a["nome"]
-        
-        print(f"[{i}/{total}] Analisando {ticker} ({tipo} - {nome})...", end="", flush=True)
+        print(f"[{i}/{total}] Analisando {ticker} ({tipo})...", end="", flush=True)
 
         prompt = f"""Voce e o Analista-Chefe da WF Investimentos.
 Analise o ativo '{ticker}' ({nome}), classe: {tipo}.
 Dados Quantitativos:
-- Preco Atual: R$ {a['preco']}
+- Preco: R$ {a['preco']}
 - SMA 200: R$ {a['sma200']}
-- IFR(2) Larry Connors: {a['rsi2']}
+- IFR(2) Connors: {a['rsi2']}
 - Score de Saude: {a['score']}/100
 
 Diretrizes para {tipo}:
-- Se ACAO ou BDR: analise valuation, solidez financeira e risco macro/politico.
-- Se FII ou FIAGRO: analise dividend yield, vacancia/credito e sensibilidade a taxa Selic.
-- Se ETF: analise a tese do indice replicado, risco sistemico e momento de reversao a media.
+- Se ACAO ou BDR: analise valuation, balanco e risco politico/setorial.
+- Se FII ou FIAGRO: analise dividend yield, vacancia e impacto da taxa Selic.
+- Se ETF: analise a tese do indice replicado, risco macro e momento de reversao a media.
 
 Retorne EXCLUSIVAMENTE um JSON valido no seguinte formato:
 {{
@@ -91,7 +86,7 @@ Retorne EXCLUSIVAMENTE um JSON valido no seguinte formato:
 }}
 """
         try:
-            response = client.models.generate_content(
+            res = client.models.generate_content(
                 model="gemini-2.5-flash",
                 contents=prompt,
                 config=types.GenerateContentConfig(
@@ -99,23 +94,18 @@ Retorne EXCLUSIVAMENTE um JSON valido no seguinte formato:
                     temperature=0.2
                 )
             )
-            res_json = json.loads(response.text)
+            data = json.loads(res.text)
             teses[ticker] = {
-                "veredito_sinal": res_json.get("veredito_sinal", "neutro"),
-                "parecer": res_json.get("parecer", "Parecer em analise.")
+                "veredito_sinal": data.get("veredito_sinal", "neutro"),
+                "parecer": data.get("parecer", "Parecer em analise.")
             }
-            
             with open(ARQUIVO_TESES, "w", encoding="utf-8") as f:
                 json.dump(teses, f, indent=4, ensure_ascii=False)
-            
-            print(f" OK ({res_json.get('veredito_sinal')})")
+            print(f" OK ({data.get('veredito_sinal')})")
             time.sleep(4.2)
-            
         except Exception as e:
             print(f" Erro: {e}")
             time.sleep(2)
 
-    print("\nVarredura qualitativa concluida com sucesso!")
-
 if __name__ == "__main__":
-    executar_analise_ia()
+    executar_varredura_total()

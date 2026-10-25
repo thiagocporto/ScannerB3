@@ -55,6 +55,11 @@
         "nome": "BB Seguridade"
     },
     {
+        "ticker": "BEEF3",
+        "tipo": "AÇÃO",
+        "nome": "Minerva"
+    },
+    {
         "ticker": "BPAC11",
         "tipo": "AÇÃO",
         "nome": "BTG Pactual"
@@ -70,6 +75,11 @@
         "nome": "BRF"
     },
     {
+        "ticker": "BRKM5",
+        "tipo": "AÇÃO",
+        "nome": "Braskem"
+    },
+    {
         "ticker": "CCRO3",
         "tipo": "AÇÃO",
         "nome": "CCR"
@@ -80,9 +90,29 @@
         "nome": "Cemig"
     },
     {
+        "ticker": "CMIN3",
+        "tipo": "AÇÃO",
+        "nome": "CSN Mineração"
+    },
+    {
+        "ticker": "COGN3",
+        "tipo": "AÇÃO",
+        "nome": "Cogna"
+    },
+    {
+        "ticker": "CPFE3",
+        "tipo": "AÇÃO",
+        "nome": "CPFL Energia"
+    },
+    {
         "ticker": "CPLE6",
         "tipo": "AÇÃO",
         "nome": "Copel"
+    },
+    {
+        "ticker": "CRFB3",
+        "tipo": "AÇÃO",
+        "nome": "Carrefour Brasil"
     },
     {
         "ticker": "CSAN3",
@@ -97,12 +127,22 @@
     {
         "ticker": "CVCB3",
         "tipo": "AÇÃO",
-        "nome": "CVC"
+        "nome": "CVC Brasil"
     },
     {
         "ticker": "CYRE3",
         "tipo": "AÇÃO",
         "nome": "Cyrela"
+    },
+    {
+        "ticker": "DXCO3",
+        "tipo": "AÇÃO",
+        "nome": "Dexco"
+    },
+    {
+        "ticker": "EGIE3",
+        "tipo": "AÇÃO",
+        "nome": "Engie Brasil"
     },
     {
         "ticker": "ELET3",
@@ -125,9 +165,9 @@
         "nome": "Eneva"
     },
     {
-        "ticker": "EGIE3",
+        "ticker": "ENGI11",
         "tipo": "AÇÃO",
-        "nome": "Engie Brasil"
+        "nome": "Energisa"
     },
     {
         "ticker": "EQTL3",
@@ -135,14 +175,49 @@
         "nome": "Equatorial"
     },
     {
+        "ticker": "EZTC3",
+        "tipo": "AÇÃO",
+        "nome": "EZTec"
+    },
+    {
+        "ticker": "FLRY3",
+        "tipo": "AÇÃO",
+        "nome": "Fleury"
+    },
+    {
         "ticker": "GGBR4",
         "tipo": "AÇÃO",
         "nome": "Gerdau"
     },
     {
+        "ticker": "GOAU4",
+        "tipo": "AÇÃO",
+        "nome": "Metalúrgica Gerdau"
+    },
+    {
+        "ticker": "GOLL4",
+        "tipo": "AÇÃO",
+        "nome": "Gol"
+    },
+    {
         "ticker": "HAPV3",
         "tipo": "AÇÃO",
         "nome": "Hapvida"
+    },
+    {
+        "ticker": "HYPE3",
+        "tipo": "AÇÃO",
+        "nome": "Hypera"
+    },
+    {
+        "ticker": "IGTI11",
+        "tipo": "AÇÃO",
+        "nome": "Iguatemi"
+    },
+    {
+        "ticker": "IRBR3",
+        "tipo": "AÇÃO",
+        "nome": "IRB Brasil"
     },
     {
         "ticker": "ITSA4",
@@ -170,14 +245,24 @@
         "nome": "Lojas Renner"
     },
     {
+        "ticker": "LWSA3",
+        "tipo": "AÇÃO",
+        "nome": "Locaweb"
+    },
+    {
         "ticker": "MGLU3",
         "tipo": "AÇÃO",
         "nome": "Magazine Luiza"
     },
     {
+        "ticker": "MRFG3",
+        "tipo": "AÇÃO",
+        "nome": "Marfrig"
+    },
+    {
         "ticker": "MRVE3",
         "tipo": "AÇÃO",
-        "nome": "MRV"
+        "nome": "MRV Engenharia"
     },
     {
         "ticker": "MULT3",
@@ -188,6 +273,11 @@
         "ticker": "NTCO3",
         "tipo": "AÇÃO",
         "nome": "Natura"
+    },
+    {
+        "ticker": "PCAR3",
+        "tipo": "AÇÃO",
+        "nome": "Pão de Açúcar"
     },
     {
         "ticker": "PETR3",
@@ -220,6 +310,11 @@
         "nome": "Rede D'Or"
     },
     {
+        "ticker": "RECV3",
+        "tipo": "AÇÃO",
+        "nome": "PetroRecôncavo"
+    },
+    {
         "ticker": "RENT3",
         "tipo": "AÇÃO",
         "nome": "Localiza"
@@ -227,12 +322,22 @@
     {
         "ticker": "SANB11",
         "tipo": "AÇÃO",
-        "nome": "Santander"
+        "nome": "Santander Brasil"
     },
     {
         "ticker": "SBSP3",
         "tipo": "AÇÃO",
         "nome": "Sabesp"
+    },
+    {
+        "ticker": "SLCE3",
+        "tipo": "AÇÃO",
+        "nome": "SLC Agrícola"
+    },
+    {
+        "ticker": "SMTO3",
+        "tipo": "AÇÃO",
+        "nome": "São Martinho"
     },
     {
         "ticker": "SUZB3",
@@ -247,7 +352,7 @@
     {
         "ticker": "TIMS3",
         "tipo": "AÇÃO",
-        "nome": "TIM"
+        "nome": "TIM Brasil"
     },
     {
         "ticker": "TOTS3",
@@ -275,6 +380,21 @@
         "nome": "Vale"
     },
     {
+        "ticker": "VAMO3",
+        "tipo": "AÇÃO",
+        "nome": "Vamos"
+    },
+    {
+        "ticker": "VBBR3",
+        "tipo": "AÇÃO",
+        "nome": "Vibra Energia"
+    },
+    {
+        "ticker": "VIVA3",
+        "tipo": "AÇÃO",
+        "nome": "Vivara"
+    },
+    {
         "ticker": "VIVT3",
         "tipo": "AÇÃO",
         "nome": "Telefônica Brasil"
@@ -283,6 +403,591 @@
         "ticker": "WEGE3",
         "tipo": "AÇÃO",
         "nome": "WEG"
+    },
+    {
+        "ticker": "YDUQ3",
+        "tipo": "AÇÃO",
+        "nome": "Yduqs"
+    },
+    {
+        "ticker": "ALUP11",
+        "tipo": "AÇÃO",
+        "nome": "Alupar"
+    },
+    {
+        "ticker": "AMER3",
+        "tipo": "AÇÃO",
+        "nome": "Americanas"
+    },
+    {
+        "ticker": "ANIM3",
+        "tipo": "AÇÃO",
+        "nome": "Ânima Educação"
+    },
+    {
+        "ticker": "ARZZ3",
+        "tipo": "AÇÃO",
+        "nome": "Arezzo&Co"
+    },
+    {
+        "ticker": "BIDI11",
+        "tipo": "AÇÃO",
+        "nome": "Banco Inter"
+    },
+    {
+        "ticker": "BRKM3",
+        "tipo": "AÇÃO",
+        "nome": "Braskem ON"
+    },
+    {
+        "ticker": "CASH3",
+        "tipo": "AÇÃO",
+        "nome": "Méliuz"
+    },
+    {
+        "ticker": "CIEL3",
+        "tipo": "AÇÃO",
+        "nome": "Cielo"
+    },
+    {
+        "ticker": "CSMG3",
+        "tipo": "AÇÃO",
+        "nome": "Copasa"
+    },
+    {
+        "ticker": "DIRR3",
+        "tipo": "AÇÃO",
+        "nome": "Direcional"
+    },
+    {
+        "ticker": "ENBR3",
+        "tipo": "AÇÃO",
+        "nome": "EDP Brasil"
+    },
+    {
+        "ticker": "JHSF3",
+        "tipo": "AÇÃO",
+        "nome": "JHSF"
+    },
+    {
+        "ticker": "LCAM3",
+        "tipo": "AÇÃO",
+        "nome": "Locamerica"
+    },
+    {
+        "ticker": "MOVI3",
+        "tipo": "AÇÃO",
+        "nome": "Movida"
+    },
+    {
+        "ticker": "NEOE3",
+        "tipo": "AÇÃO",
+        "nome": "Neoenergia"
+    },
+    {
+        "ticker": "PSSA3",
+        "tipo": "AÇÃO",
+        "nome": "Porto Seguro"
+    },
+    {
+        "ticker": "QUAL3",
+        "tipo": "AÇÃO",
+        "nome": "Qualicorp"
+    },
+    {
+        "ticker": "RAPT4",
+        "tipo": "AÇÃO",
+        "nome": "Randoncorp"
+    },
+    {
+        "ticker": "SAPR11",
+        "tipo": "AÇÃO",
+        "nome": "Sanepar Unit"
+    },
+    {
+        "ticker": "SEER3",
+        "tipo": "AÇÃO",
+        "nome": "Ser Educacional"
+    },
+    {
+        "ticker": "SOMA3",
+        "tipo": "AÇÃO",
+        "nome": "Grupo Soma"
+    },
+    {
+        "ticker": "TEND3",
+        "tipo": "AÇÃO",
+        "nome": "Tenda"
+    },
+    {
+        "ticker": "ABCB4",
+        "tipo": "AÇÃO",
+        "nome": "Banco ABC Brasil"
+    },
+    {
+        "ticker": "AGRO3",
+        "tipo": "AÇÃO",
+        "nome": "BrasilAgro"
+    },
+    {
+        "ticker": "ALPK3",
+        "tipo": "AÇÃO",
+        "nome": "Estapar"
+    },
+    {
+        "ticker": "ARML3",
+        "tipo": "AÇÃO",
+        "nome": "Armac"
+    },
+    {
+        "ticker": "AALR3",
+        "tipo": "AÇÃO",
+        "nome": "Alliar"
+    },
+    {
+        "ticker": "BLAU3",
+        "tipo": "AÇÃO",
+        "nome": "Blau Farmacêutica"
+    },
+    {
+        "ticker": "BMOB3",
+        "tipo": "AÇÃO",
+        "nome": "Bemobi"
+    },
+    {
+        "ticker": "CAML3",
+        "tipo": "AÇÃO",
+        "nome": "Camil Alimentos"
+    },
+    {
+        "ticker": "CBAV3",
+        "tipo": "AÇÃO",
+        "nome": "CBA Alumínio"
+    },
+    {
+        "ticker": "CEAB3",
+        "tipo": "AÇÃO",
+        "nome": "C&A Modas"
+    },
+    {
+        "ticker": "CLSA3",
+        "tipo": "AÇÃO",
+        "nome": "ClearSale"
+    },
+    {
+        "ticker": "CSED3",
+        "tipo": "AÇÃO",
+        "nome": "Cruzeiro do Sul Educacional"
+    },
+    {
+        "ticker": "CURY3",
+        "tipo": "AÇÃO",
+        "nome": "Cury Construtora"
+    },
+    {
+        "ticker": "DEXP3",
+        "tipo": "AÇÃO",
+        "nome": "Dexxos"
+    },
+    {
+        "ticker": "DMVF3",
+        "tipo": "AÇÃO",
+        "nome": "D1000 Varejo Farma"
+    },
+    {
+        "ticker": "ECOR3",
+        "tipo": "AÇÃO",
+        "nome": "EcoRodovias"
+    },
+    {
+        "ticker": "ESPA3",
+        "tipo": "AÇÃO",
+        "nome": "Espaçolaser"
+    },
+    {
+        "ticker": "EVEN3",
+        "tipo": "AÇÃO",
+        "nome": "Even Construtora"
+    },
+    {
+        "ticker": "FESA4",
+        "tipo": "AÇÃO",
+        "nome": "Ferbasa"
+    },
+    {
+        "ticker": "FHER3",
+        "tipo": "AÇÃO",
+        "nome": "Fertilizantes Heringer"
+    },
+    {
+        "ticker": "FIQE3",
+        "tipo": "AÇÃO",
+        "nome": "Unifique"
+    },
+    {
+        "ticker": "FRAS3",
+        "tipo": "AÇÃO",
+        "nome": "Fras-le"
+    },
+    {
+        "ticker": "GFSA3",
+        "tipo": "AÇÃO",
+        "nome": "Gafisa"
+    },
+    {
+        "ticker": "GMAT3",
+        "tipo": "AÇÃO",
+        "nome": "Grupo Mateus"
+    },
+    {
+        "ticker": "GRND3",
+        "tipo": "AÇÃO",
+        "nome": "Grendene"
+    },
+    {
+        "ticker": "GUAR3",
+        "tipo": "AÇÃO",
+        "nome": "Guararapes"
+    },
+    {
+        "ticker": "HBSA3",
+        "tipo": "AÇÃO",
+        "nome": "Hidrovias do Brasil"
+    },
+    {
+        "ticker": "HBOR3",
+        "tipo": "AÇÃO",
+        "nome": "Helbor"
+    },
+    {
+        "ticker": "INTB3",
+        "tipo": "AÇÃO",
+        "nome": "Intelbras"
+    },
+    {
+        "ticker": "JALL3",
+        "tipo": "AÇÃO",
+        "nome": "Jalles Machado"
+    },
+    {
+        "ticker": "KEPL3",
+        "tipo": "AÇÃO",
+        "nome": "Kepler Weber"
+    },
+    {
+        "ticker": "LAVV3",
+        "tipo": "AÇÃO",
+        "nome": "Lavvi Construtora"
+    },
+    {
+        "ticker": "LEVE3",
+        "tipo": "AÇÃO",
+        "nome": "Mahle Metal Leve"
+    },
+    {
+        "ticker": "LJQQ3",
+        "tipo": "AÇÃO",
+        "nome": "Lojas Quero-Quero"
+    },
+    {
+        "ticker": "LOGG3",
+        "tipo": "AÇÃO",
+        "nome": "LOG CP"
+    },
+    {
+        "ticker": "LOGN3",
+        "tipo": "AÇÃO",
+        "nome": "Log-In Logística"
+    },
+    {
+        "ticker": "LIGT3",
+        "tipo": "AÇÃO",
+        "nome": "Light"
+    },
+    {
+        "ticker": "LPSB3",
+        "tipo": "AÇÃO",
+        "nome": "Lopes Brasil"
+    },
+    {
+        "ticker": "MATD3",
+        "tipo": "AÇÃO",
+        "nome": "Mater Dei"
+    },
+    {
+        "ticker": "MDIA3",
+        "tipo": "AÇÃO",
+        "nome": "M. Dias Branco"
+    },
+    {
+        "ticker": "MDNE3",
+        "tipo": "AÇÃO",
+        "nome": "Moura Dubeux"
+    },
+    {
+        "ticker": "MEAL3",
+        "tipo": "AÇÃO",
+        "nome": "IMC Alimentação"
+    },
+    {
+        "ticker": "MEGA3",
+        "tipo": "AÇÃO",
+        "nome": "MegaWhats"
+    },
+    {
+        "ticker": "MILS3",
+        "tipo": "AÇÃO",
+        "nome": "Mills"
+    },
+    {
+        "ticker": "MITRE3",
+        "tipo": "AÇÃO",
+        "nome": "Mitre Realty"
+    },
+    {
+        "ticker": "MLAS3",
+        "tipo": "AÇÃO",
+        "nome": "Multilaser"
+    },
+    {
+        "ticker": "MYPK3",
+        "tipo": "AÇÃO",
+        "nome": "Iochpe-Maxion"
+    },
+    {
+        "ticker": "ODPV3",
+        "tipo": "AÇÃO",
+        "nome": "Odontoprev"
+    },
+    {
+        "ticker": "OFSA3",
+        "tipo": "AÇÃO",
+        "nome": "Ourofino Saúde Animal"
+    },
+    {
+        "ticker": "ONCO3",
+        "tipo": "AÇÃO",
+        "nome": "Oncoclínicas"
+    },
+    {
+        "ticker": "OPCT3",
+        "tipo": "AÇÃO",
+        "nome": "OceanPact"
+    },
+    {
+        "ticker": "ORVR3",
+        "tipo": "AÇÃO",
+        "nome": "Orizon"
+    },
+    {
+        "ticker": "PARD3",
+        "tipo": "AÇÃO",
+        "nome": "Hermes Pardini"
+    },
+    {
+        "ticker": "PGMN3",
+        "tipo": "AÇÃO",
+        "nome": "Pague Menos"
+    },
+    {
+        "ticker": "PLPL3",
+        "tipo": "AÇÃO",
+        "nome": "Plano & Plano"
+    },
+    {
+        "ticker": "PNVL3",
+        "tipo": "AÇÃO",
+        "nome": "Dimed Panvel"
+    },
+    {
+        "ticker": "POMO4",
+        "tipo": "AÇÃO",
+        "nome": "Marcopolo"
+    },
+    {
+        "ticker": "PORT3",
+        "tipo": "AÇÃO",
+        "nome": "Wilson Sons"
+    },
+    {
+        "ticker": "POSI3",
+        "tipo": "AÇÃO",
+        "nome": "Positivo Tecnologia"
+    },
+    {
+        "ticker": "PRNR3",
+        "tipo": "AÇÃO",
+        "nome": "Priner"
+    },
+    {
+        "ticker": "PINE4",
+        "tipo": "AÇÃO",
+        "nome": "Banco Pine"
+    },
+    {
+        "ticker": "RANI3",
+        "tipo": "AÇÃO",
+        "nome": "Irani Papel"
+    },
+    {
+        "ticker": "ROMI3",
+        "tipo": "AÇÃO",
+        "nome": "Indústrias Romi"
+    },
+    {
+        "ticker": "SAPR4",
+        "tipo": "AÇÃO",
+        "nome": "Sanepar PN"
+    },
+    {
+        "ticker": "SGPS3",
+        "tipo": "AÇÃO",
+        "nome": "Springs Global"
+    },
+    {
+        "ticker": "SHUL4",
+        "tipo": "AÇÃO",
+        "nome": "Schulz"
+    },
+    {
+        "ticker": "SIMH3",
+        "tipo": "AÇÃO",
+        "nome": "Simpar"
+    },
+    {
+        "ticker": "SOJA3",
+        "tipo": "AÇÃO",
+        "nome": "Boa Safra Sementes"
+    },
+    {
+        "ticker": "SRNA3",
+        "tipo": "AÇÃO",
+        "nome": "Serena Energia"
+    },
+    {
+        "ticker": "STBP3",
+        "tipo": "AÇÃO",
+        "nome": "Santos Brasil"
+    },
+    {
+        "ticker": "SYNE3",
+        "tipo": "AÇÃO",
+        "nome": "Syn Prop & Tech"
+    },
+    {
+        "ticker": "TASA4",
+        "tipo": "AÇÃO",
+        "nome": "Taurus Armas"
+    },
+    {
+        "ticker": "TCNO4",
+        "tipo": "AÇÃO",
+        "nome": "Tecnosolo"
+    },
+    {
+        "ticker": "TECN3",
+        "tipo": "AÇÃO",
+        "nome": "Technos"
+    },
+    {
+        "ticker": "TGMA3",
+        "tipo": "AÇÃO",
+        "nome": "Tegma Gestão Logística"
+    },
+    {
+        "ticker": "TRIS3",
+        "tipo": "AÇÃO",
+        "nome": "Trisul"
+    },
+    {
+        "ticker": "TTEN3",
+        "tipo": "AÇÃO",
+        "nome": "3Tentos"
+    },
+    {
+        "ticker": "TUPY3",
+        "tipo": "AÇÃO",
+        "nome": "Tupy"
+    },
+    {
+        "ticker": "UNIP6",
+        "tipo": "AÇÃO",
+        "nome": "Unipar Carbocloro"
+    },
+    {
+        "ticker": "VITT3",
+        "tipo": "AÇÃO",
+        "nome": "Vittia"
+    },
+    {
+        "ticker": "VLID3",
+        "tipo": "AÇÃO",
+        "nome": "Valid"
+    },
+    {
+        "ticker": "VULC3",
+        "tipo": "AÇÃO",
+        "nome": "Vulcabras"
+    },
+    {
+        "ticker": "WIZC3",
+        "tipo": "AÇÃO",
+        "nome": "Wiz Co"
+    },
+    {
+        "ticker": "ZAMP3",
+        "tipo": "AÇÃO",
+        "nome": "Zamp Burger King"
+    },
+    {
+        "ticker": "BMGB4",
+        "tipo": "AÇÃO",
+        "nome": "Banco BMG"
+    },
+    {
+        "ticker": "DESK3",
+        "tipo": "AÇÃO",
+        "nome": "Desktop Sigmanet"
+    },
+    {
+        "ticker": "ENJU3",
+        "tipo": "AÇÃO",
+        "nome": "Enjoei"
+    },
+    {
+        "ticker": "SHOW3",
+        "tipo": "AÇÃO",
+        "nome": "Time For Fun"
+    },
+    {
+        "ticker": "WEST3",
+        "tipo": "AÇÃO",
+        "nome": "Westwing Brasil"
+    },
+    {
+        "ticker": "NINJ3",
+        "tipo": "AÇÃO",
+        "nome": "GetNinjas"
+    },
+    {
+        "ticker": "DOTZ3",
+        "tipo": "AÇÃO",
+        "nome": "Dotz"
+    },
+    {
+        "ticker": "AMBP3",
+        "tipo": "AÇÃO",
+        "nome": "Ambipar"
+    },
+    {
+        "ticker": "MTRE3",
+        "tipo": "AÇÃO",
+        "nome": "Mitre"
+    },
+    {
+        "ticker": "MELK3",
+        "tipo": "AÇÃO",
+        "nome": "Melnick Desenvolvimento"
     },
     {
         "ticker": "MXRF11",
