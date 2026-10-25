@@ -296,10 +296,13 @@ def gerar_dashboard_html():
                 <p>AVALIAÇÃO INSTITUCIONAL &amp; SCANNER B3</p>
             </div>
         </div>
-        <div style="display: flex; align-items: center; gap: 16px;"><a href="https://thiagocporto.github.io/QuantLab/" target="_blank" style="background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; padding: 8px 16px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);">🔬 QUANTLAB</a><div class="meta">
-            <div>Atualizado em: <strong>{agora_br}</strong></div>
-            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Horário de Brasília)</div>
-            <div style="margin-top: 4px;">Universo Monitorado: <strong>{len(ativos_validos)} Ativos</strong></div></div>
+        <div style="display: flex; align-items: center; gap: 18px;">
+            <a href="https://thiagocporto.github.io/QuantLab/" target="_blank" style="background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; padding: 8px 16px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);">🔬 QUANTLAB</a>
+            <div class="meta">
+                <div>Atualizado em: <strong>{agora_br}</strong></div>
+                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">(Horário de Brasília)</div>
+                <div style="margin-top: 4px;">Universo Monitorado: <strong>{len(ativos_validos)} Ativos</strong></div>
+            </div>
         </div>
     </div>
 
@@ -369,7 +372,9 @@ def gerar_dashboard_html():
                     <td>{a['score']}</td>
                     <td>
                         <button class="btn-ia {btn_class}" onclick="abrirModal('{a['ticker']}', `{a['parecer']}`)">
-                            Tese IA ({v.upper()})</button> <a href="https://thiagocporto.github.io/QuantLab/?ticker={a[\x27ticker\x27]}" target="_blank" style="background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 5px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-decoration: none; margin-left: 4px;" title="Simular no QuantLab">🔬</a>
+                            Tese IA ({v.upper()})
+                        </button>
+                        <a href="https://thiagocporto.github.io/QuantLab/?ticker={a['ticker']}" target="_blank" style="background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 5px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-decoration: none; margin-left: 4px;" title="Simular no QuantLab">🔬</a>
                     </td>
                 </tr>
 """
@@ -486,9 +491,7 @@ def gerar_dashboard_html():
     caminho_saida = BASE_DIR / "index.html"
     with open(caminho_saida, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"Sucesso: index.html compilado com Cards Intraday, Botao de Busca e Logo em '{caminho_saida}'!")
+    print(f"Sucesso: index.html compilado com Cards Intraday, Botao de Busca, QuantLab e Logo em '{caminho_saida}'!")
 
 if __name__ == "__main__":
     gerar_dashboard_html()
-
-
