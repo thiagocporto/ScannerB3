@@ -271,20 +271,20 @@ def gerar_dashboard_html():
         .modal-body {{ font-size: 13px; line-height: 1.6; color: #e2e8f0; white-space: pre-wrap; margin-top: 14px; }}
 
         /* Responsividade Mobile Segura (Apenas telas ate 768px - Desktop 100% intocado) */
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            .header { flex-direction: column; align-items: flex-start; gap: 14px; }
-            .meta { text-align: left; }
-            .search-bar { flex-direction: column; align-items: stretch; }
-            .search-bar input { min-width: 100%; max-width: 100%; }
-            .btn-consultar { width: 100%; justify-content: center; }
-            .destaques-grid { grid-template-columns: 1fr; gap: 12px; }
-            .charts-grid { grid-template-columns: 1fr; gap: 16px; }
-            .table-box { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .table-box table { min-width: 720px; }
-            th, td { white-space: nowrap; }
-            .modal-box { width: 95%; padding: 16px; }
-        }
+        @media (max-width: 768px) {{
+            body {{ padding: 12px; }}
+            .header {{ flex-direction: column; align-items: flex-start; gap: 14px; }}
+            .meta {{ text-align: left; }}
+            .search-bar {{ flex-direction: column; align-items: stretch; }}
+            .search-bar input {{ min-width: 100%; max-width: 100%; }}
+            .btn-consultar {{ width: 100%; justify-content: center; }}
+            .destaques-grid {{ grid-template-columns: 1fr; gap: 12px; }}
+            .charts-grid {{ grid-template-columns: 1fr; gap: 16px; }}
+            .table-box {{ overflow-x: auto; -webkit-overflow-scrolling: touch; }}
+            .table-box table {{ min-width: 720px; }}
+            th, td {{ white-space: nowrap; }}
+            .modal-box {{ width: 95%; padding: 16px; }}
+        }}
     </style>
 </head>
 <body>
@@ -463,7 +463,7 @@ def gerar_dashboard_html():
                 return;
             }}
 
-            alert(`Ativo '${val}' não localizado na tabela.`);
+            alert(`Ativo '${{val}}' não localizado na tabela.`);
         }}
 
         function abrirModal(ticker, parecer) {{
@@ -495,4 +495,5 @@ def gerar_dashboard_html():
 
 if __name__ == "__main__":
     gerar_dashboard_html()
+
 
