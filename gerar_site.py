@@ -7,7 +7,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 import pandas as pd
 
-BASE_DIR = Path(r"D:\ScannerB3")
+BASE_DIR = Path(__file__).resolve().parent
 
 def obter_logo_em_base64():
     """Converte a imagem da logo para Base64 para garantir carregamento infalivel."""
@@ -495,5 +495,6 @@ def gerar_dashboard_html():
 
 if __name__ == "__main__":
     gerar_dashboard_html()
+
 
 
