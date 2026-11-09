@@ -1,211 +1,211 @@
 ﻿Ticker,Preço (R$),SMA 200,Alvo SMA 5,Upside (%),IFR(2),ConnorsRSI,%b Bollinger,Swing Trade,Position Trade,Score Fundamentalista,Gatilho_Swing
-ABEV3,15.55,15.58,15.29,-1.66,92.7,60.0,0.39,Tendência de Baixa,Abaixo da Média Semanal,61 (Bom),False
-ALOS3,27.03,27.92,25.38,-6.09,97.0,87.6,0.36,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
-ALPA4,13.9,13.13,12.91,-7.12,89.8,85.3,0.36,Lateralização / Neutro,Alta Estrutural (Semanal),79 (Bom),False
+ABEV3,15.58,15.58,15.3,-1.81,93.6,63.4,0.4,Lateralização / Neutro,Abaixo da Média Semanal,61 (Bom),False
+ALOS3,27.27,27.92,25.43,-6.74,97.4,91.8,0.37,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+ALPA4,13.75,13.13,12.88,-6.33,88.6,84.3,0.34,Lateralização / Neutro,Alta Estrutural (Semanal),79 (Bom),False
 ASAI3,8.89,9.08,8.36,-5.92,92.6,75.5,0.33,Tendência de Baixa,Abaixo da Média Semanal,46 (Regular),False
-AURE3,11.79,12.17,11.23,-4.77,94.5,83.0,0.34,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
-B3SA3,14.62,16.69,14.26,-2.49,86.9,74.9,0.27,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-BBAS3,17.04,21.82,16.67,-2.18,73.1,40.1,0.27,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-BBDC3,13.32,15.73,12.86,-3.42,85.4,78.3,0.27,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-BBDC4,14.49,18.04,14.02,-3.27,81.9,76.8,0.26,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-BBSE3,38.5,36.27,38.64,0.35,51.6,61.3,0.12,Lateralização / Neutro,Abaixo da Média Semanal,100 (Excelente),False
+AURE3,11.78,12.17,11.23,-4.7,94.4,82.9,0.34,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
+B3SA3,14.8,16.69,14.29,-3.43,90.9,83.2,0.28,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+BBAS3,16.79,21.82,16.62,-1.02,48.4,27.4,0.26,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+BBDC3,13.33,15.73,12.87,-3.48,85.6,79.1,0.27,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+BBDC4,14.52,18.04,14.02,-3.43,82.7,77.5,0.27,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+BBSE3,38.53,36.27,38.64,0.29,53.1,62.3,0.13,Lateralização / Neutro,Abaixo da Média Semanal,100 (Excelente),False
 BEEF3,2.76,4.11,2.6,-5.8,85.5,80.6,0.26,Tendência de Baixa,Abaixo da Média Semanal,60 (Bom),False
-BPAC11,56.47,57.94,54.17,-4.07,89.5,74.9,0.28,Tendência de Baixa,Abaixo da Média Semanal,75 (Bom),False
-BRAP4,19.61,22.25,18.87,-3.77,96.9,91.7,0.6,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
-BRKM5,3.12,7.55,3.09,-0.96,48.7,37.5,0.25,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-CMIG4,10.57,11.15,10.24,-3.16,92.0,81.0,0.37,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-CMIN3,5.21,5.13,5.0,-4.07,76.6,77.5,0.88,Tendência de Alta Forte,Abaixo da Média Semanal,79 (Bom),False
-COGN3,1.48,2.7,1.43,-3.51,68.0,64.5,0.23,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
-CPFE3,44.46,45.9,42.91,-3.5,90.7,81.5,0.37,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
-CSAN3,2.77,4.5,2.54,-8.3,93.2,49.3,0.31,Tendência de Baixa,Abaixo da Média Semanal,22 (Fraco),False
-CSNA3,4.59,6.31,4.21,-8.28,93.5,78.5,0.34,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
+BPAC11,56.94,57.94,54.27,-4.69,91.2,78.6,0.29,Tendência de Baixa,Abaixo da Média Semanal,75 (Bom),False
+BRAP4,19.52,22.25,18.85,-3.42,96.4,89.7,0.58,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
+BRKM5,3.1,7.55,3.09,-0.45,44.0,35.0,0.24,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+CMIG4,10.62,11.15,10.25,-3.52,93.0,83.9,0.38,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+CMIN3,5.24,5.13,5.0,-4.5,78.1,79.3,0.91,Tendência de Alta Forte,Abaixo da Média Semanal,79 (Bom),False
+COGN3,1.49,2.7,1.43,-4.03,71.2,67.8,0.23,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+CPFE3,44.39,45.9,42.89,-3.37,90.3,80.7,0.36,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+CSAN3,2.78,4.5,2.54,-8.56,93.6,73.6,0.31,Tendência de Baixa,Abaixo da Média Semanal,22 (Fraco),False
+CSNA3,4.43,6.31,4.18,-5.69,89.3,67.3,0.31,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
 CVCB3,0.85,1.72,0.82,-3.29,87.3,70.1,0.26,Tendência de Baixa,Abaixo da Média Semanal,10 (Fraco),False
-CYRE3,19.07,25.31,18.23,-4.4,71.7,39.0,0.29,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-DXCO3,4.74,5.34,4.67,-1.39,67.1,70.0,0.27,Tendência de Baixa,Abaixo da Média Semanal,38 (Fraco),False
-EGIE3,27.45,31.32,26.81,-2.32,92.0,77.6,0.32,Tendência de Baixa,Abaixo da Média Semanal,75 (Bom),False
-ENEV3,27.31,25.49,26.38,-3.41,93.5,83.8,0.35,Lateralização / Neutro,Alta Estrutural (Semanal),38 (Fraco),False
-ENGI11,47.21,50.95,45.25,-4.16,93.6,85.3,0.3,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
-EQTL3,34.74,40.19,33.48,-3.62,91.6,78.3,0.29,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-EZTC3,9.55,13.49,9.33,-2.26,70.4,61.3,0.26,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-FLRY3,20.4,17.74,20.38,-0.12,59.0,64.7,0.22,Lateralização / Neutro,Alta Estrutural (Semanal),72 (Bom),False
-GGBR4,25.0,22.72,24.7,-1.19,75.4,79.5,0.38,Pullback em Alta (Aguardando Gatilho),Alta Estrutural (Semanal),63 (Bom),False
-GOAU4,11.09,10.06,10.95,-1.26,77.2,79.6,0.34,Lateralização / Neutro,Alta Estrutural (Semanal),63 (Bom),False
-HAPV3,4.64,9.87,4.27,-8.06,93.8,83.3,0.3,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-HYPE3,22.3,22.28,21.8,-2.24,92.2,74.8,0.34,Lateralização / Neutro,Abaixo da Média Semanal,93 (Excelente),False
-IGTI11,23.67,26.44,22.85,-3.46,91.3,72.6,0.3,Tendência de Baixa,Abaixo da Média Semanal,61 (Bom),False
-IRBR3,58.72,56.07,57.8,-1.57,77.9,69.0,0.3,Lateralização / Neutro,Abaixo da Média Semanal,55 (Regular),False
-ITSA4,13.21,13.6,12.84,-2.77,94.3,84.5,0.31,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+CYRE3,19.13,25.31,18.24,-4.64,75.9,40.2,0.29,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
+DXCO3,4.72,5.34,4.67,-1.06,64.2,66.3,0.27,Tendência de Baixa,Abaixo da Média Semanal,38 (Fraco),False
+EGIE3,27.51,31.32,26.83,-2.49,92.7,78.7,0.32,Tendência de Baixa,Abaixo da Média Semanal,75 (Bom),False
+ENEV3,27.3,25.49,26.38,-3.38,93.4,83.8,0.35,Lateralização / Neutro,Alta Estrutural (Semanal),38 (Fraco),False
+ENGI11,47.31,50.95,45.27,-4.32,93.9,85.9,0.3,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
+EQTL3,34.64,40.19,33.46,-3.39,90.9,77.2,0.29,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
+EZTC3,9.63,13.49,9.35,-2.91,75.0,66.9,0.26,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+FLRY3,20.47,17.74,20.39,-0.39,63.0,66.5,0.22,Lateralização / Neutro,Alta Estrutural (Semanal),72 (Bom),False
+GGBR4,24.91,22.72,24.68,-0.91,73.6,78.5,0.35,Lateralização / Neutro,Alta Estrutural (Semanal),63 (Bom),False
+GOAU4,11.04,10.06,10.94,-0.91,74.9,78.1,0.31,Lateralização / Neutro,Alta Estrutural (Semanal),63 (Bom),False
+HAPV3,4.62,9.87,4.26,-7.75,93.5,81.6,0.3,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+HYPE3,22.46,22.28,21.83,-2.8,94.1,82.5,0.35,Lateralização / Neutro,Abaixo da Média Semanal,93 (Excelente),False
+IGTI11,23.84,26.45,22.88,-4.01,92.8,77.0,0.31,Tendência de Baixa,Abaixo da Média Semanal,61 (Bom),False
+IRBR3,58.68,56.07,57.79,-1.52,77.4,68.2,0.29,Lateralização / Neutro,Abaixo da Média Semanal,55 (Regular),False
+ITSA4,13.24,13.6,12.85,-2.95,94.7,85.2,0.32,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
 ITUB4,41.24,42.57,39.99,-3.04,94.7,85.6,0.33,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-KLBN11,17.35,18.3,17.62,1.58,19.4,18.8,0.15,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-LREN3,10.16,13.3,9.62,-5.35,95.1,85.4,0.32,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-LWSA3,3.38,3.95,3.2,-5.21,89.4,76.1,0.27,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-MGLU3,5.83,7.15,5.49,-5.8,87.3,71.6,0.29,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-MRVE3,4.42,6.46,4.2,-4.89,80.9,41.3,0.28,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
-MULT3,27.72,30.33,26.53,-4.29,91.5,78.0,0.31,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-PCAR3,2.41,2.66,2.32,-3.73,94.8,75.8,0.37,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-PETR3,50.93,47.87,53.03,4.12,1.8,13.9,0.03,Lateralização / Neutro,Abaixo da Média Semanal,100 (Excelente),False
-PETR4,45.19,43.09,46.85,3.68,1.3,15.2,0.05,Lateralização / Neutro,Abaixo da Média Semanal,100 (Excelente),False
-PRIO3,59.3,60.94,62.31,5.07,1.5,8.4,-0.01,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,93 (Excelente),False
-RADL3,14.75,20.34,14.91,1.11,31.4,37.2,0.21,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
+KLBN11,17.61,18.3,17.68,0.37,40.1,55.4,0.28,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
+LREN3,10.12,13.3,9.61,-5.06,94.7,84.0,0.32,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+LWSA3,3.43,3.95,3.21,-6.3,91.8,82.7,0.28,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
+MGLU3,5.84,7.15,5.49,-5.92,87.5,71.8,0.29,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+MRVE3,4.52,6.46,4.22,-6.55,94.3,78.3,0.29,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
+MULT3,27.91,30.33,26.57,-4.8,92.6,81.7,0.32,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
+PCAR3,2.37,2.66,2.31,-2.45,62.2,36.1,0.35,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+PETR3,50.71,47.87,52.98,4.48,1.6,12.5,0.02,Lateralização / Neutro,Abaixo da Média Semanal,100 (Excelente),False
+PETR4,44.97,43.09,46.81,4.09,1.1,13.4,0.04,Lateralização / Neutro,Abaixo da Média Semanal,100 (Excelente),False
+PRIO3,59.2,60.94,62.29,5.22,1.5,7.7,-0.02,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,93 (Excelente),False
+RADL3,14.79,20.34,14.92,0.89,34.4,37.9,0.22,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
 RAIZ4,28.0,0.98,22.05,-21.24,96.8,74.5,1.0,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),0 (Fraco),False
-RDOR3,33.45,37.2,32.74,-2.12,65.0,37.8,0.28,Tendência de Baixa,Abaixo da Média Semanal,54 (Regular),False
-RECV3,10.26,11.12,10.38,1.15,32.6,35.8,0.15,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-RENT3,30.88,41.78,29.42,-4.72,86.5,75.5,0.29,Tendência de Baixa,Abaixo da Média Semanal,63 (Bom),False
-SANB11,26.84,28.62,25.75,-4.08,88.8,77.7,0.53,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
-SBSP3,27.37,28.97,25.74,-5.97,93.7,82.1,0.4,Tendência de Baixa,Abaixo da Média Semanal,79 (Bom),False
-SLCE3,17.18,16.07,16.68,-2.91,88.1,84.7,0.55,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),40 (Regular),False
-SMTO3,20.48,17.36,20.56,0.41,59.4,69.2,0.46,Tendência de Alta Forte,Alta Estrutural (Semanal),63 (Bom),False
-SUZB3,53.38,46.39,52.52,-1.61,95.9,54.6,0.89,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),78 (Bom),False
-TAEE11,40.77,40.4,39.93,-2.07,88.5,78.1,0.34,Lateralização / Neutro,Abaixo da Média Semanal,68 (Bom),False
-TIMS3,20.19,22.22,19.86,-1.65,89.2,75.2,0.93,Lateralização / Neutro,Alta Estrutural (Semanal),93 (Excelente),False
-TOTS3,33.06,33.97,32.8,-0.8,55.2,43.5,0.24,Tendência de Baixa,Abaixo da Média Semanal,71 (Bom),False
-UGPA3,30.45,29.96,30.51,0.21,54.4,71.4,0.18,Lateralização / Neutro,Abaixo da Média Semanal,71 (Bom),False
-USIM5,5.06,7.56,4.97,-1.74,72.9,72.3,0.22,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
-VALE3,65.82,76.5,63.03,-4.24,95.0,90.7,0.69,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-VAMO3,2.68,3.67,2.57,-4.03,83.8,65.2,0.27,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
-VBBR3,29.06,32.18,28.92,-0.47,66.3,66.8,0.2,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-VIVA3,18.06,24.46,17.94,-0.65,57.6,62.3,0.26,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-VIVT3,31.76,33.95,31.11,-2.05,92.2,80.3,0.66,Lateralização / Neutro,Alta Estrutural (Semanal),71 (Bom),False
-WEGE3,50.27,47.73,49.2,-2.14,81.4,80.1,0.74,Tendência de Alta Forte,Alta Estrutural (Semanal),75 (Bom),False
-YDUQ3,9.51,10.47,9.23,-2.9,85.1,70.7,0.3,Tendência de Baixa,Abaixo da Média Semanal,40 (Regular),False
-ALUP11,32.64,33.6,32.09,-1.67,77.5,72.2,0.3,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-AMER3,4.46,5.06,4.22,-5.43,93.7,76.3,0.32,Tendência de Baixa,Abaixo da Média Semanal,28 (Fraco),False
-ANIM3,2.33,3.49,2.36,1.29,25.6,22.0,0.24,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-BRKM3,3.29,6.55,3.23,-1.7,60.1,43.8,0.25,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-CASH3,4.06,4.36,4.11,1.23,49.9,57.3,0.22,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-CSMG3,51.35,56.31,49.5,-3.61,88.6,76.9,0.33,Tendência de Baixa,Abaixo da Média Semanal,72 (Bom),False
+RDOR3,33.73,37.21,32.8,-2.77,86.6,47.4,0.29,Tendência de Baixa,Abaixo da Média Semanal,54 (Regular),False
+RECV3,10.24,11.12,10.37,1.31,30.7,34.8,0.15,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+RENT3,30.67,41.78,29.38,-4.21,84.6,71.0,0.28,Tendência de Baixa,Abaixo da Média Semanal,63 (Bom),False
+SANB11,26.92,28.62,25.76,-4.3,89.4,77.9,0.54,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+SBSP3,27.35,28.97,25.73,-5.92,93.6,82.1,0.39,Tendência de Baixa,Abaixo da Média Semanal,79 (Bom),False
+SLCE3,17.26,16.07,16.7,-3.27,89.1,86.0,0.6,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),40 (Regular),False
+SMTO3,20.34,17.36,20.54,0.96,47.0,61.7,0.4,Tendência de Alta Forte,Alta Estrutural (Semanal),63 (Bom),False
+SUZB3,53.69,46.39,52.58,-2.06,98.7,68.5,0.91,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),78 (Bom),False
+TAEE11,40.87,40.4,39.95,-2.26,89.5,80.2,0.35,Lateralização / Neutro,Alta Estrutural (Semanal),68 (Bom),False
+TIMS3,20.1,22.22,19.84,-1.3,86.6,71.7,0.9,Lateralização / Neutro,Alta Estrutural (Semanal),93 (Excelente),False
+TOTS3,33.4,33.97,32.86,-1.6,71.2,63.5,0.26,Tendência de Baixa,Abaixo da Média Semanal,71 (Bom),False
+UGPA3,30.38,29.96,30.5,0.39,51.7,69.9,0.17,Lateralização / Neutro,Abaixo da Média Semanal,71 (Bom),False
+USIM5,4.99,7.56,4.96,-0.64,61.2,63.1,0.2,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
+VALE3,65.65,76.5,62.99,-4.05,94.7,90.2,0.67,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+VAMO3,2.65,3.67,2.57,-3.17,67.0,34.7,0.27,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
+VBBR3,29.05,32.18,28.92,-0.44,65.8,66.3,0.2,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+VIVA3,18.01,24.46,17.93,-0.43,53.0,60.4,0.26,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+VIVT3,31.94,33.95,31.14,-2.49,94.0,85.6,0.71,Lateralização / Neutro,Alta Estrutural (Semanal),71 (Bom),False
+WEGE3,50.51,47.73,49.24,-2.51,82.8,81.3,0.76,Tendência de Alta Forte,Alta Estrutural (Semanal),75 (Bom),False
+YDUQ3,9.53,10.47,9.24,-3.06,85.8,72.0,0.3,Tendência de Baixa,Abaixo da Média Semanal,40 (Regular),False
+ALUP11,32.68,33.61,32.1,-1.77,78.5,73.2,0.31,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+AMER3,4.45,5.06,4.22,-5.26,93.4,75.7,0.32,Tendência de Baixa,Abaixo da Média Semanal,28 (Fraco),False
+ANIM3,2.37,3.49,2.37,-0.08,35.9,27.2,0.24,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+BRKM3,3.28,6.55,3.23,-1.46,56.2,41.2,0.25,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+CASH3,4.1,4.36,4.12,0.44,58.1,64.1,0.24,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+CSMG3,51.05,56.31,49.44,-3.16,86.7,72.7,0.32,Tendência de Baixa,Abaixo da Média Semanal,72 (Bom),False
 DIRR3,8.9,12.66,8.5,-4.49,89.8,75.2,0.33,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
 JHSF3,9.84,10.56,9.59,-2.54,61.9,37.3,0.29,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-MOVI3,6.4,10.64,6.04,-5.56,84.4,59.5,0.26,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
-PSSA3,44.93,49.47,44.44,-1.09,71.5,72.9,0.23,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+MOVI3,6.36,10.64,6.04,-5.09,82.5,45.3,0.26,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
+PSSA3,45.37,49.47,44.53,-1.85,78.4,79.8,0.25,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
 QUAL3,1.45,1.82,1.42,-2.21,69.2,60.1,0.31,Tendência de Baixa,Abaixo da Média Semanal,48 (Regular),False
-RAPT4,3.77,5.34,3.6,-4.4,89.8,75.4,0.27,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-SAPR11,32.39,39.04,31.18,-3.73,82.9,74.9,0.29,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-SEER3,11.38,12.06,11.03,-3.11,88.3,60.0,0.28,Tendência de Baixa,Abaixo da Média Semanal,79 (Bom),False
-TEND3,16.59,30.13,17.78,7.19,23.0,30.1,0.13,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-ABCB4,23.78,24.54,23.07,-3.0,85.8,68.7,0.31,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-AGRO3,18.54,19.06,18.03,-2.76,92.8,84.8,0.69,Lateralização / Neutro,Alta Estrutural (Semanal),45 (Regular),False
-ALPK3,3.85,4.47,3.66,-4.83,91.8,74.2,0.31,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-ARML3,3.17,4.24,3.1,-2.27,72.2,64.6,0.26,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
-AALR3,2.07,3.44,2.18,5.51,0.9,6.7,0.06,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,0 (Fraco),False
-BLAU3,9.09,10.07,8.8,-3.17,83.8,74.8,0.25,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
-BMOB3,25.27,25.12,24.51,-2.99,82.4,68.3,0.3,Lateralização / Neutro,Abaixo da Média Semanal,54 (Regular),False
-CAML3,4.38,5.55,4.2,-4.11,78.8,40.4,0.28,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
-CBAV3,11.28,10.73,11.25,-0.25,75.4,69.2,0.54,Tendência de Alta Forte,Alta Estrutural (Semanal),86 (Excelente),False
-CEAB3,8.03,10.79,7.4,-7.8,83.4,43.3,0.33,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-CSED3,4.85,5.13,4.44,-8.41,92.7,84.2,0.33,Tendência de Baixa,Abaixo da Média Semanal,71 (Bom),False
-CURY3,27.05,32.0,26.5,-2.03,75.6,45.7,0.3,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-DEXP3,7.49,7.32,7.36,-1.79,67.7,42.5,0.43,Lateralização / Neutro,Alta Estrutural (Semanal),86 (Excelente),False
-DMVF3,4.64,6.52,4.54,-2.24,72.8,66.2,0.23,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
-ECOR3,5.09,8.49,5.05,-0.83,48.4,31.7,0.25,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
-ESPA3,4.94,8.55,4.83,-2.15,57.9,38.3,0.26,Tendência de Baixa,Abaixo da Média Semanal,48 (Regular),False
+RAPT4,3.79,5.34,3.61,-4.8,90.9,77.5,0.27,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
+SAPR11,32.44,39.04,31.19,-3.85,83.5,75.1,0.29,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+SEER3,11.31,12.06,11.01,-2.63,76.3,42.9,0.27,Tendência de Baixa,Abaixo da Média Semanal,79 (Bom),False
+TEND3,16.57,30.13,17.78,7.29,22.7,29.7,0.13,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+ABCB4,23.75,24.54,23.06,-2.91,85.2,55.3,0.31,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+AGRO3,18.52,19.06,18.02,-2.68,92.6,84.0,0.69,Lateralização / Neutro,Alta Estrutural (Semanal),45 (Regular),False
+ALPK3,3.84,4.47,3.66,-4.64,91.3,72.9,0.31,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
+ARML3,3.16,4.24,3.1,-2.03,70.2,62.1,0.26,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
+AALR3,2.14,3.44,2.2,2.71,1.7,19.7,0.1,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,0 (Fraco),False
+BLAU3,9.08,10.07,8.8,-3.08,83.4,74.6,0.25,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+BMOB3,25.3,25.12,24.52,-3.08,82.9,69.2,0.3,Lateralização / Neutro,Abaixo da Média Semanal,54 (Regular),False
+CAML3,4.35,5.55,4.19,-3.59,68.8,33.9,0.27,Tendência de Baixa,Abaixo da Média Semanal,30 (Fraco),False
+CBAV3,11.31,10.73,11.26,-0.46,84.2,79.1,0.68,Tendência de Alta Forte,Alta Estrutural (Semanal),86 (Excelente),False
+CEAB3,8.1,10.79,7.42,-8.42,94.0,48.9,0.33,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+CSED3,4.84,5.13,4.44,-8.26,92.6,83.8,0.33,Tendência de Baixa,Abaixo da Média Semanal,71 (Bom),False
+CURY3,27.28,32.0,26.55,-2.68,87.4,74.6,0.32,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
+DEXP3,7.47,7.32,7.35,-1.58,63.5,40.3,0.42,Lateralização / Neutro,Alta Estrutural (Semanal),86 (Excelente),False
+DMVF3,4.58,6.52,4.52,-1.22,53.4,39.8,0.22,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
+ECOR3,5.18,8.49,5.07,-2.2,62.5,39.9,0.26,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
+ESPA3,4.92,8.55,4.83,-1.83,54.3,37.8,0.26,Tendência de Baixa,Abaixo da Média Semanal,48 (Regular),False
 EVEN3,3.49,5.76,3.4,-2.58,69.7,41.3,0.27,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
 FESA4,5.14,6.59,5.06,-1.6,75.0,69.6,0.25,Tendência de Baixa,Abaixo da Média Semanal,63 (Bom),False
-FHER3,2.79,3.72,2.7,-3.3,76.6,79.1,0.44,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-FIQE3,5.53,5.69,5.39,-2.46,94.2,78.5,0.4,Lateralização / Neutro,Alta Estrutural (Semanal),86 (Excelente),False
-FRAS3,21.66,22.44,21.29,-1.7,78.0,36.8,0.29,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
+FHER3,2.75,3.71,2.71,-1.38,55.6,37.4,0.37,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+FIQE3,5.49,5.69,5.39,-1.89,91.6,70.8,0.38,Lateralização / Neutro,Alta Estrutural (Semanal),86 (Excelente),False
+FRAS3,21.78,22.44,21.32,-2.13,90.4,72.8,0.29,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
 GFSA3,0.22,1.2,0.22,0.0,18.1,42.5,0.24,Tendência de Baixa,Abaixo da Média Semanal,38 (Fraco),False
-GMAT3,3.82,4.52,3.67,-4.03,92.9,74.7,0.31,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
-GRND3,3.84,4.06,3.72,-3.07,67.8,35.3,0.34,Tendência de Baixa,Alta Estrutural (Semanal),93 (Excelente),False
-HBSA3,2.99,3.57,2.99,-0.07,43.0,34.9,0.24,Tendência de Baixa,Abaixo da Média Semanal,32 (Fraco),False
-HBOR3,1.33,2.32,1.43,7.82,8.3,14.9,0.19,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,45 (Regular),False
-INTB3,14.67,14.02,14.43,-1.62,87.1,71.5,0.3,Lateralização / Neutro,Abaixo da Média Semanal,86 (Excelente),False
+GMAT3,3.86,4.52,3.67,-4.82,94.6,81.0,0.32,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+GRND3,3.86,4.06,3.73,-3.47,76.3,41.5,0.35,Tendência de Baixa,Alta Estrutural (Semanal),93 (Excelente),False
+HBSA3,3.01,3.57,2.99,-0.6,49.3,38.3,0.25,Tendência de Baixa,Abaixo da Média Semanal,32 (Fraco),False
+HBOR3,1.11,2.32,1.39,25.23,3.4,12.3,0.12,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,45 (Regular),False
+INTB3,14.87,14.02,14.47,-2.68,91.7,79.4,0.32,Lateralização / Neutro,Abaixo da Média Semanal,86 (Excelente),False
 JALL3,2.17,2.69,2.08,-4.06,80.9,69.8,0.27,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-KEPL3,6.62,7.41,6.61,-0.15,37.4,24.9,0.3,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-LAVV3,8.08,12.73,7.73,-4.36,73.0,44.5,0.26,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-LEVE3,31.68,33.18,31.15,-1.67,82.0,73.2,0.3,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+KEPL3,6.63,7.41,6.61,-0.27,39.3,26.4,0.31,Tendência de Baixa,Alta Estrutural (Semanal),86 (Excelente),False
+LAVV3,8.12,12.73,7.74,-4.73,79.0,47.3,0.27,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+LEVE3,31.67,33.18,31.15,-1.64,81.7,73.1,0.3,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
 LJQQ3,1.09,1.68,1.07,-1.83,61.1,64.4,0.27,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-LOGG3,21.1,24.92,20.57,-2.53,79.7,72.8,0.27,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-LOGN3,22.85,29.51,22.98,0.55,27.6,28.0,0.18,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
-LIGT3,2.67,3.86,2.58,-3.45,63.6,39.7,0.31,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
+LOGG3,21.0,24.92,20.55,-2.16,77.4,69.3,0.27,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+LOGN3,22.95,29.51,23.0,0.2,35.3,55.0,0.19,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
+LIGT3,2.64,3.86,2.57,-2.58,55.9,33.8,0.3,Tendência de Baixa,Abaixo da Média Semanal,78 (Bom),False
 LPSB3,1.01,1.53,1.0,-0.59,63.2,65.7,0.23,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-MATD3,5.03,5.32,4.67,-7.24,94.1,82.6,0.38,Tendência de Baixa,Abaixo da Média Semanal,55 (Regular),False
-MDIA3,16.92,19.85,16.46,-2.74,78.3,42.3,0.36,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
-MDNE3,17.97,27.7,17.0,-5.42,77.4,44.3,0.29,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-MEAL3,0.76,0.93,0.78,2.89,39.4,62.5,0.26,Tendência de Baixa,Abaixo da Média Semanal,38 (Fraco),False
-MILS3,16.02,14.6,16.07,0.3,35.7,23.8,0.49,Tendência de Alta Forte,Alta Estrutural (Semanal),93 (Excelente),False
-MLAS3,1.99,1.66,1.97,-1.11,44.6,26.5,0.33,Lateralização / Neutro,Alta Estrutural (Semanal),70 (Bom),False
-MYPK3,9.72,9.61,9.16,-5.74,78.2,39.3,0.42,Lateralização / Neutro,Alta Estrutural (Semanal),38 (Fraco),False
+MATD3,5.06,5.32,4.67,-7.67,94.5,83.9,0.38,Tendência de Baixa,Abaixo da Média Semanal,48 (Regular),False
+MDIA3,16.95,19.85,16.46,-2.88,82.7,43.7,0.37,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
+MDNE3,17.99,27.7,17.0,-5.5,78.5,44.8,0.29,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
+MEAL3,0.78,0.93,0.79,0.77,60.1,72.8,0.31,Tendência de Baixa,Abaixo da Média Semanal,38 (Fraco),False
+MILS3,16.06,14.6,16.08,0.1,44.4,28.3,0.53,Tendência de Alta Forte,Alta Estrutural (Semanal),93 (Excelente),False
+MLAS3,2.01,1.66,1.97,-1.89,52.4,30.3,0.35,Lateralização / Neutro,Alta Estrutural (Semanal),70 (Bom),False
+MYPK3,9.68,9.6,9.15,-5.43,73.2,36.8,0.41,Lateralização / Neutro,Alta Estrutural (Semanal),38 (Fraco),False
 OFSA3,26.21,27.42,25.12,-4.17,93.1,84.9,0.35,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-ONCO3,1.05,1.41,0.88,-16.19,98.1,88.2,0.7,Lateralização / Neutro,Alta Estrutural (Semanal),0 (Fraco),False
+ONCO3,1.0,1.41,0.87,-13.0,97.3,83.8,0.62,Lateralização / Neutro,Alta Estrutural (Semanal),0 (Fraco),False
 OPCT3,9.03,9.94,9.22,2.06,23.1,29.0,0.26,Tendência de Baixa,Abaixo da Média Semanal,63 (Bom),False
-ORVR3,18.74,18.33,17.19,-8.26,97.9,91.0,0.51,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),45 (Regular),False
+ORVR3,18.82,18.33,17.21,-8.57,98.0,91.8,0.52,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),45 (Regular),False
 PGMN3,2.4,4.71,2.48,3.42,24.6,22.4,0.23,Tendência de Baixa,Abaixo da Média Semanal,63 (Bom),False
-PLPL3,4.6,9.91,4.5,-2.17,59.6,42.5,0.25,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-PNVL3,11.03,12.75,10.74,-2.59,54.6,26.2,0.3,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
-POMO4,3.72,5.38,3.62,-2.74,83.8,74.6,0.25,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-POSI3,3.06,3.96,3.09,0.85,28.2,27.2,0.23,Tendência de Baixa,Abaixo da Média Semanal,38 (Fraco),False
-PRNR3,13.29,18.71,12.99,-2.24,66.5,40.7,0.28,Tendência de Baixa,Abaixo da Média Semanal,48 (Regular),False
-PINE4,11.43,12.59,10.63,-7.0,94.8,84.2,0.32,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-RANI3,8.55,8.25,8.48,-0.8,77.2,66.0,0.78,Tendência de Alta Forte,Alta Estrutural (Semanal),56 (Regular),False
-ROMI3,5.59,6.44,5.39,-3.65,84.8,72.5,0.27,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
-SAPR4,6.43,7.55,6.19,-3.79,91.4,81.5,0.3,Tendência de Baixa,Abaixo da Média Semanal,55 (Regular),False
+PLPL3,4.64,9.91,4.51,-2.84,71.0,50.7,0.26,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+PNVL3,10.97,12.75,10.73,-2.17,50.8,25.0,0.29,Tendência de Baixa,Abaixo da Média Semanal,56 (Regular),False
+POMO4,3.77,5.38,3.63,-3.77,88.6,83.8,0.27,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+POSI3,3.08,3.96,3.09,0.32,35.5,33.1,0.23,Tendência de Baixa,Abaixo da Média Semanal,38 (Fraco),False
+PRNR3,13.35,18.71,13.0,-2.59,73.5,45.4,0.28,Tendência de Baixa,Abaixo da Média Semanal,48 (Regular),False
+PINE4,11.34,12.59,10.61,-6.42,94.2,81.9,0.31,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
+RANI3,8.57,8.25,8.49,-0.98,79.2,68.6,0.78,Tendência de Alta Forte,Alta Estrutural (Semanal),56 (Regular),False
+ROMI3,5.58,6.44,5.38,-3.51,83.9,71.6,0.27,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
+SAPR4,6.45,7.55,6.19,-4.03,92.0,83.6,0.31,Tendência de Baixa,Abaixo da Média Semanal,55 (Regular),False
 SHUL4,4.24,4.75,4.19,-1.23,52.5,34.7,0.28,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-SIMH3,5.75,9.7,5.52,-4.03,78.5,57.9,0.27,Tendência de Baixa,Abaixo da Média Semanal,40 (Regular),False
-SOJA3,6.23,7.06,5.95,-4.43,91.6,84.6,0.28,Tendência de Baixa,Abaixo da Média Semanal,50 (Regular),False
-SYNE3,2.83,4.04,2.83,-0.07,45.9,33.2,0.25,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-TASA4,4.55,5.53,4.59,0.84,39.6,34.4,0.24,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-TECN3,8.0,9.02,7.64,-4.48,94.5,88.2,0.31,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-TGMA3,36.84,33.94,36.41,-1.17,65.5,58.0,0.27,Lateralização / Neutro,Alta Estrutural (Semanal),93 (Excelente),False
+SIMH3,5.7,9.7,5.51,-3.37,71.8,39.3,0.27,Tendência de Baixa,Abaixo da Média Semanal,40 (Regular),False
+SOJA3,6.29,7.06,5.97,-5.15,93.0,87.4,0.3,Tendência de Baixa,Abaixo da Média Semanal,50 (Regular),False
+SYNE3,2.84,4.04,2.83,-0.35,48.0,36.0,0.26,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+TASA4,4.56,5.53,4.59,0.66,40.8,34.9,0.24,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+TECN3,7.93,9.01,7.63,-3.81,93.2,84.2,0.3,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
+TGMA3,36.98,33.94,36.44,-1.47,67.9,63.0,0.27,Lateralização / Neutro,Alta Estrutural (Semanal),93 (Excelente),False
 TRIS3,4.36,5.24,4.26,-2.34,61.1,40.4,0.27,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-TTEN3,10.51,14.16,10.3,-2.02,72.9,67.8,0.27,Tendência de Baixa,Abaixo da Média Semanal,71 (Bom),False
-TUPY3,17.2,14.59,15.88,-7.65,95.9,76.8,0.43,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),30 (Fraco),False
-UNIP6,53.06,60.94,52.13,-1.75,77.9,69.5,0.33,Tendência de Baixa,Abaixo da Média Semanal,40 (Regular),False
-VITT3,2.53,3.36,2.62,3.64,17.2,24.1,0.19,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
-VLID3,14.64,18.49,14.17,-3.22,81.5,73.1,0.29,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-VULC3,12.3,15.29,11.94,-2.96,82.2,72.5,0.3,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
+TTEN3,10.62,14.16,10.32,-2.82,78.3,73.2,0.29,Tendência de Baixa,Abaixo da Média Semanal,71 (Bom),False
+TUPY3,17.37,14.59,15.92,-8.36,96.5,82.5,0.45,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),30 (Fraco),False
+UNIP6,53.33,60.94,52.19,-2.14,81.3,75.8,0.34,Tendência de Baixa,Abaixo da Média Semanal,40 (Regular),False
+VITT3,2.5,3.35,2.62,4.64,14.4,21.3,0.18,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,70 (Bom),False
+VLID3,14.79,18.49,14.2,-4.0,84.9,78.4,0.3,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+VULC3,12.41,15.29,11.96,-3.64,85.8,77.9,0.32,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
 WIZC3,5.98,8.24,5.93,-0.84,53.3,37.4,0.29,Tendência de Baixa,Abaixo da Média Semanal,100 (Excelente),False
-BMGB4,5.22,5.3,5.38,3.07,14.6,16.6,0.2,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,93 (Excelente),False
-DESK3,19.43,17.7,19.51,0.42,16.5,24.4,0.6,Tendência de Alta Forte,Alta Estrutural (Semanal),38 (Fraco),False
-ENJU3,6.98,8.17,6.77,-3.07,81.3,48.5,0.37,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
+BMGB4,5.21,5.3,5.38,3.22,14.0,16.4,0.2,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,93 (Excelente),False
+DESK3,19.42,17.7,19.51,0.46,14.9,22.8,0.58,Atenção: Sobrevendido em Alta,Alta Estrutural (Semanal),38 (Fraco),False
+ENJU3,6.99,8.17,6.77,-3.18,84.7,52.3,0.37,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
 WEST3,3.45,3.21,3.44,-0.29,57.0,44.9,0.26,Lateralização / Neutro,Abaixo da Média Semanal,45 (Regular),False
-DOTZ3,7.06,5.8,7.11,0.74,45.7,33.8,0.22,Lateralização / Neutro,Abaixo da Média Semanal,35 (Fraco),False
+DOTZ3,7.08,5.8,7.12,0.51,47.0,34.0,0.22,Lateralização / Neutro,Abaixo da Média Semanal,35 (Fraco),False
 AMBP3,0.14,0.19,0.14,0.0,66.7,39.6,0.34,Tendência de Baixa,Abaixo da Média Semanal,20 (Fraco),False
-MTRE3,3.12,3.37,3.04,-2.63,93.9,69.4,0.32,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
-MELK3,2.33,3.23,2.36,1.37,36.9,26.3,0.23,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
-MXRF11,8.83,9.07,8.63,-2.31,83.7,80.2,0.34,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
-HGLG11,145.03,146.84,145.61,0.4,23.2,18.3,0.18,Tendência de Baixa,Abaixo da Média Semanal,68 (Bom),False
-XPML11,97.18,101.6,96.0,-1.22,57.5,34.9,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-KNIP11,86.14,87.08,85.38,-0.88,75.3,59.4,0.3,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-KNCR11,102.64,100.66,102.25,-0.38,70.0,68.4,0.24,Lateralização / Neutro,Abaixo da Média Semanal,68 (Bom),False
-BTLG11,98.96,98.41,97.64,-1.34,91.3,83.8,0.35,Lateralização / Neutro,Abaixo da Média Semanal,35 (Fraco),False
-VISC11,98.72,102.53,98.2,-0.53,42.4,24.3,0.25,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-HGRU11,115.2,119.86,113.8,-1.22,70.3,39.4,0.33,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-XPLG11,88.77,92.05,88.43,-0.39,57.3,54.9,0.23,Tendência de Baixa,Abaixo da Média Semanal,18 (Fraco),False
-CPTS11,6.97,7.29,6.98,0.2,33.2,31.4,0.23,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-TGAR11,32.05,54.72,32.61,1.75,23.3,24.1,0.13,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
-VGIR11,8.86,9.1,8.78,-0.95,46.2,25.2,0.23,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+MTRE3,3.1,3.37,3.03,-2.13,92.1,64.2,0.31,Tendência de Baixa,Abaixo da Média Semanal,70 (Bom),False
+MELK3,2.3,3.23,2.36,2.43,32.5,24.5,0.22,Tendência de Baixa,Abaixo da Média Semanal,86 (Excelente),False
+MXRF11,8.85,9.07,8.63,-2.49,85.2,82.4,0.35,Tendência de Baixa,Abaixo da Média Semanal,53 (Regular),False
+HGLG11,144.68,146.84,145.54,0.6,20.4,17.5,0.16,Tendência de Baixa,Abaixo da Média Semanal,68 (Bom),False
+XPML11,96.55,101.6,95.87,-0.7,45.7,28.3,0.24,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+KNIP11,85.9,87.08,85.33,-0.66,58.1,38.6,0.28,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+KNCR11,102.5,100.66,102.22,-0.28,63.1,64.1,0.21,Lateralização / Neutro,Abaixo da Média Semanal,68 (Bom),False
+BTLG11,98.78,98.41,97.6,-1.19,90.1,81.8,0.33,Lateralização / Neutro,Abaixo da Média Semanal,35 (Fraco),False
+VISC11,97.83,102.53,98.02,0.19,32.2,20.8,0.22,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+HGRU11,114.5,119.86,113.66,-0.74,51.5,29.8,0.3,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+XPLG11,88.9,92.05,88.45,-0.5,63.6,57.8,0.23,Tendência de Baixa,Abaixo da Média Semanal,18 (Fraco),False
+CPTS11,6.92,7.29,6.97,0.78,22.9,24.5,0.2,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+TGAR11,31.95,54.72,32.59,2.0,22.3,23.6,0.12,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
+VGIR11,8.79,9.1,8.76,-0.32,37.4,21.8,0.2,Tendência de Baixa,Abaixo da Média Semanal,0 (Fraco),False
 RBRR11,63.0,75.39,62.88,-0.19,55.3,55.4,0.16,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-HGCR11,87.3,90.12,88.2,1.03,14.2,14.0,0.09,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,0 (Fraco),False
-TRXF11,60.62,80.39,62.92,3.8,12.7,14.2,-0.01,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
-VGIA11,8.64,8.8,8.46,-2.06,89.7,77.4,0.4,Tendência de Baixa,Alta Estrutural (Semanal),0 (Fraco),False
-RZTR11,64.68,84.0,67.18,3.87,14.4,21.0,0.08,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
-AAPL34,96.45,76.61,94.52,-2.0,76.2,78.8,0.89,Tendência de Alta Forte,Alta Estrutural (Semanal),68 (Bom),False
-NVDC34,20.31,21.84,21.86,7.61,16.9,20.4,-0.1,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-MSFT34,124.41,94.01,122.92,-1.2,72.0,72.7,0.87,Tendência de Alta Forte,Alta Estrutural (Semanal),75 (Bom),False
-AMZO34,74.03,62.64,71.5,-3.42,88.5,79.9,1.03,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),85 (Excelente),False
-GOGL34,134.02,145.16,130.73,-2.46,81.7,77.4,0.37,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
-TSLA34,65.0,61.64,63.92,-1.66,70.1,78.1,0.67,Tendência de Alta Forte,Alta Estrutural (Semanal),45 (Regular),False
-DISB34,43.33,35.38,42.51,-1.88,78.4,77.1,0.94,Tendência de Alta Forte,Alta Estrutural (Semanal),53 (Regular),False
-NFLX34,7.03,8.31,7.12,1.31,33.6,56.4,0.59,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
-MELI34,70.8,77.02,71.86,1.49,53.3,70.6,0.11,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
-BOVA11,168.28,178.34,165.01,-1.94,84.2,78.1,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-BRAX11,143.04,151.99,140.44,-1.82,86.3,78.6,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-SMAL11,98.47,113.99,95.21,-3.31,87.2,76.1,0.3,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-NDIV11,115.48,126.11,112.64,-2.46,88.5,81.6,0.31,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-DIVO11,121.88,129.88,119.52,-1.93,86.7,80.0,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-FIND11,166.54,185.02,162.37,-2.51,89.4,78.3,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
-MATB11,62.5,62.9,61.27,-1.97,87.5,79.3,0.76,Lateralização / Neutro,Alta Estrutural (Semanal),18 (Fraco),False
-IVVB11,469.29,424.13,465.5,-0.81,73.5,78.4,0.78,Tendência de Alta Forte,Alta Estrutural (Semanal),0 (Fraco),False
-SPXI11,57.12,53.3,56.57,-0.96,75.1,79.2,0.79,Tendência de Alta Forte,Alta Estrutural (Semanal),0 (Fraco),False
+HGCR11,86.76,90.12,88.09,1.54,11.5,12.8,0.06,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,0 (Fraco),False
+TRXF11,59.15,80.38,62.63,5.88,9.5,12.0,-0.08,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
+VGIA11,8.62,8.8,8.46,-1.88,88.3,73.8,0.38,Tendência de Baixa,Alta Estrutural (Semanal),0 (Fraco),False
+RZTR11,64.54,83.99,67.15,4.05,14.0,20.9,0.07,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
+AAPL34,96.2,76.61,94.47,-1.8,74.7,77.0,0.88,Tendência de Alta Forte,Alta Estrutural (Semanal),68 (Bom),False
+NVDC34,20.28,21.84,21.85,7.74,16.7,20.3,-0.11,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+MSFT34,124.74,94.01,122.98,-1.41,73.8,74.8,0.88,Tendência de Alta Forte,Alta Estrutural (Semanal),75 (Bom),False
+AMZO34,73.77,62.63,71.44,-3.15,87.7,78.9,1.02,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),85 (Excelente),False
+GOGL34,133.17,145.15,130.56,-1.96,78.3,74.0,0.34,Tendência de Baixa,Abaixo da Média Semanal,93 (Excelente),False
+TSLA34,64.75,61.64,63.87,-1.35,68.9,76.4,0.66,Tendência de Alta Forte,Alta Estrutural (Semanal),45 (Regular),False
+DISB34,43.5,35.38,42.55,-2.19,80.0,78.2,0.96,Tendência de Alta Forte,Alta Estrutural (Semanal),53 (Regular),False
+NFLX34,6.99,8.31,7.11,1.77,25.9,32.8,0.56,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
+MELI34,70.64,77.02,71.83,1.68,50.8,69.2,0.1,Tendência de Baixa,Abaixo da Média Semanal,45 (Regular),False
+BOVA11,168.27,178.34,165.01,-1.94,84.2,78.1,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+BRAX11,142.9,151.99,140.41,-1.74,85.8,77.6,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+SMAL11,98.69,113.99,95.26,-3.48,87.9,77.1,0.3,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+NDIV11,115.72,126.11,112.69,-2.62,89.2,83.0,0.31,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+DIVO11,121.99,129.88,119.54,-2.01,87.1,80.6,0.27,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+FIND11,167.37,185.03,162.53,-2.89,91.1,82.4,0.28,Tendência de Baixa,Abaixo da Média Semanal,25 (Fraco),False
+MATB11,62.56,62.9,61.28,-2.05,87.9,79.5,0.77,Lateralização / Neutro,Alta Estrutural (Semanal),18 (Fraco),False
+IVVB11,469.86,424.13,465.61,-0.9,74.3,78.7,0.79,Tendência de Alta Forte,Alta Estrutural (Semanal),0 (Fraco),False
+SPXI11,57.16,53.3,56.58,-1.01,75.6,79.4,0.79,Tendência de Alta Forte,Alta Estrutural (Semanal),0 (Fraco),False
 NASD11,21.36,20.02,21.13,-1.1,71.3,76.6,0.57,Tendência de Alta Forte,Alta Estrutural (Semanal),0 (Fraco),False
-ACWI11,18.1,16.57,17.9,-1.1,73.5,78.6,0.81,Tendência de Alta Forte,Alta Estrutural (Semanal),10 (Fraco),False
+ACWI11,18.12,16.57,17.9,-1.19,74.2,78.8,0.82,Tendência de Alta Forte,Alta Estrutural (Semanal),10 (Fraco),False
 XINA11,7.37,7.38,7.31,-0.87,68.5,45.7,0.91,Lateralização / Neutro,Alta Estrutural (Semanal),25 (Fraco),False
-GOLD11,23.53,23.93,23.09,-1.85,83.4,72.8,0.95,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
-HASH11,52.54,48.93,54.3,3.36,12.7,22.9,0.2,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
-QBTC11,24.97,22.68,25.56,2.37,17.5,24.8,0.38,Pullback em Alta (Aguardando Gatilho),Alta Estrutural (Semanal),N/D,False
-QETH11,8.28,7.91,8.73,5.48,11.7,13.0,0.04,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
-B5P211,114.45,108.35,114.07,-0.33,96.1,78.6,0.42,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),N/D,False
-IMAB11,118.77,114.26,118.26,-0.43,91.9,79.3,0.29,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
-IB5M11,127.57,124.17,126.95,-0.48,87.2,72.2,0.28,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
-LFTS11,162.59,154.72,162.43,-0.1,98.1,66.6,0.9,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),N/D,False
+GOLD11,23.48,23.93,23.08,-1.69,82.0,70.8,0.94,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
+HASH11,52.2,48.93,54.24,3.9,11.1,20.5,0.14,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
+QBTC11,24.79,22.68,25.53,2.97,14.7,21.8,0.3,Atenção: Sobrevendido em Alta,Alta Estrutural (Semanal),N/D,False
+QETH11,8.22,7.91,8.72,6.11,10.7,11.9,-0.01,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
+B5P211,114.46,108.35,114.07,-0.34,96.2,79.4,0.43,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),N/D,False
+IMAB11,118.82,114.26,118.27,-0.46,92.6,80.8,0.29,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
+IB5M11,127.52,124.17,126.94,-0.45,86.2,70.3,0.27,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
+LFTS11,162.58,154.72,162.42,-0.1,97.9,61.9,0.9,Sobrecomprado (Risco de Correção),Alta Estrutural (Semanal),N/D,False
