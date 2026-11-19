@@ -189,9 +189,9 @@ TSLA34,69.19,61.53,69.01,-0.26,47.2,40.8,0.71,Tendência de Alta Forte,Alta Estr
 DISB34,47.07,35.62,45.89,-2.5,60.7,34.6,0.9,Tendência de Alta Forte,Alta Estrutural (Semanal),63 (Bom),False
 NFLX34,7.02,8.24,6.98,-0.57,65.4,66.4,0.59,Tendência de Baixa,Abaixo da Média Semanal,85 (Excelente),False
 MELI34,67.32,75.95,69.19,2.78,9.9,18.1,0.11,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,45 (Regular),False
-BOVA11,163.8,177.99,166.38,1.57,10.8,25.3,0.34,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
+BOVA11,163.6,177.99,166.34,1.67,10.1,23.7,0.34,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
 BRAX11,139.1,151.67,141.37,1.63,8.8,22.7,0.33,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
-SMAL11,97.5,113.03,98.55,1.08,11.9,27.6,0.43,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
+SMAL11,97.6,113.03,98.57,1.0,12.8,29.3,0.43,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
 NDIV11,112.61,125.49,114.34,1.54,4.9,20.5,0.35,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
 DIVO11,119.43,129.65,121.34,1.6,5.6,20.9,0.35,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
 FIND11,157.42,184.0,161.18,2.39,2.4,19.2,0.33,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,25 (Fraco),False
@@ -204,7 +204,7 @@ XINA11,7.26,7.33,7.28,0.22,42.2,41.7,0.63,Lateralização / Neutro,Alta Estrutur
 GOLD11,22.49,23.74,22.8,1.4,11.8,21.3,0.46,Tendência de Baixa (Sobrevendido),Abaixo da Média Semanal,N/D,False
 HASH11,47.08,48.39,47.61,1.12,22.2,51.0,0.08,Tendência de Baixa,Abaixo da Média Semanal,N/D,False
 QBTC11,22.25,22.49,22.63,1.7,22.5,54.3,0.06,Tendência de Baixa,Abaixo da Média Semanal,N/D,False
-QETH11,7.46,7.78,7.46,-0.03,61.1,69.0,0.15,Tendência de Baixa,Abaixo da Média Semanal,N/D,False
+QETH11,7.39,7.78,7.44,0.73,47.0,61.4,0.12,Tendência de Baixa,Abaixo da Média Semanal,N/D,False
 B5P211,114.64,108.84,114.66,0.02,40.7,28.7,0.58,Tendência de Alta Forte,Alta Estrutural (Semanal),N/D,False
 IMAB11,118.35,114.66,118.72,0.31,25.7,23.0,0.4,Lateralização / Neutro,Alta Estrutural (Semanal),N/D,False
 IB5M11,126.57,124.5,127.08,0.4,23.9,19.7,0.37,Lateralização / Neutro,Abaixo da Média Semanal,N/D,False
